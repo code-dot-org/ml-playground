@@ -1,0 +1,35 @@
+{
+  "name": "ml-playground",
+  "version": "1.0.0",
+  "description": "Playground for developing a variety of machine learning activities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p",
+    "dev": "webpack-dev-server --mode development --content-base public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-dot-org/ml-playground.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-dot-org/ml-playground/issues"
+  },
+  "homepage": "https://github.com/code-dot-org/ml-playground#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-core": "^7.10.5",
+    "babel-polyfill": "^7.10.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^7.10.4",
+    "js-config-webpack-plugin": "^2.0.1",
+    "scss-config-webpack-plugin": "^2.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
