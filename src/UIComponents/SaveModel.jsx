@@ -7,6 +7,7 @@ import { setTrainedModelDetails, getTrainedModelDataToSave } from "../redux";
 class SaveModel extends Component {
   static propTypes = {
     saveTrainedModel: PropTypes.func,
+    exportToAppLab: PropTypes.func,
     trainedModel: PropTypes.object,
     setTrainedModelDetails: PropTypes.func,
     trainedModelDetails: PropTypes.object,
@@ -23,6 +24,10 @@ class SaveModel extends Component {
     if (this.props.trainedModelDetails.name !== undefined) {
       this.props.saveTrainedModel(this.props.dataToSave);
     }
+  };
+
+  onClickExport = () => {
+    this.props.exportToAppLab(this.props.dataToSave);
   };
 
   render() {
@@ -45,6 +50,9 @@ class SaveModel extends Component {
         </label>
         <button type="button" onClick={this.onClickSave}>
           Save Trained Model
+        </button>
+        <button type="button" onClick={this.onClickExport}>
+          Export to App Lab
         </button>
       </div>
     );

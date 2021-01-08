@@ -58,11 +58,12 @@ class PanelTabs extends Component {
 class Panels extends Component {
   static propTypes = {
     currentPanel: PropTypes.string,
-    saveTrainedModel: PropTypes.func
+    saveTrainedModel: PropTypes.func,
+    exportToAppLab: PropTypes.func
   };
 
   render() {
-    const { currentPanel, saveTrainedModel } = this.props;
+    const { currentPanel, saveTrainedModel, exportToAppLab } = this.props;
 
     return (
       <div style={styles.panelContainer}>
@@ -75,7 +76,10 @@ class Panels extends Component {
         {currentPanel === "results" && <Results />}
         {currentPanel === "predict" && <Predict />}
         {currentPanel === "saveModel" && (
-          <SaveModel saveTrainedModel={saveTrainedModel} />
+          <SaveModel
+            saveTrainedModel={saveTrainedModel}
+            exportToAppLab={exportToAppLab}
+          />
         )}
       </div>
     );
@@ -126,7 +130,8 @@ class App extends Component {
     currentPanel: PropTypes.string,
     setCurrentPanel: PropTypes.func,
     validationMessages: PropTypes.object,
-    saveTrainedModel: PropTypes.func
+    saveTrainedModel: PropTypes.func,
+    exportToAppLab: PropTypes.func
   };
 
   render() {
@@ -135,7 +140,8 @@ class App extends Component {
       currentPanel,
       setCurrentPanel,
       validationMessages,
-      saveTrainedModel
+      saveTrainedModel,
+      exportToAppLab
     } = this.props;
 
     return (
@@ -149,6 +155,7 @@ class App extends Component {
           <Panels
             currentPanel={currentPanel}
             saveTrainedModel={saveTrainedModel}
+            exportToAppLab={exportToAppLab}
           />
           <ValidationMessages
             currentPanel={currentPanel}
