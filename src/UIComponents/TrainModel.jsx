@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import train, { availableTrainers } from "../train";
 import { readyToTrain } from "../redux";
 import { styles } from "../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 class TrainModel extends Component {
   static propTypes = {
@@ -45,7 +43,9 @@ class TrainModel extends Component {
               Train model
             </button>*/}
             {!this.props.modelSize && (
-              <FontAwesomeIcon icon={faSpinner} />
+              <div>
+                Training...
+              </div>
             )}
             {this.props.modelSize && (
               <p>The trained model is {this.props.modelSize} KB big.</p>
