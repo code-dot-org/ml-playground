@@ -845,6 +845,14 @@ export function getSummaryStat(state) {
   return summaryStat;
 }
 
+export function logTrainingRun(state) {
+  const record = {}
+  record.dataToSave = getTrainedModelDataToSave(state);
+  const prevRecords = JSON.parse(localStorage.getItem('ai_models'));
+  const updatedRecords = prevRecords ? JSON.stringify(prevRecords.concat(record)) : JSON.stringify([record]);
+  localStorage.setItem('ai_models', updatedRecords);
+}
+
 export function validationMessages(state) {
   const validationMessages = {};
   validationMessages["notEnoughData"] = {
