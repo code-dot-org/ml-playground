@@ -65,6 +65,7 @@ const SET_HIGHLIGHT_COLUMN = "SET_HIGHLIGHT_COLUMN";
 const SET_RESULTS_PHASE = "SET_RESULTS_PHASE";
 const SET_SAVE_STATUS = "SET_SAVE_STATUS";
 const SET_COLUMN_REF = "SET_COLUMN_REF";
+const LOG_TRAINING_RUN = "LOG_TRAINING_RUN";
 
 // Action creators
 export function setMode(mode) {
@@ -220,6 +221,10 @@ export function setColumnRef(columnId, ref) {
   return { type: SET_COLUMN_REF, columnId, ref };
 }
 
+export function logTrainingRun(recentRun) {
+  return { type: LOG_TRAINING_RUN, recentRun };
+}
+
 const initialState = {
   name: undefined,
   csvfile: undefined,
@@ -249,7 +254,8 @@ const initialState = {
   currentColumn: undefined,
   resultsPhase: undefined,
   saveStatus: undefined,
-  columnRefs: {}
+  columnRefs: {},
+  trainingLog: []
 };
 
 // Reducer
@@ -530,6 +536,12 @@ export default function rootReducer(state = initialState, action) {
         action: action.columnId,
         ref: action.ref
       }
+    };
+  }
+  if (action.type === LOG_TRAINING_RUN) {
+    return {
+      ...state,
+      trainingLog: state.trainingLog.concat(action.recentRun)
     };
   }
   return state;
@@ -845,12 +857,13 @@ export function getSummaryStat(state) {
   return summaryStat;
 }
 
-export function logTrainingRun(state) {
-  const record = {}
-  record.dataToSave = getTrainedModelDataToSave(state);
-  const prevRecords = JSON.parse(localStorage.getItem('ai_models'));
-  const updatedRecords = prevRecords ? JSON.stringify(prevRecords.concat(record)) : JSON.stringify([record]);
-  localStorage.setItem('ai_models', updatedRecords);
+export function recentRunData(state) {
+  const entry = {};
+  entry.features = state.selectedFeatures;
+  entry.labelColumn = state.labelColumn;
+  entry.accuracy = getSummaryStat(state).stat;
+  console.log("entry", entry)
+  return entry;
 }
 
 export function validationMessages(state) {

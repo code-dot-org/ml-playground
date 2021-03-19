@@ -7,7 +7,8 @@ import {
   setTrainedModel,
   setPrediction,
   setAccuracyCheckPredictedLabels,
-  logTrainingRun
+  logTrainingRun,
+  recentRunData
 } from "../redux";
 
 const KNN = require("ml-knn");
@@ -32,7 +33,7 @@ export default class KNNTrainer {
     setTimeout(() => {
       store.dispatch(setModelSize(kiloBytes));
       const updatedState = store.getState();
-      logTrainingRun(updatedState);
+      store.dispatch(logTrainingRun(recentRunData(updatedState)));
     }, 3000);
   }
 

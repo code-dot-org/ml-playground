@@ -12,6 +12,7 @@ import { styles } from "../constants";
 import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
 import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
 import ResultsTable from "./ResultsTable";
+import ResultsSummaryTable from "./ResultsSummaryTable";
 
 class Results extends Component {
   static propTypes = {
@@ -66,8 +67,11 @@ class Results extends Component {
           )}
 
         {this.props.resultsPhase >= 1 &&
-          !isNaN(this.props.summaryStat.stat) && <ResultsTable />}
+          !isNaN(this.props.summaryStat.stat) && <ResultsTable />
+        }
 
+        <ResultsSummaryTable />
+        
         <div style={{ opacity: this.props.resultsPhase >= 2 ? 1 : 0 }}>
           {isNaN(this.props.summaryStat.stat) && (
             <p>
