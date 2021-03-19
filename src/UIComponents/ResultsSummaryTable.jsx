@@ -27,6 +27,7 @@ class ResultsSummaryTable extends Component {
                 </th>
                 <th
                   style={{
+                    ...styles.largeText,
                     ...styles.tableHeader,
                     ...styles.resultsTableFirstHeader
                   }}
@@ -35,6 +36,7 @@ class ResultsSummaryTable extends Component {
                 </th>
                 <th
                   style={{
+                    ...styles.largeText,
                     ...styles.tableHeader,
                     ...styles.resultsTableFirstHeader
                   }}
