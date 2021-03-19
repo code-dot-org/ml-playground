@@ -9,7 +9,8 @@ const sampleModes = {
     hideSpecifyColumns: true,
     hideSelectTrainer: "knnClassify",
     hideChooseReserve: true,
-    hideModelCard: true
+    hideModelCard: true,
+    hideColumnClicking: true
   },
 
   "preload-metadata": {
@@ -72,9 +73,14 @@ function saveTrainedModelStub(data, response) {
   response({ id: 303, status: "success" });
 }
 
+function setInstructionsKeyStub(instructionsKey) {
+  document.getElementById("instructions").innerText = instructionsKey;
+}
+
 // Initialize the app.
 initAll({
   mode: mode,
   onContinue: onContinueStub,
-  saveTrainedModel: saveTrainedModelStub
+  saveTrainedModel: saveTrainedModelStub,
+  setInstructionsKey: setInstructionsKeyStub
 });

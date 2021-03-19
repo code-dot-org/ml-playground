@@ -41,7 +41,8 @@ export const colors = {
 export const styles = {
   app: {
     userSelect: "none",
-    height: "100%"
+    height: "100%",
+    fontFamily: '"Gotham 4r", sans-serif'
   },
 
   bold: {
@@ -57,7 +58,6 @@ export const styles = {
   },
 
   panelContainer: {
-    fontFamily: '"Gotham 4r", sans-serif',
     position: "relative",
     float: "left",
     width: "70%",
@@ -84,7 +84,7 @@ export const styles = {
   bodyContainer: {
     height: "100%",
     boxSizing: "border-box",
-    paddingBottom: 100
+    paddingBottom: 50
   },
 
   largeText: {
@@ -223,6 +223,7 @@ export const styles = {
     position: "sticky",
     top: 0
   },
+
   dataDisplayHeaderLabelSelected: {
     backgroundColor: labelColor,
     color: "yellow"
@@ -298,7 +299,8 @@ export const styles = {
 
   resultsTableFirstHeader: {
     top: 0,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    color: "rgb(30, 30, 30)"
   },
 
   resultsTableSecondHeader: {
@@ -310,7 +312,8 @@ export const styles = {
     left: 20,
     bottom: 40,
     fontSize: 30,
-    cursor: "pointer"
+    cursor: "pointer",
+    zIndex: 1001
   },
 
   nextButton: {
@@ -318,7 +321,8 @@ export const styles = {
     right: 20,
     bottom: 40,
     fontSize: 30,
-    cursor: "pointer"
+    cursor: "pointer",
+    zIndex: 1001
   },
 
   navButton: {

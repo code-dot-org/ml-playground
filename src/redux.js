@@ -63,6 +63,7 @@ const SET_CURRENT_PANEL = "SET_CURRENT_PANEL";
 const SET_CURRENT_COLUMN = "SET_CURRENT_COLUMN";
 const SET_HIGHLIGHT_COLUMN = "SET_HIGHLIGHT_COLUMN";
 const SET_RESULTS_PHASE = "SET_RESULTS_PHASE";
+const SET_INSTRUCTIONS_KEY_CALLBACK = "SET_INSTRUCTIONS_KEY_CALLBACK";
 const SET_SAVE_STATUS = "SET_SAVE_STATUS";
 const SET_COLUMN_REF = "SET_COLUMN_REF";
 const LOG_TRAINING_RUN = "LOG_TRAINING_RUN";
@@ -197,6 +198,10 @@ export function setTrainedModelDetail(field, value, isColumn) {
   return { type: SET_TRAINED_MODEL_DETAIL, field, value, isColumn };
 }
 
+export function setInstructionsKeyCallback(instructionsKeyCallback) {
+  return { type: SET_INSTRUCTIONS_KEY_CALLBACK, instructionsKeyCallback };
+}
+
 export function setCurrentPanel(currentPanel) {
   return { type: SET_CURRENT_PANEL, currentPanel };
 }
@@ -250,6 +255,7 @@ const initialState = {
   modelSize: undefined,
   trainedModel: undefined,
   trainedModelDetails: {},
+  instructionCallback: undefined,
   currentPanel: "selectDataset",
   currentColumn: undefined,
   resultsPhase: undefined,
@@ -426,6 +432,7 @@ export default function rootReducer(state = initialState, action) {
     return {
       ...initialState,
       selectedTrainer: state.mode && state.mode.hideSelectTrainer,
+      instructionsKeyCallback: state.instructionsKeyCallback,
       mode: state.mode
     };
   }
@@ -476,7 +483,17 @@ export default function rootReducer(state = initialState, action) {
       ...trainedModelDetails
     };
   }
+  if (action.type === SET_INSTRUCTIONS_KEY_CALLBACK) {
+    return {
+      ...state,
+      instructionsKeyCallback: action.instructionsKeyCallback
+    };
+  }
   if (action.type === SET_CURRENT_PANEL) {
+    if (state.instructionsKeyCallback) {
+      state.instructionsKeyCallback(action.currentPanel);
+    }
+
     if (action.currentPanel === "dataDisplayLabel") {
       return {
         ...state,
@@ -486,6 +503,7 @@ export default function rootReducer(state = initialState, action) {
         selectedFeatures: []
       };
     }
+
     return {
       ...state,
       currentPanel: action.currentPanel,
@@ -493,23 +511,32 @@ export default function rootReducer(state = initialState, action) {
     };
   }
   if (action.type === SET_HIGHLIGHT_COLUMN) {
-    return {
-      ...state,
-      highlightColumn: action.highlightColumn
-    };
+    if (getShowColumnClicking(state)) {
+      return {
+        ...state,
+        highlightColumn: action.highlightColumn
+      };
+    }
   }
   if (action.type === SET_CURRENT_COLUMN) {
-    if (state.currentColumn === action.currentColumn) {
+    if (!getShowColumnClicking(state)) {
+      // If no column clicking, do nothing.
+      return state;
+    }
+    if (
+      state.currentPanel === "dataDisplayFeatures" &&
+      action.currentColumn === state.labelColumn
+    ) {
+      // If doing feature selection, and the label column is clicked, do nothing.
+      return state;
+    } else if (state.currentColumn === action.currentColumn) {
+      // If column is selected, then deselect.
       return {
         ...state,
         currentColumn: undefined
       };
-    } else if (
-      state.currentPanel !== "dataDisplayFeatures" ||
-      action.currentColumn !== state.labelColumn
-    ) {
-      // We don't do this if we are on the feature-selection panel
-      // and the user chose the column that is already the label.
+    } else {
+      // Select the column.
       return {
         ...state,
         currentColumn: action.currentColumn
@@ -1007,6 +1034,10 @@ export function getShowSelectLabels(state) {
 
 export function getSpecifiedDatasets(state) {
   return state.mode && state.mode.datasets;
+}
+
+export function getShowColumnClicking(state) {
+  return !(state.mode && state.mode.hideColumnClicking);
 }
 
 export function getShowChooseReserve(state) {
