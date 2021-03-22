@@ -68,8 +68,10 @@ class Results extends Component {
           !isNaN(this.props.summaryStat.stat) && <ResultsTable />
         }
 
-        <ResultsSummaryTable />
-        
+        {this.props.resultsPhase >= 1 &&
+          !isNaN(this.props.summaryStat.stat) && <ResultsSummaryTable />
+        }
+
         <div style={{ opacity: this.props.resultsPhase >= 2 ? 1 : 0 }}>
           {isNaN(this.props.summaryStat.stat) && (
             <p>

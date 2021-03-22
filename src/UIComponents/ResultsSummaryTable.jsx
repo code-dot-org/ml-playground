@@ -50,7 +50,7 @@ class ResultsSummaryTable extends Component {
                 return (
                   <tr key={index}>
                     <td style={styles.tableCell}>
-                      {entry.features}
+                      {entry.features.join(", ")}
                     </td>
                     <td style={styles.tableCell}>
                       {entry.labelColumn}
