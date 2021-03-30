@@ -48,13 +48,13 @@ export const allDatasets = [
     metadataPath: "datasets/billionaires.json",
     imagePath: "datasets/billionaires.jpg"
   },
-  {
-    id: "census_knn",
-    name: "Full Census Data",
-    path: "datasets/census_full_for_knn.csv",
-    metadataPath: "datasets/census_full_for_knn.json",
-    imagePath: "datasets/census.jpg"
-  },
+  // {
+  //   id: "census_knn",
+  //   name: "Full Census Data",
+  //   path: "datasets/census_full_for_knn.csv",
+  //   metadataPath: "datasets/census_full_for_knn.json",
+  //   imagePath: "datasets/census.jpg"
+  // },
   {
     id: "census_svm",
     name: "Partial Census Data",
@@ -69,13 +69,13 @@ export const allDatasets = [
     metadataPath: "datasets/global_happiness_contribution.json",
     imagePath: "datasets/global_happiness.jpg"
   },
-  {
-    id: "happiness_raw",
-    name: "Global Happiness (raw)",
-    path: "datasets/global_happiness_raw.csv",
-    metadataPath: "datasets/global_happiness_raw.json",
-    imagePath: "datasets/global_happiness.jpg"
-  },
+  // {
+  //   id: "happiness_raw",
+  //   name: "Global Happiness (raw)",
+  //   path: "datasets/global_happiness_raw.csv",
+  //   metadataPath: "datasets/global_happiness_raw.json",
+  //   imagePath: "datasets/global_happiness.jpg"
+  // },
   {
     id: "land_temp",
     name: "Global Land Temperature",
