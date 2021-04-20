@@ -297,17 +297,16 @@ export default function rootReducer(state = initialState, action) {
       }
     };
   }
-
   if (action.type === ADD_SELECTED_FEATURE) {
     if (!state.selectedFeatures.includes(action.selectedFeature)) {
+      const newFeatures = [...state.selectedFeatures, action.selectedFeature];
       return {
         ...state,
-        selectedFeatures: [...state.selectedFeatures, action.selectedFeature],
+        selectedFeatures: newFeatures.sort(),
         currentColumn: undefined
       };
     }
   }
-
   if (action.type === REMOVE_SELECTED_FEATURE) {
     return {
       ...state,
