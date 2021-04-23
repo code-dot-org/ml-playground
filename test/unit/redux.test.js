@@ -181,7 +181,7 @@ describe('redux functions', () => {
     expect(accuracy.percentCorrect).toBe('83.33');
   });
 
-  test('getAccuracyClassification - not very accuracy', async () => {
+  test('getAccuracyClassification - not very accurate', async () => {
     const mockState = resultsStateClassification;
     mockState.accuracyCheckPredictedLabels = [
       'yes',
