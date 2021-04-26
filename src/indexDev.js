@@ -5,7 +5,7 @@ import queryString from "query-string";
 // A list of sample modes.  Should match the dropdown in index.html.
 const sampleModes = {
   minimal: {
-    datasets: ["tacos_toy"],
+    datasets: ["icecream_toy"],
     hideSpecifyColumns: true,
     hideSelectTrainer: "knnClassify",
     hideChooseReserve: true,
