@@ -138,16 +138,10 @@ const resultsStateClassification = {
 
 describe('redux functions', () => {
   test('getAccuracyClassification - all accurate', async () => {
-    const mockState = resultsStateClassification;
-    mockState.accuracyCheckPredictedLabels = [
-      'no',
-      'yes',
-      'yes',
-      'yes',
-      'yes',
-      'no'
-    ];
-    const accuracy = getAccuracyClassification(mockState);
+    const accurateResults  = ['no', 'yes', 'yes', 'yes', 'yes', 'no']
+    resultsStateClassification['accuracyCheckPredictedLabels'] = accurateResults
+
+    const accuracy = getAccuracyClassification(resultsStateClassification);
     expect(accuracy.grades).toEqual([
       ResultsGrades.CORRECT,
       ResultsGrades.CORRECT,
@@ -160,16 +154,10 @@ describe('redux functions', () => {
   });
 
   test('getAccuracyClassification - mostly accurate', async () => {
-    const mockState = resultsStateClassification;
-    mockState.accuracyCheckPredictedLabels = [
-      'no',
-      'yes',
-      'yes',
-      'yes',
-      'yes',
-      'yes'
-    ];
-    const accuracy = getAccuracyClassification(mockState);
+    const accurateResults = ['no','yes','yes','yes','yes','yes'];
+    resultsStateClassification['accuracyCheckPredictedLabels'] = accurateResults
+
+    const accuracy = getAccuracyClassification(resultsStateClassification);
     expect(accuracy.grades).toEqual([
       ResultsGrades.CORRECT,
       ResultsGrades.CORRECT,
@@ -182,16 +170,10 @@ describe('redux functions', () => {
   });
 
   test('getAccuracyClassification - not very accurate', async () => {
-    const mockState = resultsStateClassification;
-    mockState.accuracyCheckPredictedLabels = [
-      'yes',
-      'yes',
-      'yes',
-      'no',
-      'no',
-      'yes'
-    ];
-    const accuracy = getAccuracyClassification(mockState);
+    const accurateResults = ['yes','yes','yes','no','no','yes'];
+    resultsStateClassification['accuracyCheckPredictedLabels'] = accurateResults
+
+    const accuracy = getAccuracyClassification(resultsStateClassification);
     expect(accuracy.grades).toEqual([
       ResultsGrades.INCORRECT,
       ResultsGrades.CORRECT,
@@ -204,16 +186,10 @@ describe('redux functions', () => {
   });
 
   test('getAccuracyClassification - 0% accuracy', async () => {
-    const mockState = resultsStateClassification;
-    mockState.accuracyCheckPredictedLabels = [
-      'yes',
-      'no',
-      'no',
-      'no',
-      'no',
-      'yes'
-    ];
-    const accuracy = getAccuracyClassification(mockState);
+    const accurateResults = ['yes','no','no','no','no','yes'];
+    resultsStateClassification['accuracyCheckPredictedLabels'] = accurateResults
+
+    const accuracy = getAccuracyClassification(resultsStateClassification);
     expect(accuracy.grades).toEqual([
       ResultsGrades.INCORRECT,
       ResultsGrades.INCORRECT,
