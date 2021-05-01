@@ -207,7 +207,7 @@ export function setHistoricResult(label, features, accuracy) {
 }
 
 export function setShowResultsDetails(show) {
-  return {type: SET_SHOW_RESULTS_DETAILS, show};
+  return { type: SET_SHOW_RESULTS_DETAILS, show };
 }
 
 const initialState = {
@@ -1330,6 +1330,41 @@ export function getScatterPlotData(state) {
     feature,
     data
   };
+}
+
+export function getScatterPlotDataTrain(state) {
+  const label = state.selectedFeatures[0];
+  const feature = state.selectedFeatures[1];
+
+  const data = [];
+
+  for (let row of state.data) {
+    //const fillColor = row[label] < 30 ? "red" : "blue";
+    data.push({
+      x: row[label],
+      y: row[feature],
+      value: row[state.labelColumn]
+    });
+  }
+
+  return {
+    label,
+    feature,
+    data
+  };
+}
+
+export function getUniqueLabelColors(state) {
+  const colors = [
+    "red", "blue", "green", "purple", "yellow", "black"
+  ];
+
+  const uniqueLabelValues = getUniqueOptions(state, state.labelColumn);
+  const uniqueLabelColors = {};
+  uniqueLabelValues.forEach((value, index) => {
+    uniqueLabelColors[value] = colors[index];
+  });
+  return uniqueLabelColors;
 }
 
 function areArraysEqual(array1, array2) {

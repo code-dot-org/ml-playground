@@ -10,6 +10,7 @@ import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
 import labBackground from "@public/images/lab-background-light.png";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
+import ScatterPlot from "./ScatterPlot";
 
 const framesPerCycle = 40;
 
@@ -80,10 +81,14 @@ class TrainModel extends Component {
           ...styles.panel,
           justifyContent: "center",
           backgroundSize: "cover",
-          backgroundImage: "url(" + labBackground + ")"
+          //backgroundImage: "url(" + labBackground + ")"
         }}
       >
         <Statement/>
+
+        <div style={{width: "30%", position: "absolute", right: 20}}>
+          <ScatterPlot />
+        </div>
 
         <div style={styles.trainModelDataTable}>
           <DataTable

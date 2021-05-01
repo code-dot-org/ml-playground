@@ -382,7 +382,7 @@ export const styles = {
     border: "none",
     cursor: "pointer",
     borderRadius: 5,
-    backgroundColor: "#61d2eb",
+    backgroundColor: "#0094ca",
     color: "white"
   },
 
@@ -441,25 +441,27 @@ export const styles = {
   statementLabel: {
     backgroundColor: labelColor,
     color: "white",
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 1,
     paddingBottom: 1,
     display: "inline-block",
     position: "relative",
-    lineHeight: 1.3
+    lineHeight: 1.3,
+    borderRadius: 5
   },
 
   statementFeature: {
     backgroundColor: featureColor,
     color: "white",
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 1,
     paddingBottom: 1,
     display: "inline-block",
     position: "relative",
-    lineHeight: 1.3
+    lineHeight: 1.3,
+    borderRadius: 5
   },
 
   statementDeleteIcon: {
@@ -499,19 +501,27 @@ export const styles = {
   selectLabelButton: {
     backgroundColor: labelColor,
     color: "white",
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     cursor: "pointer",
     border: "none",
-    fontSize: 18
+    fontSize: 18,
+    borderRadius: 5
   },
 
   selectFeaturesButton: {
     backgroundColor: featureColor,
     color: "white",
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     cursor: "pointer",
     border: "none",
-    fontSize: 18
+    fontSize: 18,
+    borderRadius: 5
   },
 
   trainModelContainer: {
