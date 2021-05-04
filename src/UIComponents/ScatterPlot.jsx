@@ -9,7 +9,7 @@ const scatterDataBase = {
   labels: ["Scatter"],
   datasets: [
     {
-      label: "",
+      //label: "",
       fill: true,
       backgroundColor: "rgba(75,192,192,0.4)",
       pointBorderColor: "rgba(75,192,192,0)",
@@ -28,8 +28,14 @@ const scatterDataBase = {
       pointBackgroundColor: function(context) {
         var index = context.dataIndex;
         var value = context.dataset.data[index];
-        return context.dataset.categoryColors[value.value];
+        //return context.dataset.categoryColors[value.value];
         //return value.value < 30 ? "brown" : "green";
+        const r = (value.value / 100) * 255;
+        return `rgb(${r}, ${r / 2}, 0)`;
+      },
+
+      label: function(context) {
+        return value.value;
       }
     }
   ]
@@ -61,7 +67,17 @@ const chartOptionsBase = {
     ]
   },
   legend: { display: false },
-  maintainAspectRatio: false
+  maintainAspectRatio: false,
+  tooltips: {
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var label = data.labels[tooltipItem.datasetIndex];
+        return ( tooltipItem.value
+          //label + ": (" + tooltipItem.xLabel + ", " + tooltipItem.yLabel + ")"
+        );
+      }
+    }
+  }
 };
 
 class ScatterPlot extends Component {
