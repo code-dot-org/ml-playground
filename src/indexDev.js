@@ -57,7 +57,9 @@ const sampleModes = {
     hideChooseReserve: true
   },
 
-  "final-project": {}
+  "final-project": {
+    randomizeTestData: true
+  }
 };
 
 // Look for a ?mode= parameter on the URL
