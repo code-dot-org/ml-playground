@@ -13,13 +13,15 @@ AI Lab is a highly configurable environment providing a student experience for d
 - viewing per-column graphs and metadata
 - viewing custom [CrossTab](https://github.com/code-dot-org/ml-playground/pull/62) tables for comparing categorical columns
 - viewing scatter plot graphs for comparing continuous columns
-- using SVM or KNN classification or KNN regression to train a model
+- using KNN classification or KNN regression to train a model
 - choosing the subset of data to reserve for validation
 - measuring accuracy of the resulting trained model using reserved data
 - using the trained model by doing predictions
 - saving the trained model to the server for use in App Lab
 
 It can be run standalone for more rapid development, though its ultimate destination is to appear in [Code Studio](https://studio.code.org/).  When run standalone, it does not have all of the styling of Code Studio.  It also calls stub functions for completion, saving a trained model, and indicating which [Dynamic](https://github.com/code-dot-org/code-dot-org/pull/39384) [Instruction](https://github.com/code-dot-org/ml-playground/pull/97) should be shown.  The standalone runtime does have a dropdown for selecting which set of level parameters are used, in lieu of a level providing these parameters, and it also shows the current Dynamic Instruction identifier.
+
+The standalone runtime is also deployed to https://code-dot-org.github.io/ml-playground/ though we might vary which branch is published there.
 
 ## Common operations
 
@@ -34,7 +36,7 @@ yarn install
 yarn start
 ```
 
-The app will be running at [http://localhost:8080](http://localhost:8080).
+The app will be running at http://localhost:8080.
 
 ### Running a local standalone server
 
@@ -44,7 +46,7 @@ Borrowing one step from above:
 yarn start
 ```
 
-The app will be running at [http://localhost:8080](http://localhost:8080).
+The app will be running at http://localhost:8080.
 
 ### First time integration with local Code Studio
 
@@ -60,9 +62,9 @@ In main repo's `apps/` directory:
 yarn link @code-dot-org/ml-playground
 ```
 
-This will set up a symlink in main repo's `apps/node_modules/` to point at your local changes. 
+This will set up a symlink in main repo's `apps/node_modules/` to point at your local changes.
 
-Run 
+Run
 
 ```
 yarn run build
@@ -72,15 +74,29 @@ in this repo, and then the main repo's `apps` build should pick the changes up n
 
 If you are running `yarn start` for continuous builds in the main repo, it will pick up the changes once the build in this repo has completed.
 
+
 ### Building changes for a local Code Studio
+In main repo:
 
-Borrowing one step from above:
+``` 
+bin/dashboard-server 
+``` 
 
+In main repo's `apps/` directory: 
+``` 
+yarn start 
+```
+
+If you see an error, run `yarn` before running `yarn start` again.
+
+In this repo:
 ```
 yarn run build
 ```
 
-Then the local Code Studio apps build will pick up changes.
+Then the local Code Studio apps build will pick up changes. 
+
+See AI Lab changes at http://localhost-studio.code.org:3000/s/allthethings/stage/43/puzzle/1.
 
 Note that running `yarn start` will erase this build, and so for now it seems best to alternate between using `yarn start` for testing the standalone build, and using `yarn run build` to make a single build for consumption by the main repo.
 
@@ -113,3 +129,11 @@ yarn
 ```
 
 Then commit the changed `package.json` and `yarn.lock` files so that the official build pipeline uses the new version.
+
+### Verifying a symlink exists between the main repo and ML playground
+In main repo: 
+``` 
+ cd apps/node_modules/@code-dot-org 
+ ls -l 
+```
+In the output, you should see something like this: `ml-playground -> ../../../../../.config/yarn/link/@code-dot-org/ml-playground`
