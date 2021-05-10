@@ -8,8 +8,6 @@ export const MLTypes = {
   REGRESSION: "regression"
 };
 
-export const REGRESSION_ERROR_TOLERANCE = 5;
-
 export const ResultsGrades = {
   CORRECT: "correct",
   INCORRECT: "incorrect"
@@ -107,10 +105,6 @@ export const styles = {
     marginBottom: 8
   },
 
-  smallTextNoMargin: {
-    fontSize: 12
-  },
-
   footerText: {
     fontSize: 13,
     marginTop: 12
@@ -161,7 +155,7 @@ export const styles = {
   },
 
   scrollingContents: {
-    overflow: "auto",
+    overflow: "scroll",
     height: "100%",
     boxSizing: "border-box"
   },
@@ -197,7 +191,7 @@ export const styles = {
     fontFamily: '"Gotham 4r", sans-serif',
     fontSize: 18,
     boxSizing: "border-box",
-    overflow: "auto",
+    overflow: "scroll",
     marginTop: 59,
     position: "relative"
   },
@@ -254,7 +248,7 @@ export const styles = {
   },
 
   tableParent: {
-    overflowY: "auto",
+    overflowY: "scroll",
     overflowWrap: "break-word",
     fontSize: 10,
     boxSizing: "border-box",
@@ -397,13 +391,11 @@ export const styles = {
   resultsTableFirstHeader: {
     top: 0,
     backgroundColor: "white",
-    color: "rgb(30, 30, 30)",
-    verticalAlign: "top",
-    height: 45
+    color: "rgb(30, 30, 30)"
   },
 
   resultsTableSecondHeader: {
-    top: "47px",
+    top: "30px",
     color: "white"
   },
 

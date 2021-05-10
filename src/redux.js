@@ -21,8 +21,7 @@ import {
   ColumnTypes,
   MLTypes,
   TestDataLocations,
-  ResultsGrades,
-  REGRESSION_ERROR_TOLERANCE
+  ResultsGrades
 } from "./constants.js";
 
 // Action types
@@ -40,7 +39,6 @@ const REMOVE_SELECTED_FEATURE = "REMOVE_SELECTED_FEATURE";
 const SET_LABEL_COLUMN = "SET_LABEL_COLUMN";
 const SET_FEATURE_NUMBER_KEY = "SET_FEATURE_NUMBER_KEY";
 const SET_PERCENT_DATA_TO_RESERVE = "SET_PERCENT_DATA_TO_RESERVE";
-const SET_RESERVE_LOCATION = "SET_RESERVE_LOCATION";
 const SET_ACCURACY_CHECK_EXAMPLES = "SET_ACCURACY_CHECK_EXAMPLES";
 const SET_ACCURACY_CHECK_LABELS = "SET_ACCURACY_CHECK_LABELS";
 const SET_ACCURACY_CHECK_PREDICTED_LABELS =
@@ -61,7 +59,6 @@ const SET_INSTRUCTIONS_KEY_CALLBACK = "SET_INSTRUCTIONS_KEY_CALLBACK";
 const SET_SAVE_STATUS = "SET_SAVE_STATUS";
 const SET_HISTORIC_RESULT = "SET_HISTORIC_RESULT";
 const SET_SHOW_RESULTS_DETAILS = "SET_SHOW_RESULTS_DETAILS";
-const SET_K_VALUE = "SET_K_VALUE";
 
 // Action creators
 export function setMode(mode) {
@@ -131,10 +128,6 @@ export function setFeatureNumberKey(featureNumberKey) {
 
 export function setPercentDataToReserve(percentDataToReserve) {
   return { type: SET_PERCENT_DATA_TO_RESERVE, percentDataToReserve };
-}
-
-export function setReserveLocation(reserveLocation) {
-  return { type: SET_RESERVE_LOCATION, reserveLocation };
 }
 
 export function setAccuracyCheckExamples(accuracyCheckExamples) {
@@ -217,10 +210,6 @@ export function setShowResultsDetails(show) {
   return {type: SET_SHOW_RESULTS_DETAILS, show};
 }
 
-export function setKValue(kValue) {
-  return { type: SET_K_VALUE, kValue };
-}
-
 const initialState = {
   name: undefined,
   csvfile: undefined,
@@ -253,8 +242,7 @@ const initialState = {
   saveStatus: undefined,
   columnRefs: {},
   historicResults: [],
-  showResultsDetails: false,
-  kValue: null
+  showResultsDetails: false
 };
 
 // Reducer
@@ -370,12 +358,6 @@ export default function rootReducer(state = initialState, action) {
       percentDataToReserve: action.percentDataToReserve
     };
   }
-  if (action.type === SET_RESERVE_LOCATION) {
-   return {
-     ...state,
-     reserveLocation: action.reserveLocation
-   };
- }
   if (action.type === SET_ACCURACY_CHECK_EXAMPLES) {
     return {
       ...state,
@@ -568,12 +550,6 @@ export default function rootReducer(state = initialState, action) {
     return {
       ...state,
       showResultsDetails: action.show
-    };
-  }
-  if (action.type === SET_K_VALUE) {
-    return {
-      ...state,
-      kValue: action.kValue
     };
   }
 
@@ -791,7 +767,7 @@ export function getConvertedPredictedLabel(state) {
   return getConvertedLabel(state, state.prediction.predictedLabel);
 }
 
-export function getConvertedLabels(state, rawLabels = []) {
+export function getConvertedLabels(state, rawLabels) {
   return rawLabels.map(label => getConvertedLabel(state, label));
 }
 
@@ -811,7 +787,7 @@ export function getAccuracyClassification(state) {
   let accuracy = {};
   let numCorrect = 0;
   let grades = [];
-  const numPredictedLabels = state.accuracyCheckPredictedLabels ?  state.accuracyCheckPredictedLabels.length : 0;
+  const numPredictedLabels = state.accuracyCheckPredictedLabels.length;
   for (let i = 0; i < numPredictedLabels; i++) {
     if (
       state.accuracyCheckLabels[i].toString() ===
@@ -836,7 +812,7 @@ export function getAccuracyRegression(state) {
   let grades = [];
   const maxMin = getRange(state, state.labelColumn);
   const range = Math.abs(maxMin.max - maxMin.min);
-  const errorTolerance = range * REGRESSION_ERROR_TOLERANCE/100;
+  const errorTolerance = range * 0.03;
   const numPredictedLabels = state.accuracyCheckPredictedLabels.length;
   for (let i = 0; i < numPredictedLabels; i++) {
     const diff = Math.abs(
@@ -1009,7 +985,6 @@ export function getTrainedModelDataToSave(state) {
   dataToSave.features = getFeaturesToSave(state);
   dataToSave.summaryStat = getSummaryStat(state);
   dataToSave.trainedModel = state.trainedModel;
-  dataToSave.kValue = state.kValue;
 
   return dataToSave;
 }
@@ -1202,7 +1177,7 @@ export function getPanelButtons(state) {
       ? null
       : isPanelAvailable(state, "saveModel")
       ? { panel: "saveModel", text: "Continue" }
-      : { panel: "continue", text: "Finish" };
+      : { panel: "continue", text: "Continue" };
   } else if (state.currentPanel === "saveModel") {
     prev = { panel: "results", text: "Back" };
     next = isPanelAvailable(state, "save")
@@ -1364,10 +1339,4 @@ function areArraysEqual(array1, array2) {
       return value === array2[index];
     })
   );
-}
-
-export function isUserUploadedDataset(state) {
-  // The csvfile for internally curated datasets are strings; those uploaded by
-  // users are objects. Use data type as a proxy to know which case we're in.
-  return typeof state.csvfile === 'object' && state.csvfile !== null;
 }
