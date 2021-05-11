@@ -12,6 +12,7 @@ import blueScanner from "@public/images/ai-bot/blue-scanner.png";
 import resultsBackground from "@public/images/results-background-light.png";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
+import ResultsTable from "./ResultsTable";
 
 const framesPerCycle = 40;
 
@@ -81,18 +82,24 @@ class GenerateResults extends Component {
         style={{
           ...styles.panel,
           justifyContent: "center",
-          backgroundSize: "cover",
-          backgroundImage: "url(" + resultsBackground + ")"
+          //backgroundSize: "cover",
+          //backgroundImage: "url(" + resultsBackground + ")"
         }}
       >
-        <Statement/>
+        {/*<Statement/>*/}
+        <div style={styles.statement}>
+          Test A.I.
+        </div>
 
         <div style={styles.generateResultsContainer}>
           <div style={styles.generateResultsDataTable}>
+            <ResultsTable />
+            {/*
             <DataTable
               reducedColumns={true}
               startingRow={this.getAnimationStep()}
             />
+            */}
           </div>
 
           <div
@@ -104,6 +111,7 @@ class GenerateResults extends Component {
               transform: transform,
             }}
           >
+
             <DataTable
               reducedColumns={true}
               singleRow={this.getAnimationStep()}

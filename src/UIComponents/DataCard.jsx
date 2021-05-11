@@ -71,6 +71,7 @@ class DataCard extends Component {
                     </div>
                   )}
 
+                  {/*
                   <div style={styles.bold}>Columns:</div>
                   <div style={styles.contents}>
                     {metadata.fields.map(field => {
@@ -82,6 +83,8 @@ class DataCard extends Component {
                       );
                     })}
                   </div>
+                  */}
+
                 </div>
               )}
               {!card && dataLength > 0 && (

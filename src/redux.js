@@ -214,7 +214,7 @@ export function setHistoricResult(label, features, accuracy) {
 }
 
 export function setShowResultsDetails(show) {
-  return {type: SET_SHOW_RESULTS_DETAILS, show};
+  return { type: SET_SHOW_RESULTS_DETAILS, show };
 }
 
 export function setKValue(kValue) {
@@ -372,11 +372,11 @@ export default function rootReducer(state = initialState, action) {
     };
   }
   if (action.type === SET_RESERVE_LOCATION) {
-   return {
-     ...state,
-     reserveLocation: action.reserveLocation
-   };
- }
+    return {
+      ...state,
+      reserveLocation: action.reserveLocation
+    };
+  }
   if (action.type === SET_ACCURACY_CHECK_EXAMPLES) {
     return {
       ...state,
@@ -761,7 +761,7 @@ function isEmpty(object) {
 export function getConvertedValue(state, rawValue, column) {
   const convertedValue =
     getCategoricalColumns(state).includes(column) &&
-      !isEmpty(state.featureNumberKey)
+    !isEmpty(state.featureNumberKey)
       ? getKeyByValue(state.featureNumberKey[column], rawValue)
       : rawValue;
   return convertedValue;
@@ -812,7 +812,9 @@ export function getAccuracyClassification(state) {
   let accuracy = {};
   let numCorrect = 0;
   let grades = [];
-  const numPredictedLabels = state.accuracyCheckPredictedLabels ?  state.accuracyCheckPredictedLabels.length : 0;
+  const numPredictedLabels = state.accuracyCheckPredictedLabels
+    ? state.accuracyCheckPredictedLabels.length
+    : 0;
   for (let i = 0; i < numPredictedLabels; i++) {
     if (
       state.accuracyCheckLabels[i].toString() ===
@@ -837,7 +839,7 @@ export function getAccuracyRegression(state) {
   let grades = [];
   const maxMin = getRange(state, state.labelColumn);
   const range = Math.abs(maxMin.max - maxMin.min);
-  const errorTolerance = range * REGRESSION_ERROR_TOLERANCE/100;
+  const errorTolerance = (range * REGRESSION_ERROR_TOLERANCE) / 100;
   const numPredictedLabels = state.accuracyCheckPredictedLabels.length;
   for (let i = 0; i < numPredictedLabels; i++) {
     const diff = Math.abs(
@@ -1099,7 +1101,8 @@ function isPanelEnabled(state, panelId) {
     if (
       state.percentDataToReserve === 0 ||
       state.accuracyCheckExamples.length === 0 ||
-      ["success", "started"].includes(state.saveStatus)) {
+      ["success", "started"].includes(state.saveStatus)
+    ) {
       return false;
     }
   }
@@ -1137,7 +1140,7 @@ function isPanelAvailable(state, panelId) {
   }
 
   if (panelId === "saveModel") {
-    if (mode && mode.hideSave || state.saveStatus === "success") {
+    if ((mode && mode.hideSave) || state.saveStatus === "success") {
       return false;
     }
   }
@@ -1186,6 +1189,8 @@ export function getPanelButtons(state) {
   } else if (state.currentPanel === "dataDisplayFeatures") {
     prev = isPanelAvailable(state, "dataDisplayLabel")
       ? { panel: "dataDisplayLabel", text: "Back" }
+      : isPanelAvailable(state, "selectDataset")
+      ? { panel: "selectDataset", text: "Back" }
       : null;
     next = isPanelAvailable(state, "trainingSettings")
       ? { panel: "trainingSettings", text: "Continue" }
@@ -1389,7 +1394,7 @@ function areArraysEqual(array1, array2) {
 export function isUserUploadedDataset(state) {
   // The csvfile for internally curated datasets are strings; those uploaded by
   // users are objects. Use data type as a proxy to know which case we're in.
-  return typeof state.csvfile === 'object' && state.csvfile !== null;
+  return typeof state.csvfile === "object" && state.csvfile !== null;
 }
 
 export function isSaveComplete(saveStatus) {

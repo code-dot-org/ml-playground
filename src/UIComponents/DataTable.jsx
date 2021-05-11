@@ -73,7 +73,8 @@ class DataTable extends Component {
         ]
       ];
     } else if (this.props.startingRow !== undefined) {
-      const subsetRowCount = 30;
+      return this.props.data.slice(0,100);
+      /*const subsetRowCount = 30;
       const actualStartingRow = Math.min(
         this.props.startingRow,
         Math.max(this.props.data.length - subsetRowCount, 0)
@@ -82,9 +83,9 @@ class DataTable extends Component {
         actualStartingRow,
         actualStartingRow + subsetRowCount
       );
-      return returnRows;
+      return returnRows;*/
     } else {
-      return this.props.data;
+      return this.props.data.slice(0, 100);
     }
   };
 
@@ -127,7 +128,10 @@ class DataTable extends Component {
                       onMouseEnter={() => setHighlightColumn(key)}
                       onMouseLeave={() => setHighlightColumn(undefined)}
                     >
-                      {row[key]}
+                      {this.props.startingRow !== undefined &&
+                      index <= this.props.startingRow
+                        ? <span>&nbsp;</span>
+                        : row[key]}
                     </td>
                   );
                 })}

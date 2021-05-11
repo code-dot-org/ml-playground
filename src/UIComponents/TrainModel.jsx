@@ -10,6 +10,20 @@ import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
 import labBackground from "@public/images/lab-background-light.png";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
+import { Scatter } from "react-chartjs-2";
+
+import vizTriangle from "@public/images/viz-triangle.png";
+import vizCircle from "@public/images/viz-circle.png";
+import vizSquare from "@public/images/viz-square.png";
+
+const vizImages = [vizTriangle, vizCircle, vizSquare];
+
+const getRandomInt = max => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
+const vizItems = [];
+
 
 const framesPerCycle = 40;
 
@@ -30,6 +44,14 @@ class TrainModel extends Component {
 
   componentDidMount() {
     this.onClickTrainModel();
+
+    for (let i = 0; i < 30; i++) {
+      vizItems.push({
+        src: vizImages[getRandomInt(vizImages.length-1)],
+        x: 20 + getRandomInt(260),
+        y: 20 + getRandomInt(260)
+      });
+    }
   }
 
   onClickTrainModel = () => {
@@ -83,7 +105,8 @@ class TrainModel extends Component {
           backgroundImage: "url(" + labBackground + ")"
         }}
       >
-        <Statement/>
+        {/*<Statement/>*/}
+        <div style={styles.statement}>Train A.I.</div>
 
         <div style={styles.trainModelDataTable}>
           <DataTable
@@ -92,8 +115,36 @@ class TrainModel extends Component {
           />
         </div>
 
-        <div style={styles.trainModelContainer}>
+        <div
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            position: "absolute",
+            top: 40,
+            right: 40,
+            height: 300,
+            width: 300,
+            borderRadius: 15,
+            background:
+              "linear-gradient(11deg, rgba(0,0,0,1) 0%, rgba(86,88,84,1) 64%, rgba(162,166,159,1) 100%)"
+          }}
+        >
+          {vizItems.slice(0, this.getAnimationStep()).map(image => {
+            return (
+              <img
+                src={image.src}
+                style={{
+                  position: "absolute",
+                  left: image.x,
+                  top: image.y,
+                  width: 15,
+                  height: 15
+                }}
+              />
+          )})}
+        </div>
 
+        <div style={styles.trainModelContainer}>
           <div
             style={{
               position: "absolute",
