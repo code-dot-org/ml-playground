@@ -532,7 +532,7 @@ export const styles = {
   trainModelDataTable: {
     width: "30%",
     overflow: "hidden",
-    opacity: 0.3,
+    opacity: 1, // 0.3,
     paddingTop: 20
   },
   trainModelBotContainer: {
@@ -565,10 +565,10 @@ export const styles = {
 
   generateResultsContainer: { overflow: "hidden", paddingTop: 20 },
   generateResultsDataTable: {
-    paddingLeft: "70%",
+    xpaddingLeft: "70%",
     width: "30%",
     overflow: "hidden",
-    opacity: 0.3,
+    opacity: 1, // 0.3,
     paddingTop: 20
   },
   generateResultsBotContainer: {

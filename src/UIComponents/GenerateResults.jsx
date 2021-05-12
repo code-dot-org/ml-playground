@@ -13,6 +13,7 @@ import resultsBackground from "@public/images/results-background-light.png";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
 import ResultsTable from "./ResultsTable";
+import Viz from "./Viz";
 
 const framesPerCycle = 40;
 
@@ -70,6 +71,10 @@ class GenerateResults extends Component {
     return Math.floor(this.state.frame / framesPerCycle);
   };
 
+  getAnimationSubstep = () => {
+    return this.state.frame % framesPerCycle;
+  };
+
   render() {
     const translateX = 30 + this.getAnimationProgess() * 55;
     const translateY = 15;
@@ -81,25 +86,42 @@ class GenerateResults extends Component {
         id="train-model"
         style={{
           ...styles.panel,
-          justifyContent: "center",
+          justifyContent: "center"
           //backgroundSize: "cover",
           //backgroundImage: "url(" + resultsBackground + ")"
         }}
       >
         {/*<Statement/>*/}
-        <div style={styles.statement}>
-          Test A.I.
-        </div>
+        <div style={styles.statement}>Testing accuracy</div>
+
+        <Viz
+          showingResults={true}
+          animationStep={this.getAnimationStep()}
+          animationSubstep={this.getAnimationSubstep()}
+        />
 
         <div style={styles.generateResultsContainer}>
           <div style={styles.generateResultsDataTable}>
-            <ResultsTable />
-            {/*
+            {/*<ResultsTable />*/}
+
+            <svg
+              preserveAspectRatio="none"
+              style={{
+                position: "absolute",
+                width: "30%",
+                height: 120,
+                zIndex: 1
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="2 1 11 4"
+            >
+              <path d="M 13 2 L 11 4 L 10 3 L 9 4 L 8 3 L 6 5 L 5 4 L 4 3 L 3 4 L 2 2 L 2 1 L 13 1 L 13 2" fill="#fff"/>
+            </svg>
+
             <DataTable
               reducedColumns={true}
               startingRow={this.getAnimationStep()}
             />
-            */}
           </div>
 
           <div
@@ -108,10 +130,9 @@ class GenerateResults extends Component {
               transformOrigin: "center center",
               bottom: translateY + "%",
               left: translateX + "%",
-              transform: transform,
+              transform: transform
             }}
           >
-
             <DataTable
               reducedColumns={true}
               singleRow={this.getAnimationStep()}
@@ -125,8 +146,8 @@ class GenerateResults extends Component {
               <div>
                 <img src={aiBotClosed} style={styles.trainBotBody} />
               </div>
-              <div style={{width: 150}}>
-                <img src={blueScanner} style={{width: "100%"}} />
+              <div style={{ width: 150 }}>
+                <img src={blueScanner} style={{ width: "100%" }} />
               </div>
             </div>
           </div>
