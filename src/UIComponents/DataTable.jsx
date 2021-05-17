@@ -7,7 +7,6 @@ import { styles } from "../constants";
 
 class DataTable extends Component {
   static propTypes = {
-    currentPanel: PropTypes.string,
     data: PropTypes.array,
     labelColumn: PropTypes.string,
     selectedFeatures: PropTypes.array,
@@ -15,6 +14,7 @@ class DataTable extends Component {
     setHighlightColumn: PropTypes.func,
     currentColumn: PropTypes.string,
     highlightColumn: PropTypes.string,
+    setColumnRef: PropTypes.func,
     reducedColumns: PropTypes.bool,
     singleRow: PropTypes.number,
     startingRow: PropTypes.number
@@ -36,17 +36,9 @@ class DataTable extends Component {
     let style;
 
     if (key === this.props.currentColumn) {
-      if (this.props.currentPanel === "dataDisplayLabel") {
-        style = styles.dataDisplayCellSelectedLabel;
-      } else {
-        style = styles.dataDisplayCellSelected;
-      }
+      style = styles.dataDisplayCellSelected;
     } else if (key === this.props.highlightColumn) {
-      if (this.props.currentPanel === "dataDisplayLabel") {
-        style = styles.dataDisplayCellHighlightedLabel;
-      } else {
-        style = styles.dataDisplayCellHighlighted;
-      }
+      style = styles.dataDisplayCellHighlighted;
     }
 
     return { ...styles.dataDisplayCell, ...style };
@@ -89,7 +81,12 @@ class DataTable extends Component {
   };
 
   render() {
-    const { data, setCurrentColumn, setHighlightColumn } = this.props;
+    const {
+      data,
+      setCurrentColumn,
+      setColumnRef,
+      setHighlightColumn
+    } = this.props;
 
     if (data.length === 0) {
       return null;
@@ -105,6 +102,7 @@ class DataTable extends Component {
                   key={key}
                   style={this.getColumnHeaderStyle(key)}
                   onClick={() => setCurrentColumn(key)}
+                  ref={ref => setColumnRef && setColumnRef(key, ref)}
                   onMouseEnter={() => setHighlightColumn(key)}
                   onMouseLeave={() => setHighlightColumn(undefined)}
                 >
@@ -146,8 +144,7 @@ export default connect(
     labelColumn: state.labelColumn,
     selectedFeatures: state.selectedFeatures,
     currentColumn: state.currentColumn,
-    highlightColumn: state.highlightColumn,
-    currentPanel: state.currentPanel
+    highlightColumn: state.highlightColumn
   }),
   dispatch => ({
     setCurrentColumn(column) {

@@ -3,24 +3,21 @@ import PropTypes from "prop-types";
 import SelectDataset from "./UIComponents/SelectDataset";
 import DataDisplay from "./UIComponents/DataDisplay";
 import ColumnInspector from "./UIComponents/ColumnInspector";
+import PhraseBuilder from "./UIComponents/PhraseBuilder";
 import DataCard from "./UIComponents/DataCard";
+import TrainingSettings from "./UIComponents/TrainingSettings";
 import TrainModel from "./UIComponents/TrainModel";
 import Results from "./UIComponents/Results";
 import Predict from "./UIComponents/Predict";
 import SaveModel from "./UIComponents/SaveModel";
-import ModelCard from "./UIComponents/ModelCard";
-import { styles, saveMessages } from "./constants";
+import { styles } from "./constants";
 import { connect } from "react-redux";
 import {
   getPanelButtons,
   setCurrentPanel,
   validationMessages,
-  getTrainedModelDataToSave,
-  isSaveComplete,
-  shouldDisplaySaveStatus
+  getTrainedModelDataToSave
 } from "./redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 class PanelButtons extends Component {
   static propTypes = {
@@ -29,10 +26,7 @@ class PanelButtons extends Component {
     setCurrentPanel: PropTypes.func,
     onContinue: PropTypes.func,
     startSaveTrainedModel: PropTypes.func,
-    dataToSave: PropTypes.object,
-    saveStatus: PropTypes.string,
-    isSaveComplete: PropTypes.func,
-    shouldDisplaySaveStatus: PropTypes.func
+    dataToSave: PropTypes.object
   };
 
   onClickPrev = () => {
@@ -40,21 +34,17 @@ class PanelButtons extends Component {
   };
 
   onClickNext = () => {
-    if (["continue", "finish"].includes(this.props.panelButtons.next.panel)) {
-      this.props.onContinue();
-    } else if (this.props.currentPanel === "saveModel") {
+    if (this.props.panelButtons.next.panel === "save") {
       this.props.startSaveTrainedModel(this.props.dataToSave);
+    } else if (this.props.panelButtons.next.panel === "continue") {
+      this.props.onContinue();
     } else {
       this.props.setCurrentPanel(this.props.panelButtons.next.panel);
     }
   };
 
   render() {
-    const { panelButtons, saveStatus } = this.props;
-
-    let loadSaveStatus= this.props.isSaveComplete(saveStatus)
-      ? (saveMessages[saveStatus])
-      : ( <FontAwesomeIcon icon={faSpinner} />);
+    const { panelButtons } = this.props;
 
     return (
       <div>
@@ -75,11 +65,6 @@ class PanelButtons extends Component {
             </button>
           </div>
         )}
-
-        {this.props.shouldDisplaySaveStatus(saveStatus) &&
-          this.props.currentPanel === "saveModel" && (
-            <span style={styles.modelSaveMessage}>{loadSaveStatus}</span>
-          )}
 
         {panelButtons.next && (
           <div style={styles.nextButton}>
@@ -148,10 +133,20 @@ class App extends Component {
     onContinue: PropTypes.func,
     resultsPhase: PropTypes.number,
     startSaveTrainedModel: PropTypes.func,
-    dataToSave: PropTypes.object,
-    saveStatus: PropTypes.string,
-    isSaveComplete: PropTypes.func,
-    shouldDisplaySaveStatus: PropTypes.func
+    dataToSave: PropTypes.object
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.columnPositions = {};
+  }
+
+  setColumnRef = (columnId, ref) => {
+    if (ref) {
+      const rect = ref.getBoundingClientRect();
+      this.columnPositions[columnId] = rect.left + rect.width;
+    }
   };
 
   render() {
@@ -162,8 +157,7 @@ class App extends Component {
       onContinue,
       resultsPhase,
       dataToSave,
-      startSaveTrainedModel,
-      saveStatus
+      startSaveTrainedModel
     } = this.props;
 
     return (
@@ -182,12 +176,20 @@ class App extends Component {
         {["dataDisplayLabel", "dataDisplayFeatures"].includes(currentPanel) && (
           <BodyContainer>
             <ContainerLeft>
-              <DataDisplay />
+              <DataDisplay setColumnRef={this.setColumnRef} />
             </ContainerLeft>
-
+            <ColumnInspector columnPositions={this.columnPositions} />
             <ContainerRight>
-              <ColumnInspector />
+              <PhraseBuilder />
             </ContainerRight>
+          </BodyContainer>
+        )}
+
+        {currentPanel === "trainingSettings" && (
+          <BodyContainer>
+            <ContainerFullWidth>
+              <TrainingSettings />
+            </ContainerFullWidth>
           </BodyContainer>
         )}
 
@@ -204,7 +206,7 @@ class App extends Component {
             <ContainerLeft>
               <Results />
             </ContainerLeft>
-            {resultsPhase === 1 && (
+            {resultsPhase === 3 && (
               <ContainerRight>
                 <Predict />
               </ContainerRight>
@@ -220,14 +222,6 @@ class App extends Component {
           </BodyContainer>
         )}
 
-        {currentPanel === "modelSummary" && (
-          <BodyContainer>
-            <ContainerFullWidth>
-              <ModelCard />
-            </ContainerFullWidth>
-          </BodyContainer>
-        )}
-
         <PanelButtons
           panelButtons={panelButtons}
           currentPanel={currentPanel}
@@ -235,9 +229,6 @@ class App extends Component {
           onContinue={onContinue}
           startSaveTrainedModel={startSaveTrainedModel}
           dataToSave={dataToSave}
-          saveStatus={saveStatus}
-          isSaveComplete={isSaveComplete}
-          shouldDisplaySaveStatus={shouldDisplaySaveStatus}
         />
       </div>
     );
@@ -250,18 +241,11 @@ export default connect(
     currentPanel: state.currentPanel,
     validationMessages: validationMessages(state),
     resultsPhase: state.resultsPhase,
-    dataToSave: getTrainedModelDataToSave(state),
-    saveStatus: state.saveStatus
+    dataToSave: getTrainedModelDataToSave(state)
   }),
   dispatch => ({
     setCurrentPanel(panel) {
       dispatch(setCurrentPanel(panel));
-    },
-    isSaveComplete(state) {
-      dispatch(isSaveComplete(state));
-    },
-    shouldDisplaySaveStatus(state) {
-      dispatch(shouldDisplaySaveStatus(state));
-    },
+    }
   })
 )(App);

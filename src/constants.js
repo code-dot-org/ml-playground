@@ -21,6 +21,7 @@ export const ResultsGrades = {
 export const TEST_DATA_PERCENTS = [0, 5, 10, 15, 20];
 
 export const TestDataLocations = {
+  BEGINNING: "beginning",
   END: "end",
   RANDOM: "random"
 };
@@ -29,7 +30,8 @@ export const ModelNameMaxLength = 150;
 
 export const saveMessages = {
   success: "Your model was saved!",
-  failure: "There was an error. Your model did not save. Please try again.",
+  failure: "There was an error. Your model did not save.",
+  name: "Please name your model."
 };
 
 const labelColor = "rgb(254, 96, 3)";
@@ -128,26 +130,12 @@ export const styles = {
     position: "relative"
   },
 
-  panelPopupContainer: {
+  popupPanel: {
     position: "absolute",
-    left: 20,
-    top: 20,
-    width: "calc(100% - 40px)",
-    height: "calc(100% - 40px)",
-    zIndex: 10
-  },
-
-  panelPopup: {
-    padding: 10,
-    backgroundColor: "white",
-    overflow: "hidden",
-    height: "100%",
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "column",
-    //opacity: 0.7,
-    border: "solid 1px black",
-    boxShadow: "-5px 5px 10px black"
+    border: "1px solid",
+    top: 90,
+    height: "initial",
+    zIndex: 1
   },
 
   scrollableContents: {
@@ -239,7 +227,7 @@ export const styles = {
     fontSize: 13.33,
     padding: "2px 6px",
     margin: 0,
-    border: "none"
+    border: "none",
   },
 
   specifyColumnsItem: {
@@ -312,24 +300,11 @@ export const styles = {
     borderColor: "#d6f2fa",
     cursor: "pointer"
   },
-  dataDisplayCellHighlightedLabel: {
-    backgroundColor: "#f1caca",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#f1caca",
-    cursor: "pointer"
-  },
   dataDisplayCellSelected: {
     backgroundColor: "#94e3fa",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#94e3fa"
-  },
-  dataDisplayCellSelectedLabel: {
-    backgroundColor: "#f39f9f",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#f39f9f"
   },
 
   tableCell: {
@@ -362,38 +337,6 @@ export const styles = {
   crossTabCell5: {
     backgroundColor: "rgba(255,100,100, 1)"
   },
-
-  resultsPanelContainer: {
-    width: "100%",
-    height: "100%",
-    position: "relative"
-  },
-
-  resultsStatement: {
-    float: "left",
-    width: "80%"
-  },
-
-  resultsAccuracy: { float: "left", fontSize: 18, width: "10%" },
-
-  resultsDetailsButtonContainer: {
-    float: "left",
-    textAlign: "center",
-    width: "10%"
-  },
-
-  resultsDetailsButton: {
-    fontSize: 14,
-    padding: "4px 12px",
-    margin: 0,
-    border: "none",
-    cursor: "pointer",
-    borderRadius: 5,
-    backgroundColor: "#61d2eb",
-    color: "white"
-  },
-
-  resultsPreviousHeading: { clear: "both", paddingTop: 18, paddingBottom: 6 },
 
   resultsTableFirstHeader: {
     top: 0,
@@ -438,63 +381,19 @@ export const styles = {
 
   statement: {
     fontSize: 32,
-    paddingBottom: 15,
-    lineHeight: '50px'
-  },
-
-  statementSmall: {
-    fontSize: 18,
-    paddingBottom: 6
+    paddingBottom: 15
   },
 
   statementLabel: {
-    backgroundColor: labelColor,
-    color: "white",
+    color: labelColor,
     paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 1,
-    display: "inline-block",
-    position: "relative",
-    lineHeight: 1.3
+    paddingRight: 4
   },
 
   statementFeature: {
-    backgroundColor: featureColor,
-    color: "white",
+    color: featureColor,
     paddingLeft: 4,
-    paddingRight: 4,
-    paddingTop: 1,
-    paddingBottom: 1,
-    display: "inline-block",
-    position: "relative",
-    lineHeight: 1.3
-  },
-
-  statementDeleteIcon: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    transform: 'translateX(50%) translateY(-50%)',
-    color: "black",
-    cursor: "pointer"
-  },
-
-  statementDeleteCircle: {
-    backgroundColor: "white",
-    borderRadius: "50%",
-    height: 20,
-    width: 20,
-    top: 0,
-    left: 0
-  },
-
-  statementDeleteX: {
-    fontSize: 20,
-    position: "absolute",
-    top: 0,
-    right: 0,
-    lineHeight: "20px"
+    paddingRight: 4
   },
 
   selectLabelText: {
@@ -503,24 +402,6 @@ export const styles = {
 
   selectFeaturesText: {
     color: featureColor
-  },
-
-  selectLabelButton: {
-    backgroundColor: labelColor,
-    color: "white",
-    padding: 10,
-    cursor: "pointer",
-    border: "none",
-    fontSize: 18
-  },
-
-  selectFeaturesButton: {
-    backgroundColor: featureColor,
-    color: "white",
-    padding: 10,
-    cursor: "pointer",
-    border: "none",
-    fontSize: 18
   },
 
   trainModelContainer: {
@@ -646,67 +527,5 @@ export const styles = {
 
   saveInputsWidth: {
     width: "95%"
-  },
-
-  modelCardContainer: {
-    backgroundColor: "rgb(198, 202, 205)",
-    borderRadius: 5,
-    padding: 20,
-    whiteSpace: "normal",
-    overflowY: "auto",
-    width: "30%",
-    margin: "0 auto"
-  },
-
-  modelCardHeader: {
-    marginBottom: 10,
-    marginTop: 0,
-    fontSize: 18,
-    fontFamily: '"Gotham 7r", sans-serif'
-  },
-
-  modelCardHeading: {
-    fontSize: 14,
-    marginTop: 0,
-    marginBottom: 5,
-    textAlign: "center",
-    fontFamily: '"Gotham 7r", sans-serif'
-  },
-
-  modelCardContent: {
-    fontSize: 13,
-    marginBottom: 0,
-    marginTop: 0
-  },
-
-  modelCardSubpanel: {
-    backgroundColor: "rgb(231, 232, 234)",
-    borderRadius: 5,
-    marginBottom: 10,
-    padding: 10
-  },
-
-  modelCardDetails: {
-    marginBottom: 0
-  },
-
-  summaryScreenBot: {
-    margin: 0,
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    left: "calc(35% - 185px)",
-    width: "150px"
-  },
-
-  modelSaveMessage: {
-    bottom: 40,
-    zIndex: 1001,
-    right: "calc(50% - 250px)",
-    textAlign: "center",
-    position: "fixed",
-    width: 500,
-    height: 30,
-    lineHeight: "20px"
   }
 };

@@ -4,15 +4,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
+import { setCurrentColumn } from "../redux";
 import { styles } from "../constants";
 
 class DataDisplay extends Component {
   static propTypes = {
-    data: PropTypes.array
+    data: PropTypes.array,
+    setCurrentColumn: PropTypes.func,
+    setColumnRef: PropTypes.func
   };
 
   render() {
-    const { data } = this.props;
+    const { data, setCurrentColumn, setColumnRef } = this.props;
 
     if (data.length === 0) {
       return null;
@@ -21,8 +24,11 @@ class DataDisplay extends Component {
     return (
       <div id="data-display" style={styles.panel}>
         <Statement />
-        <div style={styles.tableParent}>
-          <DataTable />
+        <div
+          style={styles.tableParent}
+          onScroll={() => setCurrentColumn(undefined)}
+        >
+          <DataTable setColumnRef={setColumnRef} />
         </div>
         <div style={styles.footerText}>
           There are {this.props.data.length} rows of data.
@@ -35,5 +41,10 @@ class DataDisplay extends Component {
 export default connect(
   state => ({
     data: state.data
+  }),
+  dispatch => ({
+    setCurrentColumn(column) {
+      dispatch(setCurrentColumn(column));
+    }
   })
 )(DataDisplay);
