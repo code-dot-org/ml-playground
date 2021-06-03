@@ -258,7 +258,8 @@ export const allDatasets = [
     name: "Student Survey",
     path: "datasets/student_survey_isolated.csv",
     metadataPath: "datasets/student_survey_isolated.json",
-    imagePath: "datasets/student_survey.jpg"
+    imagePath: "datasets/student_survey.jpg",
+    isToy: true
   }
 ];
 
