@@ -253,6 +253,13 @@ export const allDatasets = [
     metadataPath: "datasets/car_evaluation.json",
     imagePath: "datasets/car_evaluation.jpg"
   },
+  {
+    id: "survey_isolated_toy",
+    name: "Student Survey",
+    path: "datasets/student_survey_isolated.csv",
+    metadataPath: "datasets/student_survey_isolated.json",
+    imagePath: "datasets/student_survey.jpg"
+  }
 ];
 
 export function getAvailableDatasets(specificDatasets) {

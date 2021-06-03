@@ -53,6 +53,11 @@ const sampleModes = {
 
   "final-project": {
     randomizeTestData: true
+  },
+
+  "survey-toy": {
+    datasets: ["survey_isolated_toy"],
+    hideSelectLabel: true
   }
 };
 
