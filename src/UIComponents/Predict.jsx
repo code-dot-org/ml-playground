@@ -13,7 +13,7 @@ import {
   getPredictAvailable,
   getExtremaByColumn
 } from "../redux";
-import { styles } from "../constants";
+import { styles } from "../styles";
 import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
 import ScrollableContent from "./ScrollableContent";
 

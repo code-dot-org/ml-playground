@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { styles } from "../constants";
+import { styles } from "../styles";
 
 export default class ScrollableContent extends Component {
   static propTypes = {

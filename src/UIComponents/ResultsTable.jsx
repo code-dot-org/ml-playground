@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { isRegression, setResultsHighlightRow } from "../redux";
-import { styles, colors, REGRESSION_ERROR_TOLERANCE } from "../constants";
+import { styles, colors } from "../styles";
+import { REGRESSION_ERROR_TOLERANCE } from "../constants";
 
 class ResultsTable extends Component {
   static propTypes = {

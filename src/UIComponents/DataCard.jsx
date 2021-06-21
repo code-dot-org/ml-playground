@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { styles } from "../constants.js";
+import { styles } from "../styles.js";
 import ScrollableContent from "./ScrollableContent";
 
 class DataCard extends Component {

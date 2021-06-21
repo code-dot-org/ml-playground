@@ -8,7 +8,8 @@ import {
   getDataDescription,
   isUserUploadedDataset
 } from "../redux";
-import { styles, ModelNameMaxLength } from "../constants";
+import { ModelNameMaxLength } from "../constants";
+import { styles } from "../styles";
 import Statement from "./Statement";
 import ScrollableContent from "./ScrollableContent";
 

@@ -13,7 +13,7 @@ import {
 import { parseCSV } from "../csvReaderWrapper";
 import { parseJSON } from "../jsonReaderWrapper";
 import { allDatasets, getAvailableDatasets } from "../datasetManifest";
-import { styles } from "../constants";
+import { styles } from "../styles";
 import ScrollableContent from "./ScrollableContent";
 
 class SelectDataset extends Component {

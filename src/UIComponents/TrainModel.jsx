@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { store } from "../index.js";
 import train from "../train";
 import { readyToTrain } from "../redux";
-import { styles, getFadeOpacity } from "../constants";
+import { styles, getFadeOpacity } from "../styles";
 import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
 import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
 import background from "@public/images/results-background-light.png";

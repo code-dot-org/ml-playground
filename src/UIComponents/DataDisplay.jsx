@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
-import { styles } from "../constants";
+import { styles } from "../styles";
 
 class DataDisplay extends Component {
   static propTypes = {

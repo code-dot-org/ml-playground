@@ -9,12 +9,8 @@ import {
   addSelectedFeature,
   removeSelectedFeature
 } from "../redux";
-import {
-  ColumnTypes,
-  styles,
-  colors,
-  UNIQUE_OPTIONS_MAX
-} from "../constants.js";
+import { ColumnTypes, UNIQUE_OPTIONS_MAX } from "../constants.js";
+import { styles, colors } from "../styles";
 import { Bar } from "react-chartjs-2";
 import ScatterPlot from "./ScatterPlot";
 import CrossTab from "./CrossTab";

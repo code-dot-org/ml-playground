@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { setResultsTab } from "../redux";
-import { ResultsGrades, styles } from "../constants";
+import { ResultsGrades } from "../constants";
+import { styles } from "../styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 

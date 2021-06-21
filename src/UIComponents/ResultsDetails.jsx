@@ -8,7 +8,8 @@ import {
   getCorrectResults,
   getIncorrectResults
 } from "../redux";
-import { ResultsGrades, styles } from "../constants";
+import { ResultsGrades } from "../constants";
+import { styles } from "../styles";
 import ResultsToggle from "./ResultsToggle";
 import ResultsTable from "./ResultsTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

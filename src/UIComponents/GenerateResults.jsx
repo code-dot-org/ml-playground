@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { readyToTrain } from "../redux";
-import { styles, getFadeOpacity } from "../constants";
+import { styles, getFadeOpacity } from "../styles";
 import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
 import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
 import blueScanner from "@public/images/ai-bot/blue-scanner.png";
