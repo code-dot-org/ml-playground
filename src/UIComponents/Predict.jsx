@@ -30,7 +30,7 @@ class Predict extends Component {
   };
 
   handleChange = (event, feature) => {
-    const testData = this.props.testData;
+    const testData = {...this.props.testData};
     testData[feature] = event.target.value;
     this.props.setTestData(testData);
   };
