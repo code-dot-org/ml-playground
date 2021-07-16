@@ -16,11 +16,11 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=8.15",
+    "node": ">=16.5",
     "npm": ">=3.10.8"
   },
   "scripts": {
-    "build": "webpack --mode -production --env production",
+    "build": "webpack --mode production --env production",
     "start": "yarn run dev",
     "dev": "webpack-dev-server --mode development --content-base public --host 0.0.0.0 --disable-host-check",
     "lint": "eslint --ext .js,.jsx src",
