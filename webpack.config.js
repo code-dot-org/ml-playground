@@ -1,4 +1,3 @@
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 
@@ -66,19 +65,6 @@ const commonConfig = {
   output: { path: path.resolve(__dirname, "dist") }
 };
 
-const firstConfigOnly = {
-  plugins: [
-    new CleanWebpackPlugin(),
-    new CopyPlugin([
-      {
-        from: 'public/datasets/*.*',
-        to: 'assets/datasets/',
-        flatten: true
-      }
-    ])
-  ]
-};
-
 const externalConfig = {
   externals: {
     lodash: 'lodash',
@@ -94,7 +80,6 @@ const defaultConfig = [
       assetPath: './src/assetPath.js'
     },
     ...commonConfig,
-    ...firstConfigOnly,
     ...externalConfig
   },
   {
