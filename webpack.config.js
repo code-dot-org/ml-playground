@@ -61,11 +61,11 @@ const commonConfig = {
     },
     maxAssetSize: 300000,
     maxEntrypointSize: 10500000
-  }
+  },
+  output: { path: path.resolve(__dirname, "dist") }
 };
 
 const firstConfigOnly = {
-  output: { path: path.resolve(__dirname, "dist") },
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin([
