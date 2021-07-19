@@ -15,7 +15,8 @@ const commonConfig = {
   },
   output: {
     filename: "[name].js",
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    clean: true
   },
   module: {
     rules: [
