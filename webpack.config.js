@@ -20,26 +20,18 @@ const commonConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: 'babel-loader'
-      },
-      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.jsx$/,
+        test:  /\.(js|jsx)$/,
         enforce: 'pre',
         exclude: /(node_modules)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['react', 'env'],
-              plugins: ['transform-class-properties']
-            }
-          }
-        ]
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/env', '@babel/react'],
+          plugins: ['transform-class-properties']
+        }
       },
       {
         test: /\.(png|jpg)$/,
