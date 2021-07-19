@@ -14,7 +14,8 @@ const commonConfig = {
   output: {
     filename: "[name].js",
     libraryTarget: 'umd',
-    clean: true
+    clean: true,
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
@@ -60,8 +61,7 @@ const commonConfig = {
     },
     maxAssetSize: 300000,
     maxEntrypointSize: 10500000
-  },
-  output: { path: path.resolve(__dirname, "dist") }
+  }
 };
 
 const externalConfig = {
