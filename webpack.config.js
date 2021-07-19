@@ -23,7 +23,10 @@ const commonConfig = {
         test: /\.js$/,
         loader: 'babel-loader'
       },
-      {test: /\.css$/, loader: 'style-loader!css-loader'},
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
       {
         test: /\.jsx$/,
         enforce: 'pre',
@@ -62,6 +65,7 @@ const commonConfig = {
 };
 
 const firstConfigOnly = {
+  output: { path: path.resolve(__dirname, "dist") },
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin([
@@ -117,4 +121,3 @@ module.exports = (env, argv) => {
 
   return defaultConfig;
 };
-
