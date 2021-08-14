@@ -1,12 +1,11 @@
 /* React component to handle showing details of categorical columns. */
 import PropTypes from "prop-types";
+import { categeoricalColumnDetailsShape } from "./shapes";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { colors, styles } from "../constants";
 import { Bar } from "react-chartjs-2";
-import {
-  getCategoricalColumnDetails
-} from "../selectors/currentColumnSelectors";
+import { getCategoricalColumnDetails } from "../selectors/currentColumnSelectors";
 
 const barData = {
   labels: [],
@@ -39,7 +38,7 @@ const chartOptions = {
 
 class ColumnDetailsCategorical extends Component {
   static propTypes = {
-    columnDetails: PropTypes.object
+    columnDetails: categeoricalColumnDetailsShape
   };
 
   render() {
@@ -67,9 +66,8 @@ class ColumnDetailsCategorical extends Component {
           )}
           {barData.labels.length > maxLabelsInHistogram && (
             <div>
-              {barData.labels.length} values were found in this
-              column. A graph is only shown when there are{" "}
-              {maxLabelsInHistogram} or fewer.
+              {barData.labels.length} values were found in this column. A graph
+              is only shown when there are {maxLabelsInHistogram} or fewer.
             </div>
           )}
         </div>
@@ -78,8 +76,6 @@ class ColumnDetailsCategorical extends Component {
   }
 }
 
-export default connect(
-  state => ({
-    columnDetails: getCategoricalColumnDetails(state)
-  })
-)(ColumnDetailsCategorical);
+export default connect(state => ({
+  columnDetails: getCategoricalColumnDetails(state)
+}))(ColumnDetailsCategorical);
