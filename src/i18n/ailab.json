@@ -1,3 +1,26 @@
 {
-  "trainModelButtonText": "Train"
+  "trainModelButtonText": "Train",
+  "navigateForward": "Continue",
+  "navigateBack": "Back",
+  "tryAgain": "Try again",
+  "navigateDone": "Finish",
+  "saveProgress": "Save",
+  "correctAnswer": "Correct",
+  "incorrectAnswer": "Incorrect",
+  "potentialUsesLabel": "Intended Use",
+  "potentialUsesDescription": "Describe the problem you think this model could help solve, or one potential app someone could make with this model.",
+  "potentialUsesPlaceholder": "Write a brief description.",
+  "potentialMisusesLabel": "Limitations and Warnings",
+  "potentialMisusesDescription": "Describe any limitations in how this model was created or how it should be used. You may say things like \"Avoid using this model for...\" or \"Be cautious about...\".\nImportant questions to consider are:",
+  "potentialMisusesDescriptionRepresent": "Does the data represent all possible users and scenarios?",
+  "potentialMisusesDescriptionEnough": "Did you gather enough data to be confident in the model's accuracy?",
+  "potentialMisusesDescriptionSituations": "Are there situations where this model definitely shouldn't be used?",
+  "potentialMisusesPlaceholder": "Write a brief description.",
+  "modelNameLabel": "Model name",
+  "datasetDescriptionLabel": "About the Data",
+  "datasetDescriptionPlaceholder": "How was the data collected? Who collected it? When was it collected?",
+  "saveModelColumnCountLabel": "Column Descriptions",
+  "saveModelFieldRequired": "required",
+  "saveModelColumnTypeLabel": "label",
+  "saveModelColumnTypeFeature": "feature"
 }
