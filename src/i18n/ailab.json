@@ -22,5 +22,18 @@
   "saveModelColumnCountLabel": "Column Descriptions",
   "saveModelFieldRequired": "required",
   "saveModelColumnTypeLabel": "label",
-  "saveModelColumnTypeFeature": "feature"
+  "saveModelColumnTypeFeature": "feature",
+  "modelCardAccuracy": "Accuracy",
+  "modelCardIntendedUse": "Intended Use",
+  "modelCardLimitations": "Limitations and Warnings",
+  "modelCardDatasetDetails": "About the Data",
+  "modelCardDatasetDetailsSize": "Dataset size",
+  "modelCardDatasetDetailsSizeCount": "{rowCount} rows",
+  "modelCardFeaturesAndLabel": "Features and Label",
+  "modelCardLabel": "Label",
+  "modelCardPossibleValues": "Possible Values",
+  "modelCardPossibleValuesMinimum": "min",
+  "modelCardPossibleValuesMaximum": "max",
+  "modelCardFeatures": "Features",
+  "modelCardAIBotAltText": "A.I. bot"
 }
