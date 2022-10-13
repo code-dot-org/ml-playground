@@ -35,5 +35,7 @@
   "modelCardPossibleValuesMinimum": "min",
   "modelCardPossibleValuesMaximum": "max",
   "modelCardFeatures": "Features",
-  "modelCardAIBotAltText": "A.I. bot"
+  "modelCardAIBotAltText": "A.I. bot",
+  "dataDisplayRowCount": "There are {rowCount} rows of data.",
+  "dataDisplayRowCountTruncated": "There are {rowCount} rows of data. (Showing first {rowLimit} rows)"
 }
