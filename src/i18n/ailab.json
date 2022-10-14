@@ -37,5 +37,18 @@
   "modelCardFeatures": "Features",
   "modelCardAIBotAltText": "A.I. bot",
   "dataDisplayRowCount": "There are {rowCount} rows of data.",
-  "dataDisplayRowCountTruncated": "There are {rowCount} rows of data. (Showing first {rowLimit} rows)"
+  "dataDisplayRowCountTruncated": "There are {rowCount} rows of data. (Showing first {rowLimit} rows)",
+  "columnInspectorDataType": "Data Type",
+  "columnInspectorDescription": "Description",
+  "columnDetailsInformation": "Column information",
+  "columnDetailsNumericalTypeError": "Numerical columns cannot contain strings.",
+  "columnDetailsMinimumValue": "min",
+  "columnDetailsMaximumValue": "max",
+  "columnDetailsValueRange": "range",
+  "columnDetailsTooManyLabels": "{labelCount} values were found in this column. A graph is only shown when there are {maxLabelCount} or fewer.",
+  "selectLabelButton": "Select label",
+  "scatterPlotLabel": "Relationship information",
+  "addFeatureButton": "Add feature",
+  "columnType_numerical": "numerical",
+  "columnType_categorical": "categorical"
 }

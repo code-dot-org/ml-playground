@@ -17,6 +17,7 @@ import AddFeatureButton from "./AddFeatureButton";
 import SelectLabelButton from "./SelectLabelButton";
 import UniqueOptionsWarning from "./UniqueOptionsWarning";
 import { currentColumnInspectorShape } from "./shapes";
+import I18n from '../i18n'
 
 class ColumnInspector extends Component {
   static propTypes = {
@@ -39,6 +40,7 @@ class ColumnInspector extends Component {
       return null;
     }
 
+    const localizedDataType = I18n.t(`columnType_${currentColumnDetails.dataType}`)
     return (
       currentColumnDetails && (
         <div
@@ -50,9 +52,9 @@ class ColumnInspector extends Component {
         >
           <div style={styles.largeText}>{currentColumnDetails.id}</div>
           <ScrollableContent>
-            <span style={styles.bold}>Data Type:</span>
-            &nbsp;
-            {currentColumnDetails.readOnly && currentColumnDetails.dataType}
+            <span style={styles.bold}>{I18n.t("columnInspectorDataType")}</span>
+            <br />
+            {currentColumnDetails.readOnly && localizedDataType}
             {!currentColumnDetails.readOnly && (
               <ColumnDataTypeDropdown
                 columnId={currentColumnDetails.id}
@@ -62,7 +64,7 @@ class ColumnInspector extends Component {
             {currentColumnDetails.description && (
               <div>
                 <br />
-                <span style={styles.bold}>Description:</span>
+                <span style={styles.bold}>{I18n.t("columnInspectorDescription")}</span>
                 &nbsp;
                 <div>{currentColumnDetails.description}</div>
                 <br />
