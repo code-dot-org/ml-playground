@@ -61,5 +61,8 @@
   "dataCardRowCount": "Rows of data",
   "dataCardLastUpdated": "Last updated",
   "dataCardPotentialUses": "Potential uses",
-  "dataCardPotentialMisuses": "Potential misuses"
+  "dataCardPotentialMisuses": "Potential misuses",
+  "saveStatus_success": "Your model was saved!",
+  "saveStatus_failure": "There was an error. Your model did not save. Please try again.",
+  "saveStatus_piiProfanity": "Your model could not be saved because it contains profanity or personally identifying information (e.g. email, address, phone number)."
 }
