@@ -41,7 +41,7 @@ class Predict extends Component {
   render() {
     return (
       <div id="predict" style={{ ...styles.panel, ...styles.rightPanel }}>
-        <div style={styles.largeText}>Try it out!</div>
+        <div style={styles.largeText}>{I18n.t("predictHeader")}</div>
         <ScrollableContent>
           <div>
             {this.props.selectedNumericalFeatures.map((feature, index) => {
