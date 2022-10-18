@@ -57,7 +57,9 @@ class Predict extends Component {
                       type="number"
                       onChange={event => this.handleChange(event, feature)}
                       value={this.props.testData[feature] || ""}
-                      placeholder={`min: ${+min}, max: ${+max}`}
+                      placeholder={I18n.t(
+                        "predictPlaceholder",
+                        {"minimum": min, "maximum": max})}
                     />
                   </label>
                 </div>

@@ -82,5 +82,6 @@
   "resultsTablePredictedValueHeader": "A.I. Prediction",
   "resultsTablePredictionRange": "Predictions are +/- {percentage}% of range",
   "predictButton": "Predict",
-  "predictAIBotPredicts": "A.I. predicts"
+  "predictAIBotPredicts": "A.I. predicts",
+  "predictPlaceholder": "min {minimum}, max {maximum}"
 }
