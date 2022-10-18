@@ -7,7 +7,7 @@ import { categeoricalColumnDetailsShape } from "./shapes";
 import {
   getCategoricalColumnDetails
 } from "../selectors/currentColumnSelectors";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 const barData = {
   labels: [],

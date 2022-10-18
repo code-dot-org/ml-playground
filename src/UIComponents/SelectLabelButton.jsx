@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { styles } from "../constants";
 import { setLabelColumn } from "../redux";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 
 class SelectLabelButton extends Component {

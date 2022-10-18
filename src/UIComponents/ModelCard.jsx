@@ -9,7 +9,7 @@ import { getDatasetDetails } from "../helpers/datasetDetails";
 import Statement from "./Statement";
 import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
 import { modelCardDatasetDetailsShape, trainedModelDetailsShape, modelCardColumnShape } from "./shapes";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class ModelCard extends Component {
   static propTypes = {

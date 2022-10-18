@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getScatterPlotData } from "../selectors/visualizationSelectors.js";
 import { styles, colors } from "../constants.js";
 import { Scatter } from "react-chartjs-2";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 const scatterDataBase = {
   labels: ["Scatter"],

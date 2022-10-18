@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { styles } from "../constants";
 import { getNumericalColumnDetails } from "../selectors/currentColumnSelectors";
 import { numericalColumnDetailsShape } from "./shapes"
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class ColumnDetailsNumerical extends Component {
   static propTypes = {

@@ -6,7 +6,7 @@ import { setResultsTab } from "../redux";
 import { ResultsGrades, styles } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class ResultsToggle extends Component {
   static propTypes = {

@@ -11,7 +11,7 @@ import { getSelectedColumnsDescriptions } from "../selectors";
 import { styles, ModelNameMaxLength } from "../constants";
 import Statement from "./Statement";
 import ScrollableContent from "./ScrollableContent";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class SaveModel extends Component {
   static propTypes = {

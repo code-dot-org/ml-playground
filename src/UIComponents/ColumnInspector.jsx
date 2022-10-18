@@ -17,7 +17,7 @@ import AddFeatureButton from "./AddFeatureButton";
 import SelectLabelButton from "./SelectLabelButton";
 import UniqueOptionsWarning from "./UniqueOptionsWarning";
 import { currentColumnInspectorShape } from "./shapes";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class ColumnInspector extends Component {
   static propTypes = {

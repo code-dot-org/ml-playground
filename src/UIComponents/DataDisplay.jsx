@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Statement from "./Statement";
 import DataTable from "./DataTable";
 import { styles } from "../constants";
-import I18n from '../i18n'
+import I18n from "../i18n";
 
 class DataDisplay extends Component {
   static propTypes = {
