@@ -83,5 +83,9 @@
   "resultsTablePredictionRange": "Predictions are +/- {percentage}% of range",
   "predictButton": "Predict",
   "predictAIBotPredicts": "A.I. predicts",
-  "predictPlaceholder": "min {minimum}, max {maximum}"
+  "predictPlaceholder": "min {minimum}, max {maximum}",
+  "crossTabRelationshipHeader": "Relationship information",
+  "crossTabTooMuchData": "The currently-selected data is too large to show in a table.",
+  "uniqueOptionsWarningNotice": "Note",
+  "uniqueOptionsWarningMessage": "Categorical columns with more than {valueCount} unique values can not be selected as the label or a feature."
 }
