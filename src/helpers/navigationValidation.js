@@ -1,4 +1,4 @@
-import I18n from '../i18n'
+import I18n from "../i18n";
 /*
 Validation checks to determine if app set up is ready for machine learning
 training. Panels prompt users to incrementally complete actions in preparation
