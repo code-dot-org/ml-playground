@@ -10,7 +10,7 @@ import Results from "./UIComponents/Results";
 import Predict from "./UIComponents/Predict";
 import SaveModel from "./UIComponents/SaveModel";
 import ModelCard from "./UIComponents/ModelCard";
-import { styles} from "./constants";
+import { styles } from "./constants";
 import { connect } from "react-redux";
 import {
   getPanelButtons,
