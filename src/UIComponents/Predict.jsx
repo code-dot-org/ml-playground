@@ -59,7 +59,7 @@ class Predict extends Component {
                       value={this.props.testData[feature] || ""}
                       placeholder={I18n.t(
                         "predictPlaceholder",
-                        {"minimum": min, "maximum": max})}
+                        {"minimum": +min, "maximum": +max})}
                     />
                   </label>
                 </div>
