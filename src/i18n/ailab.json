@@ -54,7 +54,7 @@
   "selectDatasetErrorTooFewRows": "Please upload a {fileType} with at least {count} rows.",
   "selectDatasetErrorTooFewColumns": "Please upload a {fileType} with at least {count} columns.",
   "dataCardWarningLargeDataset": "Warning: Datasets with more than {rowCount} rows will slow down the user experience.",
-  "dataCardRemovedRows": "{rowCount} rows removed because they contained empty cells.",
+  "dataCardRemovedRows": "{rowCount} {rowCount, plural, one {row} other {rows}} removed because {rowCount, plural, one {it} other {they}} contained empty cells.",
   "dataCardDefaultHeader": "Details",
   "dataCardSource": "Source",
   "dataCardRowCount": "Rows of data",
