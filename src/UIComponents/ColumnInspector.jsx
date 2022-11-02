@@ -52,26 +52,26 @@ class ColumnInspector extends Component {
         >
           <div style={styles.largeText}>{currentColumnDetails.id}</div>
           <ScrollableContent>
-            <span style={styles.bold}>{I18n.t("columnInspectorDataType")}</span>
-            <br />
-            {currentColumnDetails.readOnly && localizedDataType}
-            {!currentColumnDetails.readOnly && (
-              <ColumnDataTypeDropdown
-                columnId={currentColumnDetails.id}
-                currentDataType={currentColumnDetails.dataType}
-              />
-            )}
+            <div style={styles.cardRow}>
+              <span style={styles.bold}>{I18n.t("columnInspectorDataType")}</span>
+              <br />
+              {currentColumnDetails.readOnly && localizedDataType}
+              {!currentColumnDetails.readOnly && (
+                <ColumnDataTypeDropdown
+                  columnId={currentColumnDetails.id}
+                  currentDataType={currentColumnDetails.dataType}
+                />
+              )}
+            </div>
             {currentColumnDetails.description && (
-              <div>
-                <br />
+              <div style={styles.cardRow}>
                 <span style={styles.bold}>{I18n.t("columnInspectorDescription")}</span>
                 &nbsp;
                 <div>{currentColumnDetails.description}</div>
-                <br />
               </div>
             )}
             {selectingFeatures && (
-              <div>
+              <div style={styles.cardRow}>
                 <ScatterPlot />
                 <CrossTab />
               </div>
