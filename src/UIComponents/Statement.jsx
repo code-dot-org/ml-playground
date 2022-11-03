@@ -101,6 +101,9 @@ class Statement extends Component {
 
     // Placeholders put into the "predictionStatement" string which will be replaced with React
     // components.
+    // This placeholder system is necessary because different languages will order the words in
+    // the sentence differently. Since we can't predict what order the react components will be
+    // in, we need to use placeholders in the plaintext string.
     const OUTPUT_KEY = "__CDO_OUTPUT__";
     const INPUTS_KEY = "__CDO_INPUTS__";
     // The "Predict ___ based on ___" sentence translators receive. The OUTPUT and INPUTS
