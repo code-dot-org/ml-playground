@@ -51,7 +51,7 @@ class Statement extends Component {
     );
   };
 
-  selectedFeaturesHTML = selectedFeatures => {
+  selectedFeaturesHTML = (selectedFeatures, currentPanel) => {
     return (
       <span>
         {selectedFeatures.map((selectedFeature, index) => {
@@ -59,19 +59,21 @@ class Statement extends Component {
             <span key={index}>
               <div style={styles.statementFeature}>
                 {selectedFeature}
-                <div
-                  id="uitest-remove-statement-feature"
-                  onClick={() => this.removeFeature(selectedFeature)}
-                  onKeyDown={() => this.removeFeature(selectedFeature)}
-                  style={styles.statementDeleteIcon}
-                  role="button"
-                  tabIndex={0}
-                >
-                <div style={styles.statementDeleteCircle} />
-                <div style={styles.statementDeleteX}>
-                  <FontAwesomeIcon icon={faTimesCircle} />
-                </div>
-                </div>
+                {currentPanel === "dataDisplayFeatures" && (
+                  <div
+                    id="uitest-remove-statement-feature"
+                    onClick={() => this.removeFeature(selectedFeature)}
+                    onKeyDown={() => this.removeFeature(selectedFeature)}
+                    style={styles.statementDeleteIcon}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <div style={styles.statementDeleteCircle} />
+                    <div style={styles.statementDeleteX}>
+                      <FontAwesomeIcon icon={faTimesCircle} />
+                    </div>
+                  </div>
+                )}
               </div>
               {index < selectedFeatures.length - 1 && ", "}
                 </span>
@@ -115,7 +117,7 @@ class Statement extends Component {
       if (part === OUTPUT_KEY) {
         return this.labelHTML(labelColumn, currentPanel);
       } else if (part === INPUTS_KEY) {
-        return this.selectedFeaturesHTML(selectedFeatures);
+        return this.selectedFeaturesHTML(selectedFeatures, currentPanel);
       } else {
         return part;
       }
