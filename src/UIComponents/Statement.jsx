@@ -111,9 +111,9 @@ class Statement extends Component {
     const predictionStatement = I18n.t("predictionStatement",
       {"output": OUTPUT_KEY, "inputs": INPUTS_KEY});
     // Regex to split the "Predict..." statement and isolate the dynamic content parts.
-    // "Predict __CDO_OUTPUT__ based on  __CDO_INPUTS__" becomes
+    // "Predict __CDO_OUTPUT__ based on __CDO_INPUTS__" becomes
     // ["Predict ", "__CDO_OUTPUT__", " based on ", "__CDO_INPUTS__"]
-    const regex = new RegExp(`(${OUTPUT_KEY}|${INPUTS_KEY})`)
+    const regex = new RegExp(`(${OUTPUT_KEY}|${INPUTS_KEY})`);
     const predictionStatementParts = predictionStatement.split(regex).filter((part) => part);
     // Swap the OUTPUT and INPUTS placeholders with React components.
     const predictionStatementComponents = predictionStatementParts.map((part, index) => {
@@ -125,7 +125,7 @@ class Statement extends Component {
         return part;
       }
     }).map((part, index) => {
-      //React wants sibling elements in a list to have a unique "key".
+      // React wants sibling elements in a list to have a unique "key".
       return (<span key={index}>{part}</span>);
     });
 
