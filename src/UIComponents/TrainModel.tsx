@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { store } from "../index";
 import train from "../train";
-import { getTableData, readyToTrain } from "../redux";
+import { getTableData, readyToTrain, RootState } from "../redux";
 import { styles, getFadeOpacity } from "../constants";
 import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
 import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
@@ -11,14 +11,15 @@ import background from "@public/images/results-background-light.jpg";
 import DataTable from "./DataTable";
 import { TrainingAnimationDescription } from "./AnimationDescriptions";
 import I18n from "../i18n";
+import { DataRow } from "../types";
 
 const framesPerCycle = 80;
 const maxNumItems = 7;
 
 interface TrainModelProps {
-  data: any[] | null;
+  data: DataRow[] | null;
   readyToTrain: boolean;
-  labelColumn: string;
+  labelColumn: string | undefined;
   selectedFeatures: string[];
   instructionsOverlayActive: boolean;
 }
@@ -187,7 +188,7 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
   );
 }
 
-export default connect((state: any) => ({
+export default connect((state: RootState) => ({
   data: getTableData(state, false),
   readyToTrain: readyToTrain(state),
   labelColumn: state.labelColumn,

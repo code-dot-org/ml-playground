@@ -1,7 +1,8 @@
 /* React component to handle displaying test data and A.I. Bot's guesses. */
 import { useCallback } from "react";
 import { connect } from "react-redux";
-import { isRegression, setResultsHighlightRow } from "../redux";
+import { isRegression, setResultsHighlightRow, RootState } from "../redux";
+import { Dispatch } from "redux";
 import { styles, colors, REGRESSION_ERROR_TOLERANCE } from "../constants";
 import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
@@ -9,12 +10,12 @@ import { ResultsData } from "../types";
 
 interface ResultsTableProps {
   selectedFeatures: string[];
-  labelColumn: string;
+  labelColumn: string | undefined;
   results: ResultsData;
   isRegression: boolean;
   setResultsHighlightRow: (row: number | undefined) => void;
   resultsHighlightRow: number | undefined;
-  datasetId: string;
+  datasetId: string | undefined;
 }
 
 function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: isRegressionMode, setResultsHighlightRow, resultsHighlightRow, datasetId }: ResultsTableProps) {
@@ -80,7 +81,7 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
                     }}
                     key={index}
                   >
-                    {getLocalizedColumnName(datasetId, feature)}
+                    {getLocalizedColumnName(datasetId!, feature)}
                   </th>
                 );
               })}
@@ -91,7 +92,7 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
                   ...styles.resultsTableSecondHeader
                 }}
               >
-                {getLocalizedColumnName(datasetId, labelColumn)}
+                {getLocalizedColumnName(datasetId!, labelColumn!)}
               </th>
               <th
                 style={{
@@ -100,7 +101,7 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
                   ...styles.resultsTableSecondHeader
                 }}
               >
-                {getLocalizedColumnName(datasetId, labelColumn)}
+                {getLocalizedColumnName(datasetId!, labelColumn!)}
               </th>
             </tr>
           </thead>
@@ -136,16 +137,16 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     selectedFeatures: state.selectedFeatures,
     labelColumn: state.labelColumn,
     isRegression: isRegression(state),
     resultsHighlightRow: state.resultsHighlightRow,
     datasetId: state.metadata && state.metadata.name
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setResultsHighlightRow(column: number | undefined) {
-      dispatch(setResultsHighlightRow(column as any));
+      dispatch(setResultsHighlightRow(column as number));
     }
   })
 )(ResultsTable);

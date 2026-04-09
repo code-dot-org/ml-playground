@@ -1,7 +1,8 @@
 /* React component to handle saving a trained model. */
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { setTrainedModelDetail } from "../redux";
+import { setTrainedModelDetail, RootState } from "../redux";
+import { Dispatch } from "redux";
 import {
   getDatasetDescription,
   isUserUploadedDataset
@@ -12,16 +13,18 @@ import Statement from "./Statement";
 import ScrollableContent from "./ScrollableContent";
 import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
+import { TrainedModelDetailsSave } from "../types";
+import KNN from "ml-knn";
 
 interface SaveModelProps {
-  trainedModel: any;
+  trainedModel: KNN | undefined;
   setTrainedModelDetail: (field: string, value: string, isColumn: boolean) => void;
-  trainedModelDetails: any;
-  labelColumn: string;
+  trainedModelDetails: TrainedModelDetailsSave;
+  labelColumn: string | undefined;
   columnDescriptions: { id: string; description: string | null }[];
   dataDescription: string | undefined;
   isUserUploadedDataset: boolean;
-  datasetId: string;
+  datasetId: string | undefined;
 }
 
 function SaveModel({
@@ -45,7 +48,7 @@ function SaveModel({
   };
 
   const getColumnFields = () => {
-    const fields: any[] = [];
+    const fields: { id: string; isColumn: boolean; columnType: string | undefined; answer: string | null; localizedName: string; placeholder?: string }[] = [];
 
     for (const columnDescription of columnDescriptions) {
       const labelType = I18n.t("saveModelColumnTypeLabel");
@@ -57,14 +60,14 @@ function SaveModel({
         isColumn: true,
         columnType,
         answer: columnDescription.description,
-        localizedName: getLocalizedColumnName(datasetId, columnDescription.id)
+        localizedName: getLocalizedColumnName(datasetId!, columnDescription.id)
       });
     }
     return fields;
   };
 
   const getUsesFields = () => {
-    const fields: any[] = [];
+    const fields: { id: string; text: string | undefined; description: string | undefined; descriptionDetails?: (string | undefined)[]; placeholder: string | undefined; isColumn?: boolean; answer?: string }[] = [];
     fields.push({
       id: "potentialUses",
       text: I18n.t("potentialUsesLabel"),
@@ -88,8 +91,9 @@ function SaveModel({
 
   const nameField = {
     id: "name",
-    text: I18n.t("modelNameLabel")
-  } as any;
+    text: I18n.t("modelNameLabel"),
+    isColumn: false
+  };
 
   const dataDescriptionField = {
     id: "datasetDescription",
@@ -130,7 +134,7 @@ function SaveModel({
                 <div>{field.description}</div>
                 <ul>
                   {field.descriptionDetails &&
-                    field.descriptionDetails.map((detail: string, index: number) => {
+                    field.descriptionDetails.map((detail: string | undefined, index: number) => {
                       return (
                         <li style={styles.regularText} key={index}>
                           {detail}
@@ -143,7 +147,7 @@ function SaveModel({
                     <textarea
                       rows={4}
                       onChange={event =>
-                        handleChange(event, field.id, field.isColumn)
+                        handleChange(event, field.id, !!field.isColumn)
                       }
                       placeholder={field.placeholder}
                       style={styles.saveInputsWidth}
@@ -201,7 +205,7 @@ function SaveModel({
                         <textarea
                           rows={1}
                           onChange={event =>
-                            handleChange(event, field.id, field.isColumn)
+                            handleChange(event, field.id, !!field.isColumn)
                           }
                           placeholder={field.placeholder}
                           value={field.answer || ""}
@@ -224,7 +228,7 @@ function SaveModel({
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     trainedModel: state.trainedModel,
     trainedModelDetails: state.trainedModelDetails,
     labelColumn: state.labelColumn,
@@ -233,7 +237,7 @@ export default connect(
     isUserUploadedDataset: isUserUploadedDataset(state),
     datasetId: state.metadata && state.metadata.name
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setTrainedModelDetail(field: string, value: string, isColumn: boolean) {
       dispatch(setTrainedModelDetail(field, value, isColumn));
     }

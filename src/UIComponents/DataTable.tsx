@@ -1,19 +1,21 @@
 /* React component to handle displaying imported data. */
 import { connect } from "react-redux";
-import { getTableData, setCurrentColumn, setHighlightColumn } from "../redux";
+import { getTableData, setCurrentColumn, setHighlightColumn, RootState } from "../redux";
+import { Dispatch } from "redux";
 import { styles } from "../constants";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
+import { DataRow } from "../types";
 
 interface DataTableProps {
   currentPanel: string;
-  data: any[] | null;
-  datasetId: string;
-  labelColumn: string;
+  data: DataRow[] | null;
+  datasetId: string | undefined;
+  labelColumn: string | undefined;
   selectedFeatures: string[];
   setCurrentColumn: (column: string | undefined) => void;
   setHighlightColumn: (column: string | undefined) => void;
-  currentColumn: string;
-  highlightColumn: string;
+  currentColumn: string | undefined;
+  highlightColumn: string | undefined;
   reducedColumns?: boolean;
   singleRow?: number | undefined;
   startingRow?: number | undefined;
@@ -134,7 +136,7 @@ function DataTable({
                 onMouseEnter={() => handleSetHighlightColumn(columnId)}
                 onMouseLeave={() => handleSetHighlightColumn(undefined)}
               >
-                {getLocalizedColumnName(datasetId, columnId)}
+                {getLocalizedColumnName(datasetId!, columnId)}
               </th>
             );
           })}
@@ -173,8 +175,8 @@ function DataTable({
 }
 
 export default connect(
-  (state: any, props: any) => ({
-    data: getTableData(state, props.useResultsData) as any[],
+  (state: RootState, props: { useResultsData?: boolean }) => ({
+    data: getTableData(state, !!props.useResultsData),
     datasetId: state.metadata && state.metadata.name,
     labelColumn: state.labelColumn,
     selectedFeatures: state.selectedFeatures,
@@ -182,12 +184,12 @@ export default connect(
     highlightColumn: state.highlightColumn,
     currentPanel: state.currentPanel
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setCurrentColumn(column: string | undefined) {
-      dispatch(setCurrentColumn(column as any));
+      dispatch(setCurrentColumn(column as string));
     },
     setHighlightColumn(column: string | undefined) {
-      dispatch(setHighlightColumn(column as any));
+      dispatch(setHighlightColumn(column as string));
     }
   })
 )(DataTable);

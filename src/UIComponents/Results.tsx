@@ -3,13 +3,15 @@ import { useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { styles } from "../constants";
 import { UnconnectedStatement } from "./Statement";
-import { setShowResultsDetails, setResultsPhase } from "../redux";
+import { setShowResultsDetails, setResultsPhase, RootState } from "../redux";
+import { Dispatch } from "redux";
+import { HistoricResult } from "../types";
 import ResultsDetails from "./ResultsDetails";
 import ScrollableContent from "./ScrollableContent";
 import I18n from "../i18n";
 
 interface ResultsProps {
-  historicResults: any[];
+  historicResults: HistoricResult[];
   showResultsDetails: boolean;
   setShowResultsDetails: (show: boolean) => void;
   setResultsPhase: (phase: number) => void;
@@ -90,11 +92,11 @@ function Results({ historicResults, showResultsDetails, setShowResultsDetails, s
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     historicResults: state.historicResults,
     showResultsDetails: state.showResultsDetails
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setResultsPhase(phase: number) {
       dispatch(setResultsPhase(phase));
     },

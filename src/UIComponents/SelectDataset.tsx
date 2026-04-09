@@ -7,8 +7,10 @@ import {
   setSelectedJSON,
   resetState,
   getSpecifiedDatasets,
-  setHighlightDataset
+  setHighlightDataset,
+  RootState
 } from "../redux";
+import { Dispatch } from "redux";
 import { parseCSV, MIN_CSV_ROWS, MIN_CSV_COLUMNS } from "../csvReaderWrapper";
 import { parseJSON } from "../jsonReaderWrapper";
 import { getDatasets, getAvailableDatasets } from "../datasetManifest";
@@ -21,13 +23,13 @@ interface SelectDatasetProps {
   setSelectedCSV: (csvfilePath: string | File) => void;
   setSelectedJSON: (jsonfilePath: string) => void;
   setHighlightDataset: (id: string | undefined) => void;
-  csvfile: string | object;
-  jsonfile: string | object;
+  csvfile: string | object | undefined;
+  jsonfile: string | object | undefined;
   resetState: () => void;
   specifiedDatasets: string[] | undefined;
-  name: string;
-  highlightDataset: string;
-  invalidData: string;
+  name: string | undefined;
+  highlightDataset: string | undefined;
+  invalidData: string | undefined;
 }
 
 function SelectDataset({
@@ -44,7 +46,7 @@ function SelectDataset({
   const [, setDownload] = useState(false);
 
   const handleDatasetClick = (id: string) => {
-    const assetPath = (global as any).__ml_playground_asset_public_path__;
+    const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
     const dataset = getDatasets().find(dataset => dataset.id === id);
 
     // Don't process the click if we're just clicking the current
@@ -65,11 +67,11 @@ function SelectDataset({
     }
   };
 
-  const handleUploadSelect = (event: any) => {
+  const handleUploadSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     resetState();
-    setSelectedCSV(event.target.files[0]);
+    setSelectedCSV(event.target.files![0]);
     setDownload(false);
-    parseCSV(event.target.files[0], false, true);
+    parseCSV(event.target.files![0] as unknown as string, false, true);
   };
 
   const getInvalidDataMessage = () => {
@@ -88,7 +90,7 @@ function SelectDataset({
 
   const datasets = getAvailableDatasets(specifiedDatasets);
 
-  const assetPath = (global as any).__ml_playground_asset_public_path__;
+  const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
 
   return (
     <div id="select-dataset" style={styles.panel}>
@@ -157,7 +159,7 @@ function SelectDataset({
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     csvfile: state.csvfile,
     jsonfile: state.jsonfile,
     specifiedDatasets: getSpecifiedDatasets(state),
@@ -165,7 +167,7 @@ export default connect(
     highlightDataset: state.highlightDataset,
     invalidData: state.invalidData
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     resetState() {
       dispatch(resetState());
     },
@@ -173,13 +175,13 @@ export default connect(
       dispatch(setSelectedName(name));
     },
     setSelectedCSV(csvfilePath: string | File) {
-      dispatch(setSelectedCSV(csvfilePath as any));
+      dispatch(setSelectedCSV(csvfilePath as string));
     },
     setSelectedJSON(jsonfilePath: string) {
       dispatch(setSelectedJSON(jsonfilePath));
     },
     setHighlightDataset(id: string | undefined) {
-      dispatch(setHighlightDataset(id as any));
+      dispatch(setHighlightDataset(id as string));
     }
   })
 )(SelectDataset);

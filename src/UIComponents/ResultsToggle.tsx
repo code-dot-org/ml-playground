@@ -1,6 +1,6 @@
 /* React component to handle toggling between correct/incorrect test results */
 import { connect } from "react-redux";
-import { setResultsTab } from "../redux";
+import { setResultsTab, RootState } from "../redux";
 import { ResultsGrades, styles } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -59,7 +59,7 @@ function ResultsToggle({ resultsTab, setResultsTab }: ResultsToggleProps) {
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     resultsTab: state.resultsTab
   }),
   dispatch => ({

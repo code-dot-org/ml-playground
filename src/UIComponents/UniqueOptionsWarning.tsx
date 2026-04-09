@@ -1,5 +1,6 @@
 /* React component to handle showing warning for excessive unique options. */
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { styles, UNIQUE_OPTIONS_MAX } from "../constants";
 import {
   hasTooManyUniqueOptions
@@ -26,7 +27,7 @@ function UniqueOptionsWarning({ showWarning }: UniqueOptionsWarningProps) {
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     showWarning: hasTooManyUniqueOptions(state)
   })
 )(UniqueOptionsWarning);

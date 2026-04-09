@@ -8,14 +8,15 @@ import {
 import { getUniqueOptions, getLocalizedColumnName } from "../helpers/columnDetails";
 import { areArraysEqual } from "../helpers/utils";
 import { ColumnTypes } from "../constants";
-import { Coordinate, ScatterPlotData, CrossTabResult, CrossTabData } from "../types";
+import { Coordinate, ScatterPlotData, CrossTabResult, CrossTabData, DataRow } from "../types";
+import { RootState } from "../redux";
 
 export const getScatterPlotData = createSelector(
   [
     getLabelColumn,
-    (state: any) => labelColumnIsNumerical(state),
+    (state: RootState) => labelColumnIsNumerical(state),
     getCurrentColumn,
-    (state: any) => currentColumnIsNumerical(state),
+    (state: RootState) => currentColumnIsNumerical(state),
     getData,
     getDatasetId
   ],
@@ -24,7 +25,7 @@ export const getScatterPlotData = createSelector(
     labelColumnIsNumerical: boolean,
     currentColumn: string | undefined,
     currentColumnIsNumerical: boolean,
-    data: any[],
+    data: DataRow[],
     datasetId: string | undefined
   ): ScatterPlotData | null => {
     if (!labelColumn || !currentColumn) {
@@ -42,7 +43,7 @@ export const getScatterPlotData = createSelector(
     // For each row, record the X (feature value) and Y (label value).
     const coordinates: Coordinate[] = [];
     for (const row of data) {
-      coordinates.push({ x: row[currentColumn], y: row[labelColumn] });
+      coordinates.push({ x: Number(row[currentColumn]), y: Number(row[labelColumn]) });
     }
 
     const label = getLocalizedColumnName(datasetId ?? "", labelColumn);
@@ -93,11 +94,11 @@ export const getScatterPlotData = createSelector(
 export const getCrossTabData = createSelector(
   [
     getLabelColumn,
-    (state: any) => labelColumnIsCategorical(state),
+    (state: RootState) => labelColumnIsCategorical(state),
     getCurrentColumn,
-    (state: any) => currentColumnIsCategorical(state),
+    (state: RootState) => currentColumnIsCategorical(state),
     getData,
-    (state: any) => getUniqueOptionsLabelColumn(state),
+    (state: RootState) => getUniqueOptionsLabelColumn(state),
     getDatasetId
   ],
   (
@@ -105,7 +106,7 @@ export const getCrossTabData = createSelector(
     labelColumnIsCategorical: boolean,
     currentColumn: string | undefined,
     currentColumnIsCategorical: boolean,
-    data: any[],
+    data: DataRow[],
     uniqueOptionsLabelColumn: string[],
     datasetId: string | undefined
   ): CrossTabData | null => {
@@ -125,7 +126,7 @@ export const getCrossTabData = createSelector(
     // value.
 
     for (const row of data) {
-      const featureValues: any[] = [];
+      const featureValues: (string | number)[] = [];
       featureValues.push(row[currentColumn]);
 
       let existingEntry = results.find(result => {
@@ -194,7 +195,7 @@ export const labelColumnIsCategorical = createSelector(
 
 export const getUniqueOptionsLabelColumn = createSelector(
   [getLabelColumn, getData],
-  (labelColumn: string | undefined, data: any[]): string[] => {
-    return getUniqueOptions(data, labelColumn!).sort()
+  (labelColumn: string | undefined, data: DataRow[]): string[] => {
+    return getUniqueOptions(data, labelColumn!).map(String).sort()
   }
 )

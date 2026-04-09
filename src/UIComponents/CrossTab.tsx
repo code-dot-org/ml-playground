@@ -5,6 +5,7 @@
 */
 import { useCallback } from "react";
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { getCrossTabData } from "../selectors/visualizationSelectors";
 import { styles } from "../constants";
 import ScrollableContent from "./ScrollableContent";
@@ -18,7 +19,7 @@ interface CrossTabProps {
 function CrossTab({ crossTabData }: CrossTabProps) {
   const getCellStyle = useCallback((percent: number) => {
     return {
-      ...(styles as Record<string, any>)["crossTabCell" + Math.round(percent / 20)],
+      ...(styles as Record<string, React.CSSProperties>)["crossTabCell" + Math.round(percent / 20)],
       ...styles.crossTabTableCell
     };
   }, []);
@@ -132,6 +133,6 @@ function CrossTab({ crossTabData }: CrossTabProps) {
   );
 }
 
-export default connect((state: any) => ({
+export default connect((state: RootState) => ({
   crossTabData: getCrossTabData(state)
 }))(CrossTab);

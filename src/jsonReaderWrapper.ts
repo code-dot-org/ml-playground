@@ -5,6 +5,7 @@ import {
   setLabelColumn
 } from "./redux";
 import { ColumnTypes } from "./constants";
+import { Metadata } from "./types";
 
 export const parseJSON = (jsonfile: string): void => {
   const rawFile = new XMLHttpRequest();
@@ -19,17 +20,19 @@ export const parseJSON = (jsonfile: string): void => {
 };
 
 const updateData = (result: string): void => {
-  const metadata = JSON.parse(result);
+  const metadata: Metadata = JSON.parse(result);
   store.dispatch(setImportedMetadata(metadata));
 
   const state = store.getState();
 
-  for (const field of metadata.fields) {
-    const fieldType = field.type ? field.type : ColumnTypes.CATEGORICAL;
-    store.dispatch(setColumnsByDataType(field.id, fieldType));
+  if (metadata.fields) {
+    for (const field of metadata.fields) {
+      const fieldType = field.type ? field.type : ColumnTypes.CATEGORICAL;
+      store.dispatch(setColumnsByDataType(field.id!, fieldType));
+    }
   }
 
-  if (state.mode && state.mode.hideSelectLabel) {
+  if (state.mode && state.mode.hideSelectLabel && metadata.defaultLabelColumn) {
     // Use the manifest's default label instead.
     store.dispatch(setLabelColumn(metadata.defaultLabelColumn));
   }

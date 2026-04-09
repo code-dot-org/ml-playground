@@ -1,7 +1,7 @@
 /* React component to handle selecting columns as features. */
 import { connect } from "react-redux";
+import { RootState, addSelectedFeature } from "../redux";
 import { styles } from "../constants";
-import { addSelectedFeature } from "../redux";
 import I18n from "../i18n";
 
 interface AddFeatureButtonProps {
@@ -28,7 +28,7 @@ function AddFeatureButton({ column, addSelectedFeature }: AddFeatureButtonProps)
 }
 
 export default connect(
-  (state: any) => ({}),
+  (state: RootState) => ({}),
   dispatch => ({
     addSelectedFeature(column: string) {
       dispatch(addSelectedFeature(column));

@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import {
   getUniqueOptions,
   getExtrema,
+  Extrema,
   isColumnReadOnly,
   getColumnDescription,
   tooManyUniqueOptions,
@@ -15,16 +16,18 @@ import {
   getTrainedModelDetails
  } from '../selectors';
 import { ColumnTypes } from "../constants";
+import { RootState } from "../redux";
+import { DataRow, Metadata, TrainedModelDetailsSave, CurrentColumnInspector, NumericalColumnDetails, CategoricalColumnDetails } from "../types";
 
-export const getCurrentColumn = (state: any): string | undefined => state.currentColumn;
+export const getCurrentColumn = (state: RootState): string | undefined => state.currentColumn;
 
 export const getCurrentColumnDetails = createSelector(
   [
     getCurrentColumn,
-    (state: any) => isCurrentColumnReadOnly(state),
+    (state: RootState) => isCurrentColumnReadOnly(state),
     getColumnsByDataType,
-    (state: any) => getCurrentColumnDescription(state),
-    (state: any) => isCurrentColumnSelectable(state)
+    (state: RootState) => getCurrentColumnDescription(state),
+    (state: RootState) => isCurrentColumnSelectable(state)
   ],
   (
     currentColumn: string | undefined,
@@ -32,13 +35,13 @@ export const getCurrentColumnDetails = createSelector(
     columnsByDataType: Record<string, string>,
     description: string | undefined,
     isSelectable: boolean
-  ): any => {
+  ): CurrentColumnInspector | undefined => {
     if (currentColumn) {
       return {
         id: currentColumn,
         readOnly: isReadOnly,
         dataType: columnsByDataType[currentColumn],
-        description: description,
+        description: description ?? "",
         isSelectable: isSelectable
       };
     }
@@ -47,22 +50,22 @@ export const getCurrentColumnDetails = createSelector(
 
 export const isCurrentColumnReadOnly = createSelector(
   [getCurrentColumn, getMetadata],
-  (currentColumn: string | undefined, metadata: any): boolean => {
+  (currentColumn: string | undefined, metadata: Metadata): boolean => {
     return isColumnReadOnly(metadata, currentColumn!)
   }
 )
 
 export const getCurrentColumnDescription = createSelector(
   [getCurrentColumn, getMetadata, getTrainedModelDetails],
-  (currentColumn: string | undefined, metadata: any, trainedModelDetails: any): string | undefined => {
+  (currentColumn: string | undefined, metadata: Metadata, trainedModelDetails: TrainedModelDetailsSave): string | undefined => {
     return currentColumn ? getColumnDescription(currentColumn, metadata, trainedModelDetails) ?? undefined : undefined;
   }
 )
 
 export const isCurrentColumnSelectable = createSelector(
   [
-    (state: any) => isCurrentColumnSelected(state),
-    (state: any) => isValidData(state)
+    (state: RootState) => isCurrentColumnSelected(state),
+    (state: RootState) => isValidData(state)
   ],
   (selected: boolean, isValidData: boolean): boolean => {
     return !selected && isValidData;
@@ -78,8 +81,8 @@ export const isCurrentColumnSelected = createSelector(
 
 export const isValidData = createSelector(
   [
-    (state: any) => isValidNumericalData(state),
-    (state: any) => isValidCategoricalData(state)
+    (state: RootState) => isValidNumericalData(state),
+    (state: RootState) => isValidCategoricalData(state)
   ],
   (isValidNumericalData: boolean, isValidCategoricalData: boolean): boolean => {
     return isValidNumericalData || isValidCategoricalData;
@@ -89,23 +92,23 @@ export const isValidData = createSelector(
 export const getNumericalColumnDetails = createSelector(
   [
     getCurrentColumn,
-    (state: any) => currentColumnIsNumerical(state),
-    (state: any) => getExtremaCurrentColumn(state),
-    (state: any) => currentColumnContainsOnlyNumbers(state)
+    (state: RootState) => currentColumnIsNumerical(state),
+    (state: RootState) => getExtremaCurrentColumn(state),
+    (state: RootState) => currentColumnContainsOnlyNumbers(state)
   ],
   (
     currentColumn: string | undefined,
     isNumerical: boolean,
-    extrema: any,
+    extrema: Extrema,
     containsOnlyNumbers: boolean
-  ): any => {
-    const numericalColumnDetails: any = {};
+  ): NumericalColumnDetails => {
+    const numericalColumnDetails: Partial<NumericalColumnDetails> & { id?: string } = {};
     numericalColumnDetails.id = currentColumn;
+    numericalColumnDetails.containsOnlyNumbers = containsOnlyNumbers;
     if (isNumerical) {
       numericalColumnDetails.extrema = extrema;
-      numericalColumnDetails.containsOnlyNumbers = containsOnlyNumbers;
     }
-    return numericalColumnDetails;
+    return numericalColumnDetails as NumericalColumnDetails;
   }
 )
 
@@ -118,14 +121,14 @@ export const currentColumnIsNumerical = createSelector(
 
 export const getExtremaCurrentColumn = createSelector(
   [getCurrentColumn, getData],
-  (currentColumn: string | undefined, data: any[]): any => {
+  (currentColumn: string | undefined, data: DataRow[]): Extrema => {
     return getExtrema(data, currentColumn!);
   }
 )
 
 export const currentColumnContainsOnlyNumbers = createSelector(
   [getCurrentColumn, getData],
-  (currentColumn: string | undefined, data: any[]): boolean => {
+  (currentColumn: string | undefined, data: DataRow[]): boolean => {
     return containsOnlyNumbers(data, currentColumn!);
   }
 )
@@ -140,36 +143,36 @@ export const isValidNumericalData = createSelector(
 export const getCategoricalColumnDetails = createSelector(
   [
     getCurrentColumn,
-    (state: any) => currentColumnIsCategorical(state),
-    (state: any) => getUniqueOptionsCurrentColumn(state),
-    (state: any) => getOptionFrequenciesCurrentColumn(state)
+    (state: RootState) => currentColumnIsCategorical(state),
+    (state: RootState) => getUniqueOptionsCurrentColumn(state),
+    (state: RootState) => getOptionFrequenciesCurrentColumn(state)
   ],
   (
     currentColumn: string | undefined,
     isCategorical: boolean,
     uniqueOptions: string[],
     uniqueOptionFrequencies: Record<string, number>
-  ): any => {
-    const categeoricalColumnDetails: any = {};
+  ): CategoricalColumnDetails => {
+    const categeoricalColumnDetails: Partial<CategoricalColumnDetails> & { id?: string } = {};
     categeoricalColumnDetails.id = currentColumn;
     if (isCategorical) {
       categeoricalColumnDetails.uniqueOptions = uniqueOptions;
       categeoricalColumnDetails.frequencies = uniqueOptionFrequencies;
     }
-    return categeoricalColumnDetails;
+    return categeoricalColumnDetails as CategoricalColumnDetails;
   }
 )
 
 export const getUniqueOptionsCurrentColumn = createSelector(
   [getCurrentColumn, getData],
-  (currentColumn: string | undefined, data: any[]): string[] => {
-    return getUniqueOptions(data, currentColumn!).sort()
+  (currentColumn: string | undefined, data: DataRow[]): string[] => {
+    return getUniqueOptions(data, currentColumn!).map(String).sort()
   }
 )
 
 export const getOptionFrequenciesCurrentColumn = createSelector(
   [getCurrentColumn, getData],
-  (currentColumn: string | undefined, data: any[]): Record<string, number> => {
+  (currentColumn: string | undefined, data: DataRow[]): Record<string, number> => {
     const optionFrequencies: Record<string, number> = {};
     for (const row of data) {
       if (optionFrequencies[row[currentColumn!]]) {

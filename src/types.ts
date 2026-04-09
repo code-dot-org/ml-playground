@@ -1,12 +1,26 @@
+import KNN from "ml-knn";
+
+export type DataRow = Record<string, string | number>;
+
+export interface Mode {
+  datasets?: string[];
+  hideSelectLabel?: boolean;
+  hideSave?: boolean;
+  requireAccuracy?: number;
+  hideInstructionsOverlay?: boolean;
+  randomizeTestData?: boolean;
+  hideColumnClicking?: boolean;
+}
+
 export interface ResultsData {
-  examples: any[][];
-  labels: any[];
-  predictedLabels: any[];
+  examples: (string | number)[][];
+  labels: (string | number)[];
+  predictedLabels: (string | number)[];
 }
 
 export interface CategoricalColumnDetails {
   id: string;
-  uniqueOptions: Record<string, string>;
+  uniqueOptions: string[];
   frequencies: Record<string, number>;
 }
 
@@ -25,7 +39,7 @@ export interface CurrentColumnInspector {
 }
 
 export interface CrossTabResult {
-  featureValues: any[];
+  featureValues: (string | number)[];
   labelCounts: Record<string, number>;
   labelPercents?: Record<string, number>;
 }
@@ -38,8 +52,8 @@ export interface CrossTabData {
 }
 
 export interface Coordinate {
-  x: any;
-  y: any;
+  x: number;
+  y: number;
 }
 
 export interface ScatterPlotData {
@@ -75,8 +89,8 @@ export interface Metadata {
 }
 
 export interface KNNTrainedModelDetails {
-  model: any;
-  predictedLabels: any[];
+  model: KNN;
+  predictedLabels: (number | string)[];
   kValue: number;
 }
 
@@ -84,6 +98,15 @@ export interface TrainedModelDetails {
   name?: string;
   potentialMisuses?: string;
   potentialUses?: string;
+}
+
+export interface TrainedModelDetailsSave {
+  name?: string;
+  potentialUses?: string;
+  potentialMisuses?: string;
+  datasetDescription?: string;
+  columns?: { id: string; description: string }[];
+  [key: string]: string | { id: string; description: string }[] | undefined;
 }
 
 export interface ModelCardColumn {
@@ -101,4 +124,46 @@ export interface DatasetDetails {
   numRows: number;
   potentialUses?: string;
   potentialMisuses?: string;
+}
+
+export interface SaveResponseData {
+  type?: string;
+  content?: string[];
+}
+
+export interface SaveResponse {
+  status: string;
+  data?: SaveResponseData;
+  id?: number;
+}
+
+export interface HistoricResult {
+  label: string;
+  features: string[];
+  accuracy: string;
+}
+
+export interface ModelDataToSave {
+  name?: string;
+  datasetDetails: DatasetDetails;
+  potentialUses?: string;
+  potentialMisuses?: string;
+  selectedTrainer: string;
+  featureNumberKey: Record<string, Record<string, number>>;
+  label: ModelCardColumn;
+  features: ModelCardColumn[];
+  summaryStat: { type: string; stat: string };
+  trainedModel: object | null;
+  kValue: number | null;
+}
+
+export interface NavButton {
+  panel: string;
+  text: string | undefined;
+  enabled?: boolean;
+}
+
+export interface PrevNextButtons {
+  prev: NavButton | null | undefined;
+  next: NavButton | null | undefined;
 }

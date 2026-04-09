@@ -1,9 +1,9 @@
 import uiStrings from '../i18n/mlPlayground.json';
 import MessageFormat from 'messageformat'
 
-let messages: Record<string, any> | undefined;
+let messages: Record<string, unknown> | undefined;
 
-const initI18n = (i18n: Record<string, any> = {}): void => {
+const initI18n = (i18n: Record<string, unknown> = {}): void => {
   // For now, use English pluralization rules.
   const mf = new MessageFormat('en');
   messages = {...mf.compile(uiStrings), ...i18n};
@@ -21,7 +21,7 @@ const initI18n = (i18n: Record<string, any> = {}): void => {
 interface I18nOptions {
   default?: string;
   scope?: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const t = (key: string, options: I18nOptions = {}): string | undefined => {
@@ -32,10 +32,10 @@ const t = (key: string, options: I18nOptions = {}): string | undefined => {
   const defaultValue = options["default"];
 
   const scope = options["scope"] || [];
-  let scopedMessages = messages;
+  let scopedMessages: Record<string, unknown> | undefined = messages;
   scope.forEach(s => {
     if (scopedMessages !== undefined) {
-      scopedMessages = scopedMessages[s];
+      scopedMessages = scopedMessages[s] as Record<string, unknown> | undefined;
     }
   });
 
@@ -49,7 +49,7 @@ const t = (key: string, options: I18nOptions = {}): string | undefined => {
     return defaultValue;
   }
 
-  return scopedMessages[key](options);
+  return (scopedMessages[key] as (opts: I18nOptions) => string)(options);
 };
 
 /*

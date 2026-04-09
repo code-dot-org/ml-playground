@@ -14,25 +14,28 @@ import { connect } from "react-redux";
 import {
   getPanelButtons,
   setCurrentPanel,
-  getTrainedModelDataToSave
+  getTrainedModelDataToSave,
+  RootState
 } from "./redux";
 import {
   isSaveComplete,
   shouldDisplaySaveStatus
 } from "./helpers/navigationValidation";
+import { PrevNextButtons, ModelDataToSave, SaveResponseData } from "./types";
+import { Dispatch } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import I18n from "./i18n";
 
 interface PanelButtonsProps {
-  panelButtons: any;
+  panelButtons: PrevNextButtons;
   currentPanel: string;
   setCurrentPanel: (panel: string) => void;
   onContinue: () => void;
-  startSaveTrainedModel: (dataToSave: any) => void;
-  dataToSave: any;
+  startSaveTrainedModel: (dataToSave: ModelDataToSave) => void;
+  dataToSave: ModelDataToSave;
   saveStatus: string;
-  saveResponseData: any;
+  saveResponseData: SaveResponseData | undefined;
   isSaveComplete: (saveStatus: string) => boolean;
   shouldDisplaySaveStatus: (saveStatus: string) => boolean;
 }
@@ -50,16 +53,16 @@ function PanelButtons({
   shouldDisplaySaveStatus: shouldDisplaySaveStatusProp
 }: PanelButtonsProps) {
   const onClickPrev = () => {
-    setCurrentPanel(panelButtons.prev.panel);
+    setCurrentPanel(panelButtons.prev!.panel);
   };
 
   const onClickNext = () => {
-    if (["continue", "finish"].includes(panelButtons.next.panel)) {
+    if (["continue", "finish"].includes(panelButtons.next!.panel)) {
       onContinue();
     } else if (currentPanel === "saveModel") {
       startSaveTrainedModel(dataToSave);
     } else {
-      setCurrentPanel(panelButtons.next.panel);
+      setCurrentPanel(panelButtons.next!.panel);
     }
   };
 
@@ -67,7 +70,7 @@ function PanelButtons({
     return I18n.t(`saveStatus_${saveStatus}`) ?? "";
   };
 
-  const saveResponseDataMessage = (saveResponseData: any): string | undefined => {
+  const saveResponseDataMessage = (saveResponseData: SaveResponseData | undefined): string | undefined => {
     // The list of known error types from share_filtering.rb.
     const errorTypes = ["email", "address", "phone", "profanity"];
 
@@ -75,7 +78,7 @@ function PanelButtons({
       return undefined;
     }
 
-    const index = errorTypes.indexOf(saveResponseData.type);
+    const index = errorTypes.indexOf(saveResponseData.type || "");
     if (index !== -1) {
       return `(${index})`;
     } else {
@@ -188,15 +191,15 @@ function ContainerFullWidth({ children }: ContainerFullWidthProps) {
 }
 
 interface AppProps {
-  panelButtons: any;
+  panelButtons: PrevNextButtons;
   currentPanel: string;
   setCurrentPanel: (panel: string) => void;
   onContinue: () => void;
-  resultsPhase: number;
-  startSaveTrainedModel: (dataToSave: any) => void;
-  dataToSave: any;
+  resultsPhase: number | undefined;
+  startSaveTrainedModel: (dataToSave: ModelDataToSave) => void;
+  dataToSave: ModelDataToSave;
   saveStatus: string;
-  saveResponseData: any;
+  saveResponseData: SaveResponseData | undefined;
 }
 
 function App({
@@ -297,7 +300,7 @@ function App({
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     panelButtons: getPanelButtons(state),
     currentPanel: state.currentPanel,
     resultsPhase: state.resultsPhase,
@@ -305,15 +308,9 @@ export default connect(
     saveStatus: state.saveStatus,
     saveResponseData: state.saveResponseData
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setCurrentPanel(panel: string) {
       dispatch(setCurrentPanel(panel));
-    },
-    isSaveComplete(state: any) {
-      dispatch(isSaveComplete(state));
-    },
-    shouldDisplaySaveStatus(state: any) {
-      dispatch(shouldDisplaySaveStatus(state));
     }
   })
 )(App);

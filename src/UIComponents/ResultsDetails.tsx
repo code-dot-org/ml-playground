@@ -1,7 +1,9 @@
 /* React component to handle displaying accuracy results. */
 import { useCallback } from "react";
 import { connect } from "react-redux";
-import { setShowResultsDetails } from "../redux";
+import { setShowResultsDetails, RootState } from "../redux";
+import { Dispatch } from "redux";
+import { ResultsData } from "../types";
 import {
   getPercentCorrect,
   getCorrectResults,
@@ -16,11 +18,11 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 interface ResultsDetailsProps {
   resultsTab: string;
   selectedFeatures: string[];
-  labelColumn: string;
+  labelColumn: string | undefined;
   percentCorrect: string;
   setShowResultsDetails: (show: boolean) => void;
-  correctResults: any;
-  incorrectResults: any;
+  correctResults: ResultsData;
+  incorrectResults: ResultsData;
 }
 
 function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorrect, setShowResultsDetails, correctResults, incorrectResults }: ResultsDetailsProps) {
@@ -53,7 +55,7 @@ function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorr
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     resultsTab: state.resultsTab,
     selectedFeatures: state.selectedFeatures,
     labelColumn: state.labelColumn,
@@ -61,7 +63,7 @@ export default connect(
     correctResults: getCorrectResults(state),
     incorrectResults: getIncorrectResults(state)
   }),
-  (dispatch: any) => ({
+  (dispatch: Dispatch) => ({
     setShowResultsDetails(show: boolean) {
       dispatch(setShowResultsDetails(show));
     }

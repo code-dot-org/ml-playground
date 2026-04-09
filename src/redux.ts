@@ -19,6 +19,18 @@ import {
   TestDataLocations,
   ResultsGrades
 } from "./constants";
+import {
+  DataRow,
+  Metadata,
+  Mode,
+  TrainedModelDetailsSave,
+  SaveResponseData,
+  HistoricResult,
+  ModelCardColumn,
+  ModelDataToSave,
+  PrevNextButtons
+} from "./types";
+import KNN from "ml-knn";
 
 // Action types
 const RESET_STATE = "RESET_STATE";
@@ -66,8 +78,8 @@ export interface RootState {
   csvfile: string | undefined;
   jsonfile: string | undefined;
   invalidData: string | undefined;
-  data: any[];
-  metadata: any;
+  data: DataRow[];
+  metadata: Metadata;
   removedRowsCount: number;
   highlightDataset: string | undefined;
   highlightColumn: string | undefined;
@@ -75,32 +87,32 @@ export interface RootState {
   selectedFeatures: string[];
   labelColumn: string | undefined;
   featureNumberKey: Record<string, Record<string, number>>;
-  trainingExamples: any[];
-  trainingLabels: any[];
+  trainingExamples: number[][];
+  trainingLabels: (number | string)[];
   reserveLocation: string;
-  accuracyCheckExamples: any[];
-  accuracyCheckLabels: any[];
-  accuracyCheckPredictedLabels: any[];
-  testData: Record<string, any>;
-  prediction: any;
-  trainedModel: any;
-  trainedModelDetails: any;
-  instructionsKeyCallback: ((...args: any[]) => void) | undefined;
+  accuracyCheckExamples: number[][];
+  accuracyCheckLabels: (number | string)[];
+  accuracyCheckPredictedLabels: (number | string)[];
+  testData: Record<string, string | number>;
+  prediction: number | string | undefined;
+  trainedModel: KNN | undefined;
+  trainedModelDetails: TrainedModelDetailsSave;
+  instructionsKeyCallback: ((key: string, options: { showOverlay?: boolean } | null) => void) | undefined;
   currentPanel: string;
   currentColumn: string | undefined;
   resultsPhase: number | undefined;
   saveStatus: string;
-  saveResponseData: any;
-  columnRefs: Record<string, any>;
-  historicResults: { label: string; features: string[]; accuracy: any }[];
+  saveResponseData: SaveResponseData | undefined;
+  columnRefs: Record<string, HTMLElement>;
+  historicResults: HistoricResult[];
   showResultsDetails: boolean;
   resultsHighlightRow: number | undefined;
   kValue: number | null;
   viewedPanels: string[];
   instructionsOverlayActive: boolean;
   resultsTab: string;
-  firehoseMetricsLogger: ((...args: any[]) => void) | undefined;
-  mode?: any;
+  firehoseMetricsLogger: ((eventName: string, details: Record<string, unknown>) => void) | undefined;
+  mode?: Mode;
 }
 
 interface ReduxAction {
@@ -109,7 +121,7 @@ interface ReduxAction {
 }
 
 // Action creators
-export function setMode(mode: any): ReduxAction {
+export function setMode(mode: Mode): ReduxAction {
   return { type: SET_MODE, mode };
 }
 
@@ -129,11 +141,11 @@ export function setInvalidData(invalidData: string): ReduxAction {
   return { type: SET_INVALID_DATA, invalidData };
 }
 
-export function setImportedData(data: any[], userUploadedData: boolean): ReduxAction {
+export function setImportedData(data: DataRow[], userUploadedData: boolean): ReduxAction {
   return { type: SET_IMPORTED_DATA, data, userUploadedData };
 }
 
-export function setImportedMetadata(metadata: any): ReduxAction {
+export function setImportedMetadata(metadata: Metadata): ReduxAction {
   return { type: SET_IMPORTED_METADATA, metadata };
 }
 
@@ -182,31 +194,31 @@ export function setReserveLocation(reserveLocation: string): ReduxAction {
   return { type: SET_RESERVE_LOCATION, reserveLocation };
 }
 
-export function setAccuracyCheckExamples(accuracyCheckExamples: any[]): ReduxAction {
+export function setAccuracyCheckExamples(accuracyCheckExamples: number[][]): ReduxAction {
   return { type: SET_ACCURACY_CHECK_EXAMPLES, accuracyCheckExamples };
 }
 
-export function setAccuracyCheckLabels(accuracyCheckLabels: any[]): ReduxAction {
+export function setAccuracyCheckLabels(accuracyCheckLabels: (number | string)[]): ReduxAction {
   return { type: SET_ACCURACY_CHECK_LABELS, accuracyCheckLabels };
 }
 
-export function setAccuracyCheckPredictedLabels(predictedLabels: any[]): ReduxAction {
+export function setAccuracyCheckPredictedLabels(predictedLabels: (number | string)[]): ReduxAction {
   return { type: SET_ACCURACY_CHECK_PREDICTED_LABELS, predictedLabels };
 }
 
-export function setTrainingExamples(trainingExamples: any[]): ReduxAction {
+export function setTrainingExamples(trainingExamples: number[][]): ReduxAction {
   return { type: SET_TRAINING_EXAMPLES, trainingExamples };
 }
 
-export function setTrainingLabels(trainingLabels: any[]): ReduxAction {
+export function setTrainingLabels(trainingLabels: (number | string)[]): ReduxAction {
   return { type: SET_TRAINING_LABELS, trainingLabels };
 }
 
-export function setTestData(feature: string, value: any): ReduxAction {
+export function setTestData(feature: string, value: string | number): ReduxAction {
   return { type: SET_TEST_DATA, feature, value };
 }
 
-export function setPrediction(prediction: any): ReduxAction {
+export function setPrediction(prediction: number | string): ReduxAction {
   return { type: SET_PREDICTION, prediction };
 }
 
@@ -214,7 +226,7 @@ export function resetState(): ReduxAction {
   return { type: RESET_STATE };
 }
 
-export function setTrainedModel(trainedModel: any): ReduxAction {
+export function setTrainedModel(trainedModel: KNN): ReduxAction {
   return { type: SET_TRAINED_MODEL, trainedModel };
 }
 
@@ -222,7 +234,7 @@ export function setTrainedModelDetail(field: string, value: string, isColumn: bo
   return { type: SET_TRAINED_MODEL_DETAIL, field, value, isColumn };
 }
 
-export function setInstructionsKeyCallback(instructionsKeyCallback: any): ReduxAction {
+export function setInstructionsKeyCallback(instructionsKeyCallback: (key: string, options: { showOverlay?: boolean } | null) => void): ReduxAction {
   return { type: SET_INSTRUCTIONS_KEY_CALLBACK, instructionsKeyCallback };
 }
 
@@ -250,11 +262,11 @@ export function setResultsHighlightRow(highlightRow: number): ReduxAction {
   return { type: SET_RESULTS_HIGHLIGHT_ROW, highlightRow };
 }
 
-export function setSaveStatus(status: string, data?: any): ReduxAction {
+export function setSaveStatus(status: string, data?: SaveResponseData): ReduxAction {
   return { type: SET_SAVE_STATUS, status, data };
 }
 
-export function setHistoricResult(label: string, features: string[], accuracy: any): ReduxAction {
+export function setHistoricResult(label: string, features: string[], accuracy: string): ReduxAction {
   return { type: SET_HISTORIC_RESULT, label, features, accuracy };
 }
 
@@ -274,7 +286,7 @@ export function setResultsTab(key: string): ReduxAction {
   return { type: SET_RESULTS_TAB, key };
 }
 
-export function setFirehoseMetricsLogger(firehoseMetricsLogger: any): ReduxAction {
+export function setFirehoseMetricsLogger(firehoseMetricsLogger: (eventName: string, details: Record<string, unknown>) => void): ReduxAction {
   return { type: SET_FIREHOSE_METRICS_LOGGER, firehoseMetricsLogger };
 }
 
@@ -501,7 +513,7 @@ export default function rootReducer(state: RootState = initialState, action: Red
         trainedModelDetails.columns = [];
       }
 
-      const column = trainedModelDetails.columns.find((column: any) => {
+      const column = trainedModelDetails.columns.find((column: { id: string; description: string }) => {
         return column.id === action.field;
       });
 
@@ -532,7 +544,7 @@ export default function rootReducer(state: RootState = initialState, action: Red
     reportPanelView(action.currentPanel);
     let showedOverlay = false;
     if (state.instructionsKeyCallback) {
-      const options: any = {};
+      const options: { showOverlay?: boolean } = {};
       if (
         !(state.mode && state.mode.hideInstructionsOverlay) &&
         !state.viewedPanels.includes(action.currentPanel)
@@ -725,7 +737,7 @@ export function getPredictAvailable(state: RootState): boolean {
   );
 }
 
-export function getPanelButtons(state: RootState): any {
+export function getPanelButtons(state: RootState): PrevNextButtons {
   return prevNextButtons(state);
 }
 
@@ -735,7 +747,7 @@ export function readyToTrain(state: RootState): boolean {
 
 /* Functions for processing data to display. */
 
-export function getTableData(state: RootState, useResultsData: boolean): any[] | null {
+export function getTableData(state: RootState, useResultsData: boolean): DataRow[] | null {
   if (useResultsData) {
     return getResultsDataInDataTableForm(state);
   } else {
@@ -748,34 +760,35 @@ export function isRegression(state: RootState): boolean {
 }
 
 /* Functions for processing data about a trained model to save. */
-export function getFeaturesToSave(state: RootState): any[] {
+export function getFeaturesToSave(state: RootState): ModelCardColumn[] {
   const features = state.selectedFeatures.map(feature =>
     getColumnDataToSave(state, feature)
   );
   return features;
 }
 
-export function getLabelToSave(state: RootState): any {
+export function getLabelToSave(state: RootState): ModelCardColumn {
   return getColumnDataToSave(state, state.labelColumn!);
 }
 
-export function getTrainedModelDataToSave(state: RootState): any {
-  const dataToSave: any = {};
-  dataToSave.name = state.trainedModelDetails.name;
-  dataToSave.datasetDetails = getDatasetDetails(state);
-  dataToSave.potentialUses = state.trainedModelDetails.potentialUses;
-  dataToSave.potentialMisuses = state.trainedModelDetails.potentialMisuses;
-  dataToSave.selectedTrainer = isRegression(state)
-    ? RegressionTrainer
-    : ClassificationTrainer;
-  dataToSave.featureNumberKey = state.featureNumberKey;
-  dataToSave.label = getColumnDataToSave(state, state.labelColumn!);
-  dataToSave.features = getFeaturesToSave(state);
-  dataToSave.summaryStat = getSummaryStat(state);
-  dataToSave.trainedModel = state.trainedModel
-    ? state.trainedModel.toJSON()
-    : null;
-  dataToSave.kValue = state.kValue;
+export function getTrainedModelDataToSave(state: RootState): ModelDataToSave {
+  const dataToSave: ModelDataToSave = {
+    name: state.trainedModelDetails.name,
+    datasetDetails: getDatasetDetails(state),
+    potentialUses: state.trainedModelDetails.potentialUses,
+    potentialMisuses: state.trainedModelDetails.potentialMisuses,
+    selectedTrainer: isRegression(state)
+      ? RegressionTrainer
+      : ClassificationTrainer,
+    featureNumberKey: state.featureNumberKey,
+    label: getColumnDataToSave(state, state.labelColumn!),
+    features: getFeaturesToSave(state),
+    summaryStat: getSummaryStat(state),
+    trainedModel: state.trainedModel
+      ? state.trainedModel.toJSON()
+      : null,
+    kValue: state.kValue
+  };
 
   return dataToSave;
 }

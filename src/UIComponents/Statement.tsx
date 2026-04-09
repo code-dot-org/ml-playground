@@ -1,6 +1,6 @@
 /* React component to display a statement about our model. */
 import { connect } from "react-redux";
-import { setLabelColumn, removeSelectedFeature } from "../redux";
+import { setLabelColumn, removeSelectedFeature, RootState } from "../redux";
 import { styles } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,7 @@ import { getLocalizedColumnName } from "../helpers/columnDetails";
 interface StatementProps {
   shouldShow?: boolean;
   smallFont?: boolean;
-  data?: any[];
+  data?: Record<string, string | number>[];
   currentPanel?: string;
   labelColumn?: string;
   selectedFeatures?: string[];
@@ -127,7 +127,7 @@ function Statement({
     } else {
       return part;
     }
-  }).map((part: any, index: number) => {
+  }).map((part: string | React.ReactElement, index: number) => {
     // React wants sibling elements in a list to have a unique "key".
     return (<span key={index}>{part}</span>);
   });
@@ -145,7 +145,7 @@ function Statement({
 export const UnconnectedStatement = Statement;
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     shouldShow: state.data.length !== 0,
     data: state.data,
     currentPanel: state.currentPanel,

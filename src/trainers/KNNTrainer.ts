@@ -1,7 +1,9 @@
 /* Training and prediction using a multiclassification KNN machine learning model from
 https://github.com/mljs/knn */
 
+import { Store } from "redux";
 import {
+  RootState,
   isRegression,
   setKValue,
   setTrainedModel,
@@ -15,14 +17,14 @@ import KNN from "ml-knn";
 import { KNNTrainedModelDetails } from "../types";
 
 export default class KNNTrainer {
-  private store: any;
-  private knn: any;
+  private store: Store<RootState>;
+  private knn: KNN | undefined;
 
-  constructor(store: any) {
+  constructor(store: Store<RootState>) {
     this.store = store;
   }
 
-  startTraining(store: any): void {
+  startTraining(store: Store<RootState>): void {
     this.store = store;
     const state = store.getState();
 
@@ -44,9 +46,9 @@ export default class KNNTrainer {
     the curriculum. For large classification datasets we try a variety of K
     values and select the one that yields the most accurate model.
   */
-  getOptimalModelDetails(state: any): KNNTrainedModelDetails {
-    let bestModel: any = null;
-    let bestPredictedLabels: any[] = [];
+  getOptimalModelDetails(state: RootState): KNNTrainedModelDetails {
+    let bestModel: KNN | undefined;
+    let bestPredictedLabels: (number | string)[] = [];
     let bestK = -1;
     let bestAccuracy = -1;
     const kValues = this.possibleKValues(state);
@@ -67,13 +69,13 @@ export default class KNNTrainer {
       }
     });
     return {
-      model: bestModel,
+      model: bestModel!,
       predictedLabels: bestPredictedLabels,
       kValue: bestK
     };
   }
 
-  possibleKValues(state: any): number[] {
+  possibleKValues(state: RootState): number[] {
     const datasetSize = state.data.length;
     const smallDatasetSize = 10;
     const mediumDatasetSize = 100;
@@ -104,7 +106,7 @@ export default class KNNTrainer {
     return kValues;
   }
 
-  calculatePotentialKValues(state: any): number[] {
+  calculatePotentialKValues(state: RootState): number[] {
     const datasetSize = state.data.length;
     const trainingExamplesSize = state.trainingExamples.length;
     const possibleKValues = [1, 3, 5, 7, 17, 31, 45, 61];
@@ -121,19 +123,19 @@ export default class KNNTrainer {
     return parseFloat(percent);
   }
 
-  batchPredict(accuracyCheckExamples: any[]): any[] {
-    const predictedLabels = this.knn.predict(accuracyCheckExamples);
+  batchPredict(accuracyCheckExamples: number[][]): (number | string)[] {
+    const predictedLabels = this.knn!.predict(accuracyCheckExamples);
     this.store.dispatch(setAccuracyCheckPredictedLabels(predictedLabels));
     return predictedLabels;
   }
 
-  predict(testValues: any[]): void {
+  predict(testValues: number[]): void {
     const state = this.store.getState();
-    const prediction = state.trainedModel.predict(testValues);
-    this.store.dispatch(setPrediction(prediction));
+    const predictions = state.trainedModel!.predict([testValues]);
+    this.store.dispatch(setPrediction(predictions[0]));
   }
 
-  storeTrainedModel(store: any, trainedModel: KNNTrainedModelDetails): void {
+  storeTrainedModel(store: Store<RootState>, trainedModel: KNNTrainedModelDetails): void {
     store.dispatch(setKValue(trainedModel.kValue));
     store.dispatch(setAccuracyCheckPredictedLabels(
       trainedModel.predictedLabels
@@ -141,10 +143,10 @@ export default class KNNTrainer {
     store.dispatch(setTrainedModel(trainedModel.model));
   }
 
-  storeHistoricResult(store: any, state: any): void {
+  storeHistoricResult(store: Store<RootState>, state: RootState): void {
     const accuracy = getPercentCorrect(state);
     store.dispatch(
-      setHistoricResult(state.labelColumn, state.selectedFeatures, accuracy)
+      setHistoricResult(state.labelColumn!, state.selectedFeatures, accuracy)
     );
   }
 }

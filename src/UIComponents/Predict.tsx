@@ -3,7 +3,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { store } from "../index";
 import train from "../train";
-import { setTestData, getPredictAvailable } from "../redux";
+import { setTestData, getPredictAvailable, RootState } from "../redux";
+import { Dispatch } from "redux";
 import { getConvertedPredictedLabel } from "../helpers/valueConversion";
 import {
   getSelectedCategoricalFeatures,
@@ -18,16 +19,16 @@ import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
 
 interface PredictProps {
-  labelColumn: string;
+  labelColumn: string | undefined;
   selectedCategoricalFeatures: string[];
   selectedNumericalFeatures: string[];
   uniqueOptionsByColumn: Record<string, string[]>;
-  testData: Record<string, any>;
-  setTestData: (feature: string, value: any) => void;
-  predictedLabel: string | number | undefined;
+  testData: Record<string, string | number>;
+  setTestData: (feature: string, value: string | number) => void;
+  predictedLabel: string | number;
   getPredictAvailable: boolean;
   extremaByColumn: Record<string, { min: number; max: number }>;
-  datasetId: string;
+  datasetId: string | undefined;
 }
 
 function Predict({
@@ -62,7 +63,7 @@ function Predict({
             return (
               <div style={styles.cardRow} key={index}>
                 <label>
-                  {getLocalizedColumnName(datasetId, feature)}
+                  {getLocalizedColumnName(datasetId!, feature)}
                   &nbsp;
                   <input
                     type="number"
@@ -81,7 +82,7 @@ function Predict({
           {selectedCategoricalFeatures.map((feature, index) => {
             return (
               <div style={styles.cardRow} key={index}>
-                <div>{getLocalizedColumnName(datasetId, feature)}&nbsp;</div>
+                <div>{getLocalizedColumnName(datasetId!, feature)}&nbsp;</div>
                 <div>
                   <select
                     onChange={event => handleChange(event, feature)}
@@ -131,8 +132,8 @@ function Predict({
           </div>
           <div style={styles.predictBotRight}>
             <div style={styles.statement}>{I18n.t("predictAIBotPredicts")}</div>
-            <div>{getLocalizedColumnName(datasetId, labelColumn)}</div>
-            <div>{getLocalizedColumnName(datasetId, String(predictedLabel))}</div>
+            <div>{getLocalizedColumnName(datasetId!, labelColumn!)}</div>
+            <div>{getLocalizedColumnName(datasetId!, String(predictedLabel))}</div>
           </div>
         </div>
       )}
@@ -141,7 +142,7 @@ function Predict({
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     testData: state.testData,
     predictedLabel: getConvertedPredictedLabel(state),
     labelColumn: state.labelColumn,
@@ -152,8 +153,8 @@ export default connect(
     extremaByColumn: getExtremaByColumn(state),
     datasetId: state.metadata && state.metadata.name
   }),
-  (dispatch: any) => ({
-    setTestData(feature: string, value: any) {
+  (dispatch: Dispatch) => ({
+    setTestData(feature: string, value: string | number) {
       dispatch(setTestData(feature, value));
     }
   })

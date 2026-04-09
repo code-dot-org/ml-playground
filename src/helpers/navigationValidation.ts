@@ -1,4 +1,6 @@
 import I18n from "../i18n";
+import { RootState } from "../redux";
+import { NavButton, PrevNextButtons } from "../types";
 /*
 Validation checks to determine if app set up is ready for machine learning
 training. Panels prompt users to incrementally complete actions in preparation
@@ -22,7 +24,7 @@ const panelList = [
 
 // Is a panel ready to be visited?  This determines whether a visible
 // nav button is enabled or disabled.
-export function isPanelEnabled(state: any, panelId: string): boolean {
+export function isPanelEnabled(state: RootState, panelId: string): boolean {
   if (panelId === "dataDisplayLabel") {
     if (!isDataUploaded(state)) {
       return false;
@@ -68,7 +70,7 @@ export function isPanelEnabled(state: any, panelId: string): boolean {
 
 // Is a panel available to be shown?  This determines what panels
 // can possibly be visited in the app.
-function isPanelAvailable(state: any, panelId: string): boolean {
+function isPanelAvailable(state: RootState, panelId: string): boolean {
   const mode = state.mode;
 
   if (panelId === "selectDataset") {
@@ -92,38 +94,38 @@ function isPanelAvailable(state: any, panelId: string): boolean {
   return true;
 }
 
-function isDataUploaded(state: any): boolean {
+function isDataUploaded(state: RootState): boolean {
   return state.data.length > 0 && !state.invalidData;
 }
 
-function minOneFeatureSelected(state: any): boolean {
+function minOneFeatureSelected(state: RootState): boolean {
   return state.selectedFeatures.length !== 0;
 }
 
-function labelSelected(state: any): boolean {
+function labelSelected(state: RootState): boolean {
   return !!state.labelColumn;
 }
 
-export function uniqLabelFeaturesSelected(state: any): boolean {
+export function uniqLabelFeaturesSelected(state: RootState): boolean {
   return (
     minOneFeatureSelected(state) &&
     labelSelected(state) &&
-    !state.selectedFeatures.includes(state.labelColumn)
+    !state.selectedFeatures.includes(state.labelColumn!)
   );
 }
 
-function resultsAvailable(state: any): boolean {
+function resultsAvailable(state: RootState): boolean {
   if (state.accuracyCheckExamples.length === 0) {
     return false;
   }
   return !didSaveSucceed(state) || !isSaveInProgress(state);
 }
 
-function isSaveInProgress(state: any): boolean {
+function isSaveInProgress(state: RootState): boolean {
   return state.saveStatus === "started";
 }
 
-function didSaveSucceed(state: any): boolean {
+function didSaveSucceed(state: RootState): boolean {
   return state.saveStatus === "success";
 }
 
@@ -135,17 +137,17 @@ export function shouldDisplaySaveStatus(saveStatus: string): boolean {
   return ["success", "failure", "started", "piiProfanity"].includes(saveStatus);
 }
 
-function isModelNamed(state: any): boolean {
+function isModelNamed(state: RootState): boolean {
   return ![undefined, ""].includes(state.trainedModelDetails.name);
 }
 
-function isAccuracyAcceptable(state: any): boolean {
+function isAccuracyAcceptable(state: RootState): boolean {
   const mode = state.mode;
 
   if (
     mode &&
     mode.requireAccuracy &&
-    mode.requireAccuracy > state.historicResults[0].accuracy
+    mode.requireAccuracy > Number(state.historicResults[0].accuracy)
   ) {
     return false;
   }
@@ -154,18 +156,7 @@ function isAccuracyAcceptable(state: any): boolean {
 }
 
 // Given the current panel, return the appropriate previous & next buttons.
-interface NavButton {
-  panel: string;
-  text: string | undefined;
-  enabled?: boolean;
-}
-
-interface PrevNextButtons {
-  prev: NavButton | null | undefined;
-  next: NavButton | null | undefined;
-}
-
-export function prevNextButtons(state: any): PrevNextButtons {
+export function prevNextButtons(state: RootState): PrevNextButtons {
   let prev: NavButton | null | undefined, next: NavButton | null | undefined;
 
   if (state.currentPanel === "selectDataset") {

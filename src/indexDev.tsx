@@ -1,6 +1,7 @@
 import "./assetPath";
 import { initAll, instructionsDismissed } from "./index";
 import queryString from "query-string";
+import { ModelDataToSave, SaveResponse } from "./types";
 
 interface SampleMode {
   datasets?: string[];
@@ -102,22 +103,22 @@ const sampleModes: Record<string, SampleMode> = {
 
 // Look for a ?mode= parameter on the URL
 const parameters = queryString.parse(location.search);
-const mode = parameters["mode"] ? sampleModes[parameters["mode"] as string] : null;
+const mode = parameters["mode"] ? sampleModes[parameters["mode"] as string] : undefined;
 
 function onContinueStub(): void {
   console.log("This would continue to the next level.");
 }
 
-function saveTrainedModelStub(data: any, response: (result: any) => void): void {
+function saveTrainedModelStub(data: ModelDataToSave, response: (result: SaveResponse) => void): void {
   console.log("This would save a trained model.", data);
   setTimeout(() => response({ id: 303, status: "success" }), 2000);
 }
 
-function logMetricStub(eventName: string, details: any): void {
+function logMetricStub(eventName: string, details: Record<string, unknown>): void {
   console.log(`This would log a metric for ${eventName}.`, details);
 }
 
-function setInstructionsKeyStub(instructionsKey: string, options: any): void {
+function setInstructionsKeyStub(instructionsKey: string, options: { showOverlay?: boolean } | null): void {
   const element = document.getElementById("instructions")!;
 
   element.innerText =
