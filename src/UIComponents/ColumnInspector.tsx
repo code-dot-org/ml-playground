@@ -95,5 +95,6 @@ export default connect(
     currentColumnDetails: getCurrentColumnDetails(state),
     currentPanel: state.currentPanel,
     datasetId: state.metadata && state.metadata.name
-  })
+  }),
+  {}
 )(ColumnInspector);

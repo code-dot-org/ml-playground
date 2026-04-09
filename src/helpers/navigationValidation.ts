@@ -156,7 +156,7 @@ function isAccuracyAcceptable(state: any): boolean {
 // Given the current panel, return the appropriate previous & next buttons.
 interface NavButton {
   panel: string;
-  text: string;
+  text: string | undefined;
   enabled?: boolean;
 }
 

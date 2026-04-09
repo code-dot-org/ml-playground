@@ -24,7 +24,7 @@ interface PredictProps {
   uniqueOptionsByColumn: Record<string, string[]>;
   testData: Record<string, any>;
   setTestData: (feature: string, value: any) => void;
-  predictedLabel: string | number;
+  predictedLabel: string | number | undefined;
   getPredictAvailable: boolean;
   extremaByColumn: Record<string, { min: number; max: number }>;
   datasetId: string;
@@ -132,7 +132,7 @@ function Predict({
           <div style={styles.predictBotRight}>
             <div style={styles.statement}>{I18n.t("predictAIBotPredicts")}</div>
             <div>{getLocalizedColumnName(datasetId, labelColumn)}</div>
-            <div>{getLocalizedColumnName(datasetId, predictedLabel)}</div>
+            <div>{getLocalizedColumnName(datasetId, String(predictedLabel))}</div>
           </div>
         </div>
       )}

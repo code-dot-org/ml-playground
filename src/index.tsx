@@ -21,8 +21,8 @@ import I18n from "./i18n";
 
 export const store = createStore(rootReducer);
 
-let saveTrainedModel: ((dataToSave: any, callback: (response: any) => void) => void) | null = null;
-let onContinue: (() => void) | null = null;
+let saveTrainedModel: ((dataToSave: any, callback: (response: any) => void) => void) | null | undefined = null;
+let onContinue: (() => void) | null | undefined = null;
 
 interface InitAllOptions {
   i18n?: any;
@@ -54,8 +54,7 @@ export const initAll = function (options: InitAllOptions): void {
   root.render(
     <Provider store={store}>
       <App
-        mode={mode}
-        onContinue={onContinue}
+        onContinue={onContinue!}
         startSaveTrainedModel={startSaveTrainedModel}
       />
     </Provider>

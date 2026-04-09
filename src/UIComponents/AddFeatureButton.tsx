@@ -19,7 +19,7 @@ function AddFeatureButton({ column, addSelectedFeature }: AddFeatureButtonProps)
     <button
       id="uitest-add-feature-button"
       type="button"
-      onClick={event => addFeature(event, column)}
+      onClick={event => addFeature(event, column!)}
       style={styles.selectFeaturesButton}
     >
       {I18n.t("addFeatureButton")}

@@ -53,5 +53,5 @@ export function localizeDatasets(datasets: Dataset[]): Dataset[] {
  */
 function getDatasetName(dataset: Dataset): string {
   const fallback = dataset.name;
-  return I18n.t("name", { scope: ["datasets", dataset.id], default: fallback})
+  return I18n.t("name", { scope: ["datasets", dataset.id], default: fallback}) ?? fallback
 }

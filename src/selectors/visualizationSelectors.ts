@@ -13,9 +13,9 @@ import { Coordinate, ScatterPlotData, CrossTabResult, CrossTabData } from "../ty
 export const getScatterPlotData = createSelector(
   [
     getLabelColumn,
-    (state: any, props: any) => labelColumnIsNumerical(state, props),
+    (state: any) => labelColumnIsNumerical(state),
     getCurrentColumn,
-    currentColumnIsNumerical,
+    (state: any) => currentColumnIsNumerical(state),
     getData,
     getDatasetId
   ],
@@ -45,8 +45,8 @@ export const getScatterPlotData = createSelector(
       coordinates.push({ x: row[currentColumn], y: row[labelColumn] });
     }
 
-    const label = getLocalizedColumnName(datasetId, labelColumn);
-    const feature = getLocalizedColumnName(datasetId, currentColumn);
+    const label = getLocalizedColumnName(datasetId ?? "", labelColumn);
+    const feature = getLocalizedColumnName(datasetId ?? "", currentColumn);
 
     return {
       label,
@@ -93,11 +93,11 @@ export const getScatterPlotData = createSelector(
 export const getCrossTabData = createSelector(
   [
     getLabelColumn,
-    (state: any, props: any) => labelColumnIsCategorical(state, props),
+    (state: any) => labelColumnIsCategorical(state),
     getCurrentColumn,
-    currentColumnIsCategorical,
+    (state: any) => currentColumnIsCategorical(state),
     getData,
-    (state: any, props: any) => getUniqueOptionsLabelColumn(state, props),
+    (state: any) => getUniqueOptionsLabelColumn(state),
     getDatasetId
   ],
   (
@@ -167,8 +167,8 @@ export const getCrossTabData = createSelector(
     // to generate the header at the top of the CrossTab UI.
     const uniqueLabelValues = uniqueOptionsLabelColumn;
 
-    const localizedLabelColumn = getLocalizedColumnName(datasetId, labelColumn);
-    const localizedCurrentColumn = getLocalizedColumnName(datasetId, currentColumn);
+    const localizedLabelColumn = getLocalizedColumnName(datasetId ?? "", labelColumn);
+    const localizedCurrentColumn = getLocalizedColumnName(datasetId ?? "", currentColumn);
     return {
       results,
       uniqueLabelValues,
@@ -195,6 +195,6 @@ export const labelColumnIsCategorical = createSelector(
 export const getUniqueOptionsLabelColumn = createSelector(
   [getLabelColumn, getData],
   (labelColumn: string | undefined, data: any[]): string[] => {
-    return getUniqueOptions(data, labelColumn).sort()
+    return getUniqueOptions(data, labelColumn!).sort()
   }
 )

@@ -16,9 +16,9 @@ interface CrossTabProps {
 }
 
 function CrossTab({ crossTabData }: CrossTabProps) {
-  const getCellStyle = useCallback((percent) => {
+  const getCellStyle = useCallback((percent: number) => {
     return {
-      ...styles["crossTabCell" + Math.round(percent / 20)],
+      ...(styles as Record<string, any>)["crossTabCell" + Math.round(percent / 20)],
       ...styles.crossTabTableCell
     };
   }, []);
@@ -112,10 +112,10 @@ function CrossTab({ crossTabData }: CrossTabProps) {
                             <td
                               key={labelIndex}
                               style={getCellStyle(
-                                result.labelPercents[uniqueLabelValue]
+                                result.labelPercents?.[uniqueLabelValue] ?? 0
                               )}
                             >
-                              {result.labelPercents[uniqueLabelValue] || 0}%
+                              {result.labelPercents?.[uniqueLabelValue] || 0}%
                             </td>
                           );
                         }
@@ -132,6 +132,6 @@ function CrossTab({ crossTabData }: CrossTabProps) {
   );
 }
 
-export default connect(state => ({
+export default connect((state: any) => ({
   crossTabData: getCrossTabData(state)
 }))(CrossTab);

@@ -43,18 +43,18 @@ function SelectDataset({
 }: SelectDatasetProps) {
   const [, setDownload] = useState(false);
 
-  const handleDatasetClick = id => {
-    const assetPath = global.__ml_playground_asset_public_path__;
+  const handleDatasetClick = (id: string) => {
+    const assetPath = (global as any).__ml_playground_asset_public_path__;
     const dataset = getDatasets().find(dataset => dataset.id === id);
 
     // Don't process the click if we're just clicking the current
     // dataset again.
-    if (dataset.name !== name) {
-      const csvPath = assetPath + dataset.path;
-      const jsonPath = assetPath + dataset.metadataPath;
+    if (dataset!.name !== name) {
+      const csvPath = assetPath + dataset!.path;
+      const jsonPath = assetPath + dataset!.metadataPath;
 
       resetState();
-      setSelectedName(dataset.name);
+      setSelectedName(dataset!.name);
       setSelectedCSV(csvPath);
       setSelectedJSON(jsonPath);
       setDownload(true);
@@ -65,7 +65,7 @@ function SelectDataset({
     }
   };
 
-  const handleUploadSelect = event => {
+  const handleUploadSelect = (event: any) => {
     resetState();
     setSelectedCSV(event.target.files[0]);
     setDownload(false);
@@ -88,7 +88,7 @@ function SelectDataset({
 
   const datasets = getAvailableDatasets(specifiedDatasets);
 
-  const assetPath = global.__ml_playground_asset_public_path__;
+  const assetPath = (global as any).__ml_playground_asset_public_path__;
 
   return (
     <div id="select-dataset" style={styles.panel}>
@@ -141,7 +141,7 @@ function SelectDataset({
               type="file"
               accept=".csv,text/csv,application/vnd.ms-excel"
               name="file"
-              placeholder={null}
+              placeholder={undefined}
               onChange={handleUploadSelect}
               style={styles.csvInput}
               value=""
@@ -157,7 +157,7 @@ function SelectDataset({
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     csvfile: state.csvfile,
     jsonfile: state.jsonfile,
     specifiedDatasets: getSpecifiedDatasets(state),
@@ -165,21 +165,21 @@ export default connect(
     highlightDataset: state.highlightDataset,
     invalidData: state.invalidData
   }),
-  dispatch => ({
+  (dispatch: any) => ({
     resetState() {
       dispatch(resetState());
     },
-    setSelectedName(name) {
+    setSelectedName(name: string) {
       dispatch(setSelectedName(name));
     },
-    setSelectedCSV(csvfilePath) {
-      dispatch(setSelectedCSV(csvfilePath));
+    setSelectedCSV(csvfilePath: string | File) {
+      dispatch(setSelectedCSV(csvfilePath as any));
     },
-    setSelectedJSON(jsonfilePath) {
+    setSelectedJSON(jsonfilePath: string) {
       dispatch(setSelectedJSON(jsonfilePath));
     },
-    setHighlightDataset(id) {
-      dispatch(setHighlightDataset(id));
+    setHighlightDataset(id: string | undefined) {
+      dispatch(setHighlightDataset(id as any));
     }
   })
 )(SelectDataset);

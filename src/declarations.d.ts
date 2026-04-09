@@ -29,9 +29,14 @@ declare module "react-papaparse" {
   export const CSVReader: any;
 }
 
+declare module "query-string" {
+  const queryString: any;
+  export default queryString;
+}
+
 declare module "messageformat" {
   export default class MessageFormat {
     constructor(locale: string);
-    compile(message: string): (args?: Record<string, any>) => string;
+    compile(message: string | Record<string, any>): Record<string, any>;
   }
 }

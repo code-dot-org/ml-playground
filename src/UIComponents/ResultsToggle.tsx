@@ -44,8 +44,8 @@ function ResultsToggle({ resultsTab, setResultsTab }: ResultsToggleProps) {
           <div
             key={tab.key}
             style={getTogglePillStyle(tab.key)}
-            onClick={() => setResultsTab(tab.key)}
-            onKeyDown={() => setResultsTab(tab.key)}
+            onClick={() => setResultsTab!(tab.key)}
+            onKeyDown={() => setResultsTab!(tab.key)}
             role="button"
             tabIndex={0}
           >

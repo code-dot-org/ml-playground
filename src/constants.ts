@@ -962,4 +962,4 @@ export const styles = {
   navigationButtonsContainer: {
     position: "relative"
   }
-};
+} as const;

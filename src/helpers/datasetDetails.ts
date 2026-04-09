@@ -4,13 +4,14 @@ import { DatasetDetails } from "../types";
 /* Helper functions for getting information about the selected dataset. */
 
 export function getDatasetDetails(state: any): DatasetDetails {
-  const datasetDetails = {};
-  datasetDetails.name = state.metadata && state.metadata.name;
-  datasetDetails.description = getDatasetDescription(state);
-  datasetDetails.numRows = state.data.length;
-  datasetDetails.isUserUploaded = isUserUploadedDataset(state);
-  datasetDetails.potentialUses = getPotentialUses(state);
-  datasetDetails.potentialMisuses = getPotentialMisuses(state);
+  const datasetDetails: DatasetDetails = {
+    name: state.metadata && state.metadata.name,
+    description: getDatasetDescription(state),
+    numRows: state.data.length,
+    isUserUploaded: isUserUploadedDataset(state),
+    potentialUses: getPotentialUses(state),
+    potentialMisuses: getPotentialMisuses(state),
+  };
   return datasetDetails;
 }
 

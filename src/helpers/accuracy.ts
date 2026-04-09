@@ -20,22 +20,22 @@ import { isRegression } from "../redux"
 
 // Return results data so that it looks like regular data provided to the
 // DataTable.
-export function getResultsDataInDataTableForm(state: any): Record<string, any>[] | null {
+export function getResultsDataInDataTableForm(state: any): Record<string, any>[] {
   const resultsByGrades = getAllResults(state);
 
   if (!resultsByGrades || resultsByGrades.examples.length === 0) {
-    return null;
+    return [];
   }
 
   // None of the existing uses of this function should need more than 10
   // items.  Increase the value here if they do.
   const numItems = Math.min(10, resultsByGrades.examples.length);
 
-  const results = [];
+  const results: Record<string, any>[] = [];
   for (let i = 0; i < numItems; i++) {
     results[i] = {};
 
-    state.selectedFeatures.map((feature, index) => {
+    state.selectedFeatures.map((feature: string, index: number) => {
       results[i][feature] = resultsByGrades.examples[i][index];
     })
 
@@ -60,13 +60,13 @@ export function getIncorrectResults(state: any): any {
 export function getResultsByGrade(state: any, grade: string): any {
   const results: any = {};
   const accuracyGrades = getAccuracyGrades(state);
-  const examples = getConvertedAccuracyCheckExamples(state).filter((example, index) => {
+  const examples = getConvertedAccuracyCheckExamples(state).filter((example: any, index: number) => {
     return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
   });
-  const labels = getConvertedLabels(state, state.accuracyCheckLabels).filter((example, index) => {
+  const labels = getConvertedLabels(state, state.accuracyCheckLabels).filter((example: any, index: number) => {
     return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
   });
-  const predictedLabels = getConvertedLabels(state, state.accuracyCheckPredictedLabels).filter((example, index) => {
+  const predictedLabels = getConvertedLabels(state, state.accuracyCheckPredictedLabels).filter((example: any, index: number) => {
     return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
   });
   results.examples = examples;

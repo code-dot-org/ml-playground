@@ -19,7 +19,7 @@ function SelectLabelButton({ column, setLabelColumn }: SelectLabelButtonProps) {
     <button
       id="uitest-select-label-button"
       type="button"
-      onClick={event => setPredictColumn(event, column)}
+      onClick={event => setPredictColumn(event, column!)}
       style={styles.selectLabelButton}
     >
       {I18n.t("selectLabelButton")}

@@ -20,7 +20,7 @@ function ColumnDataTypeDropdown({ columnId, currentDataType, setColumnsByDataTyp
     <div>
       <select
         onChange={event =>
-          handleChangeDataType(event, columnId)
+          handleChangeDataType(event, columnId!)
         }
         value={currentDataType}
       >

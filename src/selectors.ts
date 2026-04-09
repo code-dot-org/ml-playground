@@ -26,7 +26,9 @@ export const getCategoricalColumns = createSelector(
 export const getSelectedColumns = createSelector(
   [getSelectedFeatures, getLabelColumn],
   (selectedFeatures: string[], labelColumn: string | undefined): string[] => {
-    const selectedColumns = [...selectedFeatures, labelColumn];
+    const selectedColumns: string[] = labelColumn
+      ? [...selectedFeatures, labelColumn]
+      : [...selectedFeatures];
     return selectedColumns;
   }
 )
@@ -98,7 +100,7 @@ export const getSelectedColumnsDescriptions = createSelector(
           column,
           metadata,
           trainedModelDetails
-        )
+        ) ?? ""
       };
     });
   }

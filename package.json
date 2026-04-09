@@ -27,6 +27,7 @@
     "lint": "eslint --ext .ts,.tsx src",
     "test": "yarn run lint && jest",
     "test:unit": "jest ./test/unit/*.js",
+    "typecheck": "tsc -b --noEmit",
     "preversion": "yarn install && yarn run test",
     "version": "yarn run build",
     "postversion": "git push && git push --tags && yarn publish"

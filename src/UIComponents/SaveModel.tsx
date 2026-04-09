@@ -18,8 +18,8 @@ interface SaveModelProps {
   setTrainedModelDetail: (field: string, value: string, isColumn: boolean) => void;
   trainedModelDetails: any;
   labelColumn: string;
-  columnDescriptions: { id: string; description: string }[];
-  dataDescription: string;
+  columnDescriptions: { id: string; description: string | null }[];
+  dataDescription: string | undefined;
   isUserUploadedDataset: boolean;
   datasetId: string;
 }

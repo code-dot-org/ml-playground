@@ -44,7 +44,7 @@ export function isColumnReadOnly(metadata: any, column: string): boolean {
     column &&
     metadata &&
     metadata.fields &&
-    metadata.fields.find(field => {
+    metadata.fields.find((field: any) => {
       return field.id === column;
     }).type;
   return !!metadataColumnType;
@@ -74,7 +74,7 @@ export function containsOnlyNumbers(data: Record<string, any>[], column: string)
 export function getColumnDescription(columnId: string, metadata: any, trainedModelDetails: any): string | null {
   // Use metadata if available.
   if (columnId && metadata && metadata.fields) {
-    const field = metadata.fields.find(field => {
+    const field = metadata.fields.find((field: any) => {
       return field.id === columnId;
     });
     return getLocalizedColumnDescription(metadata.name, columnId, field.description);
@@ -82,7 +82,7 @@ export function getColumnDescription(columnId: string, metadata: any, trainedMod
 
   // Try using a user-entered column description if available.
   if (trainedModelDetails && trainedModelDetails.columns) {
-    const matchedColumn = trainedModelDetails.columns.find(column => {
+    const matchedColumn = trainedModelDetails.columns.find((column: any) => {
       return column.id === columnId;
     });
     if (matchedColumn) {
@@ -105,10 +105,10 @@ export function getColumnDescription(columnId: string, metadata: any, trainedMod
   }
   */
 export function buildOptionNumberKey(state: any, feature: string): Record<string, number> {
-  const optionsMappedToNumbers = {};
+  const optionsMappedToNumbers: Record<string, number> = {};
   const uniqueOptions = getUniqueOptions(state.data, feature);
   uniqueOptions.forEach(
-    option => (optionsMappedToNumbers[option] = uniqueOptions.indexOf(option))
+    (option: any) => (optionsMappedToNumbers[option] = uniqueOptions.indexOf(option))
   );
   return optionsMappedToNumbers;
 }
@@ -141,5 +141,5 @@ function getLocalizedColumnAttr(datasetId: string, columnId: string, attribute: 
       scope: ["datasets", datasetId, "fields", columnId],
       default: fallback
     }
-  );
+  ) ?? fallback;
 }

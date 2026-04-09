@@ -64,7 +64,7 @@ function PanelButtons({
   };
 
   const localizedSaveMessage = (saveStatus: string): string => {
-    return I18n.t(`saveStatus_${saveStatus}`);
+    return I18n.t(`saveStatus_${saveStatus}`) ?? "";
   };
 
   const saveResponseDataMessage = (saveResponseData: any): string | undefined => {
