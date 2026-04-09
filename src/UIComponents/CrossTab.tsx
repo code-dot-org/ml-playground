@@ -9,6 +9,7 @@ import { RootState } from "../redux";
 import { getCrossTabData } from "../selectors/visualizationSelectors";
 import { styles } from "../constants";
 import ScrollableContent from "./ScrollableContent";
+import { getLocalizedValue } from "../helpers/valueDetails";
 import I18n from "../i18n";
 import { CrossTabData } from "../types";
 
@@ -89,7 +90,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                     (uniqueLabelValue, index) => {
                       return (
                         <td key={index} style={styles.tableCell}>
-                          {uniqueLabelValue}
+                          {getLocalizedValue(uniqueLabelValue)}
                         </td>
                       );
                     }
@@ -102,7 +103,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                         (featureValue, featureIndex) => {
                           return (
                             <td key={featureIndex} style={styles.tableCell}>
-                              {featureValue}
+                              {getLocalizedValue(featureValue)}
                             </td>
                           );
                         }

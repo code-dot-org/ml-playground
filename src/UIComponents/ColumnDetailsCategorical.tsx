@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { RootState } from "../redux";
 import { colors, styles } from "../constants";
 import { Bar } from "react-chartjs-2";
+import { getLocalizedValue } from "../helpers/valueDetails";
 import {
   getCategoricalColumnDetails
 } from "../selectors/currentColumnSelectors";
@@ -29,9 +30,10 @@ const chartOptions = {
 
 const ColumnDetailsCategorical = ({ columnDetails }: ColumnDetailsCategoricalProps) => {
   const { id, uniqueOptions, frequencies } = columnDetails;
-  const labels = uniqueOptions && Object.values(uniqueOptions);
+  const labels = Object.values(uniqueOptions || {});
+  const localizedLabels = labels.map(option => getLocalizedValue(option));
   const barData = {
-    labels,
+    localizedLabels,
     datasets: [
       {
         label: id,
