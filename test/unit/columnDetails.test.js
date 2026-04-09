@@ -8,7 +8,7 @@ import {
   getExtrema,
   containsOnlyNumbers,
   getColumnDescription
-} from '../../src/helpers/columnDetails.js';
+} from '../../src/helpers/columnDetails';
 import {
   classificationState,
   allNumericalState,
@@ -19,7 +19,7 @@ import {
   mosquitoDescription,
   premadeDatasetTranslations
 } from './testData';
-import { ColumnTypes, UNIQUE_OPTIONS_MAX } from "../../src/constants.js";
+import { ColumnTypes, UNIQUE_OPTIONS_MAX } from "../../src/constants";
 import I18n from "../../src/i18n";
 
 beforeEach(() => {
