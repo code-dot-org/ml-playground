@@ -7,7 +7,13 @@
     "url": "git+ssh://git@github.com/code-dot-org/ml-playground.git"
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
     "moduleNameMapper": {
       ".+\\.(bin|jpg|jpeg|png|mp3|ogg|wav|gif)$": "identity-obj-proxy",
       "^@public(.*)$": "<rootDir>/public/$1"
@@ -75,9 +81,9 @@
     "public/*.json"
   ],
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.7",
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.0",
     "chart.js": "^2.9.4",
     "react-chartjs-2": "^2.11.1",
     "reselect": "^4.0.0"
