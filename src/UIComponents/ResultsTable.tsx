@@ -6,6 +6,7 @@ import { Dispatch } from "redux";
 import { styles, colors, REGRESSION_ERROR_TOLERANCE } from "../constants";
 import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
+import { getLocalizedValue } from "../helpers/valueDetails";
 import { ResultsData } from "../types";
 
 interface ResultsTableProps {
@@ -116,15 +117,15 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
                   {examples.map((example, i) => {
                     return (
                       <td style={getRowCellStyle(index)} key={i}>
-                        {example}
+                        {getLocalizedValue(example)}
                       </td>
                     );
                   })}
                   <td style={getRowCellStyle(index)}>
-                    {results.labels[index]}
+                    {getLocalizedValue(results.labels[index])}
                   </td>
                   <td style={getRowCellStyle(index)}>
-                    {results.predictedLabels[index]}
+                    {getLocalizedValue(results.predictedLabels[index])}
                   </td>
                 </tr>
               );

@@ -17,6 +17,7 @@ import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
 import ScrollableContent from "./ScrollableContent";
 import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
+import { getLocalizedValue } from "../helpers/valueDetails";
 
 interface PredictProps {
   labelColumn: string | undefined;
@@ -94,7 +95,7 @@ const Predict = ({
                       .map((option, index) => {
                         return (
                           <option key={index} value={option}>
-                            {option}
+                            {getLocalizedValue(option)}
                           </option>
                         );
                       })}
@@ -133,7 +134,7 @@ const Predict = ({
           <div style={styles.predictBotRight}>
             <div style={styles.statement}>{I18n.t("predictAIBotPredicts")}</div>
             <div>{getLocalizedColumnName(datasetId!, labelColumn!)}</div>
-            <div>{getLocalizedColumnName(datasetId!, String(predictedLabel))}</div>
+            <div>{getLocalizedValue(predictedLabel)}</div>
           </div>
         </div>
       )}
