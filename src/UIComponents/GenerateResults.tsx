@@ -27,22 +27,30 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
   const [, setFinished] = useState(false);
   const frameRef = useRef(0);
   const instructionsOverlayActiveRef = useRef(instructionsOverlayActive);
+  const dataRef = useRef(data);
 
-  // Keep ref in sync with prop
+  // Keep refs in sync with props
   useEffect(() => {
     instructionsOverlayActiveRef.current = instructionsOverlayActive;
   }, [instructionsOverlayActive]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   const getNumItems = useCallback(() => {
     return Math.min(maxNumItems, data!.length);
   }, [data]);
 
-  const dataLength = data?.length;
-
   useEffect(() => {
     const animationTimer = setInterval(() => {
+      const currentData = dataRef.current;
+      if (!currentData) {
+        return;
+      }
+
       const currentFrame = frameRef.current;
-      const numItems = Math.min(maxNumItems, data!.length);
+      const numItems = Math.min(maxNumItems, currentData.length);
       const animationStep = Math.floor(currentFrame / framesPerCycle);
 
       if (animationStep >= numItems) {
@@ -58,7 +66,7 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
     return () => {
       clearInterval(animationTimer);
     };
-  }, [data, dataLength]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getShowItemsFadingOut = () => {
     return data!.length > maxNumItems;

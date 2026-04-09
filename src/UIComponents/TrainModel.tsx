@@ -31,17 +31,27 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
   const headOpenRef = useRef(false);
   const finishedRef = useRef(false);
   const instructionsOverlayActiveRef = useRef(instructionsOverlayActive);
+  const dataRef = useRef(data);
 
-  // Keep refs in sync
+  // Keep refs in sync with props
   useEffect(() => {
     instructionsOverlayActiveRef.current = instructionsOverlayActive;
   }, [instructionsOverlayActive]);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   useEffect(() => {
     train.init(store);
     train.onClickTrain(store);
 
     const animationTimer = setInterval(() => {
+      const currentData = dataRef.current;
+      if (!currentData) {
+        return;
+      }
+
       const currentFrame = frameRef.current;
 
       if (currentFrame === 15) {
@@ -50,7 +60,7 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
       }
 
       const animationStep = Math.floor(currentFrame / framesPerCycle);
-      const numItems = Math.min(maxNumItems, data!.length);
+      const numItems = Math.min(maxNumItems, currentData.length);
 
       if (animationStep >= numItems) {
         headOpenRef.current = false;
