@@ -1,29 +1,29 @@
 /* React component to handle displaying the model card. */
 import { connect } from "react-redux";
 import { styles } from "../constants";
-import { getLabelToSave, getFeaturesToSave } from "../redux";
+import { getLabelToSave, getFeaturesToSave, RootState } from "../redux";
 import { getPercentCorrect } from "../helpers/accuracy";
 import { getDatasetDetails } from "../helpers/datasetDetails";
 import Statement from "./Statement";
 import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
 import I18n from "../i18n";
 import { getLocalizedColumnName } from "../helpers/columnDetails";
-import { ModelCardColumn } from "../types";
+import { ModelCardColumn, TrainedModelDetailsSave, DatasetDetails } from "../types";
 
 interface ModelCardProps {
-  trainedModelDetails?: any;
-  selectedFeatures?: string[];
-  percentCorrect?: string;
-  label?: ModelCardColumn;
-  features?: ModelCardColumn[];
-  datasetDetails?: any;
+  trainedModelDetails: TrainedModelDetailsSave;
+  selectedFeatures: string[];
+  percentCorrect: string;
+  label: ModelCardColumn;
+  features: ModelCardColumn[];
+  datasetDetails: DatasetDetails;
 }
 
 function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, label, features, datasetDetails }: ModelCardProps) {
   console.log("trainedModelDetails", trainedModelDetails)
-  const localizedLabel = getLocalizedColumnName(datasetDetails.name, label!.id!);
+  const localizedLabel = getLocalizedColumnName(datasetDetails.name!, label!.id!);
   const localizedFeatures =
-    selectedFeatures!.map(feature => getLocalizedColumnName(datasetDetails.name, feature));
+    selectedFeatures!.map(feature => getLocalizedColumnName(datasetDetails.name!, feature));
   const predictionStatement = I18n.t("predictionStatement",
     {"output": localizedLabel, "inputs": localizedFeatures.join(", ")})
   return (
@@ -152,7 +152,7 @@ function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, labe
   );
 }
 
-export default connect((state: any) => ({
+export default connect((state: RootState) => ({
   trainedModelDetails: state.trainedModelDetails,
   selectedFeatures: state.selectedFeatures,
   percentCorrect: getPercentCorrect(state),

@@ -3,9 +3,10 @@
 */
 import { isUserUploadedDataset } from "./datasetDetails";
 import { getPercentCorrect } from './accuracy';
+import { RootState } from "../redux";
 
-function getModelMetrics(state: any): Record<string, any> {
-  const modelMetrics: Record<string, any> = {};
+function getModelMetrics(state: RootState): Record<string, unknown> {
+  const modelMetrics: Record<string, unknown> = {};
   modelMetrics.userUploaded = isUserUploadedDataset(state);
   modelMetrics.datasetName = state.metadata.name;
   modelMetrics.features = state.selectedFeatures;
@@ -14,16 +15,18 @@ function getModelMetrics(state: any): Record<string, any> {
   return modelMetrics;
 }
 
-export function logFirehoseMetric(action: string, state: any): any {
-  return state.firehoseMetricsLogger(action, getModelMetrics(state));
+export function logFirehoseMetric(action: string, state: RootState): void {
+  if (state.firehoseMetricsLogger) {
+    state.firehoseMetricsLogger(action, getModelMetrics(state));
+  }
 }
 
 export function reportPanelView(panel: string): void {
-  if (!(window as any).ga || !panel) {
+  if (!window.ga || !panel) {
     return;
   }
   // Record each panel as a different page view in Google Analytics.
   const syntheticPagePath = window.location.pathname + '/' + panel;
-  (window as any).ga('set', 'page', syntheticPagePath);
-  (window as any).ga('send', 'pageview');
+  window.ga('set', 'page', syntheticPagePath);
+  window.ga('send', 'pageview');
 }

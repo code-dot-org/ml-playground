@@ -1,4 +1,4 @@
-import Papa from "papaparse";
+import Papa, { ParseResult } from "papaparse";
 import { store } from "./index";
 import {
   setImportedData,
@@ -8,10 +8,11 @@ import {
 } from "./redux";
 import { containsOnlyNumbers } from "./helpers/columnDetails";
 import { ColumnTypes } from "./constants";
+import { DataRow } from "./types";
 
 export const parseCSV = (csvfile: string, download: boolean, useDefaultColumnDataType: boolean): void => {
   Papa.parse(csvfile, {
-    complete: (result: any) => {
+    complete: (result: ParseResult<Record<string, string>>) => {
       updateData(result, useDefaultColumnDataType, !download);
     },
     header: true,
@@ -23,8 +24,8 @@ export const parseCSV = (csvfile: string, download: boolean, useDefaultColumnDat
 export const MIN_CSV_ROWS = 2;
 export const MIN_CSV_COLUMNS = 2;
 
-const cleanData = (data: any[]): any[] => {
-  const cleanedData: any[] = []
+const cleanData = (data: Record<string, string>[]): DataRow[] => {
+  const cleanedData: DataRow[] = []
 
   for (const row of data) {
     const cleanedRow = getCleanedRow(row);
@@ -36,7 +37,7 @@ const cleanData = (data: any[]): any[] => {
   return cleanedData;
 }
 
-const getCleanedRow = (row: any): any | null => {
+const getCleanedRow = (row: Record<string, string>): DataRow | null => {
   for (const column in row) {
     if (column !== "__parsed_extra") {
       const cellValue = row[column];
@@ -52,11 +53,11 @@ const getCleanedRow = (row: any): any | null => {
   return row;
 }
 
-const isCellValid = (cell: any): boolean => {
+const isCellValid = (cell: string | undefined): boolean => {
   return cell !== undefined && cell !== "" && typeof cell === "string";
 }
 
-const updateData = (result: any, useDefaultColumnDataType: boolean, userUploadedData: boolean): void => {
+const updateData = (result: ParseResult<Record<string, string>>, useDefaultColumnDataType: boolean, userUploadedData: boolean): void => {
   const data = result.data;
   const cleanedData = cleanData(data);
 
@@ -75,12 +76,12 @@ const updateData = (result: any, useDefaultColumnDataType: boolean, userUploaded
   }
 }
 
-const countRemovedRows = (originalData: any[], cleanedData: any[]): void => {
+const countRemovedRows = (originalData: Record<string, string>[], cleanedData: DataRow[]): void => {
   const removedRowsCount = originalData.length - cleanedData.length;
   store.dispatch(setRemovedRowsCount(removedRowsCount));
 }
 
-const setDefaultColumnDataType = (data: any[]): void => {
+const setDefaultColumnDataType = (data: DataRow[]): void => {
   const columns = Object.keys(data[0]);
   for (const column of columns) {
     if (containsOnlyNumbers(data, column)) {

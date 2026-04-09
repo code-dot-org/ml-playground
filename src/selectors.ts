@@ -7,14 +7,16 @@ import {
   getColumnDescription
  } from './helpers/columnDetails';
 import { arrayIntersection } from './helpers/utils';
+import { RootState } from "./redux";
+import { DataRow, Metadata, TrainedModelDetailsSave } from "./types";
 
-export const getData = (state: any): any[] => state.data;
-export const getColumnsByDataType = (state: any): Record<string, string> => state.columnsByDataType;
-const getSelectedFeatures = (state: any): string[] => state.selectedFeatures;
-export const getLabelColumn = (state: any): string | undefined => state.labelColumn;
-export const getMetadata = (state: any): any => state.metadata;
-export const getDatasetId = (state: any): string | undefined => state.metadata && state.metadata.name;
-export const getTrainedModelDetails = (state: any): any => state.trainedModelDetails;
+export const getData = (state: RootState): DataRow[] => state.data;
+export const getColumnsByDataType = (state: RootState): Record<string, string> => state.columnsByDataType;
+const getSelectedFeatures = (state: RootState): string[] => state.selectedFeatures;
+export const getLabelColumn = (state: RootState): string | undefined => state.labelColumn;
+export const getMetadata = (state: RootState): Metadata => state.metadata;
+export const getDatasetId = (state: RootState): string | undefined => state.metadata && state.metadata.name;
+export const getTrainedModelDetails = (state: RootState): TrainedModelDetailsSave => state.trainedModelDetails;
 
 export const getCategoricalColumns = createSelector(
   [getColumnsByDataType],
@@ -70,10 +72,10 @@ export const getSelectedNumericalFeatures = createSelector(
 
 export const getUniqueOptionsByColumn = createSelector(
   [getSelectedCategoricalColumns, getData],
-  (selectedCategoricalColumns: string[], data: any[]): Record<string, string[]> => {
+  (selectedCategoricalColumns: string[], data: DataRow[]): Record<string, string[]> => {
     const uniqueOptionsByColumn: Record<string, string[]> = {};
     selectedCategoricalColumns.map(column => (
-      uniqueOptionsByColumn[column] = getUniqueOptions(data, column).sort()
+      uniqueOptionsByColumn[column] = getUniqueOptions(data, column).map(String).sort()
     ))
     return uniqueOptionsByColumn;
   }
@@ -81,7 +83,7 @@ export const getUniqueOptionsByColumn = createSelector(
 
 export const getExtremaByColumn = createSelector(
   [getSelectedNumericalColumns, getData],
-  (getSelectedNumericalColumns: string[], data: any[]): Record<string, { min: number; max: number }> => {
+  (getSelectedNumericalColumns: string[], data: DataRow[]): Record<string, { min: number; max: number }> => {
     const extremaByColumn: Record<string, { min: number; max: number }> = {};
     getSelectedNumericalColumns.map(column => (
       extremaByColumn[column] = getExtrema(data, column)
@@ -92,7 +94,7 @@ export const getExtremaByColumn = createSelector(
 
 export const getSelectedColumnsDescriptions = createSelector(
   [getSelectedColumns, getMetadata, getTrainedModelDetails],
-  (selectedColumns: string[], metadata: any, trainedModelDetails: any): { id: string; description: string }[] => {
+  (selectedColumns: string[], metadata: Metadata, trainedModelDetails: TrainedModelDetailsSave): { id: string; description: string }[] => {
     return selectedColumns.map(column => {
       return {
         id: column,

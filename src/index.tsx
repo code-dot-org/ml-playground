@@ -13,24 +13,25 @@ import rootReducer, {
   setInstructionsDismissed,
   setFirehoseMetricsLogger
 } from "./redux";
-import { getDatasets } from "./datasetManifest";
+import { getDatasets, Dataset } from "./datasetManifest";
 import { parseCSV } from "./csvReaderWrapper";
 import { parseJSON } from "./jsonReaderWrapper";
 import { TestDataLocations } from "./constants";
 import I18n from "./i18n";
+import { Mode, ModelDataToSave, SaveResponse } from "./types";
 
 export const store = createStore(rootReducer);
 
-let saveTrainedModel: ((dataToSave: any, callback: (response: any) => void) => void) | null | undefined = null;
+let saveTrainedModel: ((dataToSave: ModelDataToSave, callback: (response: SaveResponse) => void) => void) | null | undefined = null;
 let onContinue: (() => void) | null | undefined = null;
 
 interface InitAllOptions {
-  i18n?: any;
-  mode?: any;
+  i18n?: Record<string, string>;
+  mode?: Mode;
   onContinue?: () => void;
-  saveTrainedModel?: (dataToSave: any, callback: (response: any) => void) => void;
-  logMetric?: (...args: any[]) => void;
-  setInstructionsKey?: (...args: any[]) => void;
+  saveTrainedModel?: (dataToSave: ModelDataToSave, callback: (response: SaveResponse) => void) => void;
+  logMetric?: (eventName: string, details: Record<string, unknown>) => void;
+  setInstructionsKey?: (key: string, options: { showOverlay?: boolean } | null) => void;
 }
 
 /**
@@ -43,11 +44,13 @@ export const initAll = function (options: InitAllOptions): void {
   const mode = options && options.mode;
   onContinue = options && options.onContinue;
   saveTrainedModel = options && options.saveTrainedModel;
-  store.dispatch(setFirehoseMetricsLogger(options && options.logMetric));
-  store.dispatch(
-    setInstructionsKeyCallback(options && options.setInstructionsKey)
-  );
-  store.dispatch(setMode(mode));
+  if (options && options.logMetric) {
+    store.dispatch(setFirehoseMetricsLogger(options.logMetric));
+  }
+  if (options && options.setInstructionsKey) {
+    store.dispatch(setInstructionsKeyCallback(options.setInstructionsKey));
+  }
+  store.dispatch(setMode(mode as Mode));
   processMode(mode);
 
   const root = createRoot(document.getElementById("root")!);
@@ -66,15 +69,15 @@ export const instructionsDismissed = function(): void {
 }
 
 // Process an optional mode.
-const processMode = (mode: any): void => {
-  const assetPath = (global as any).__ml_playground_asset_public_path__;
+const processMode = (mode: Mode | undefined): void => {
+  const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
   let panelSet = false;
 
   if (mode) {
     // Load a single dataset immediately.
     if (mode.datasets && mode.datasets.length === 1) {
-      const item = getDatasets().filter((item: any) => {
-        return item.id === mode.datasets[0];
+      const item = getDatasets().filter((item: Dataset) => {
+        return item.id === mode.datasets![0];
       })[0];
       store.dispatch(setSelectedCSV(assetPath + item.path));
       store.dispatch(setSelectedJSON(assetPath + item.metadataPath));
@@ -102,9 +105,9 @@ const processMode = (mode: any): void => {
 };
 
 // Do the asynchronous save of a model.
-const startSaveTrainedModel = (dataToSave: any): void => {
+const startSaveTrainedModel = (dataToSave: ModelDataToSave): void => {
   store.dispatch(setSaveStatus("started"));
-  saveTrainedModel!(dataToSave, (response: any) => {
+  saveTrainedModel!(dataToSave, (response: SaveResponse) => {
     store.dispatch(setSaveStatus(response.status, response.data));
     if (response.status === "success") {
       store.dispatch(setCurrentPanel("modelSummary"));

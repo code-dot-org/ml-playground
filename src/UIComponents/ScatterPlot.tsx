@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { getScatterPlotData } from "../selectors/visualizationSelectors";
 import { styles, colors } from "../constants";
 import { Scatter } from "react-chartjs-2";
@@ -94,6 +95,6 @@ function ScatterPlot({ scatterPlotData }: ScatterPlotProps) {
   );
 }
 
-export default connect((state: any) => ({
+export default connect((state: RootState) => ({
   scatterPlotData: getScatterPlotData(state)
 }), {})(ScatterPlot);

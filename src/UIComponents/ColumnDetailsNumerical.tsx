@@ -1,5 +1,6 @@
 /* React component to handle showing details of numerical columns. */
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { styles } from "../constants";
 import { getNumericalColumnDetails } from "../selectors/currentColumnSelectors";
 import I18n from "../i18n";
@@ -32,7 +33,7 @@ function ColumnDetailsNumerical({ columnDetails }: ColumnDetailsNumericalProps) 
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     columnDetails: getNumericalColumnDetails(state)
   }),
   {}

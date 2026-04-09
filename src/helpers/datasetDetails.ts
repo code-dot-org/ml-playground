@@ -1,9 +1,10 @@
 import I18n from "../i18n";
 import { DatasetDetails } from "../types";
+import { RootState } from "../redux";
 
 /* Helper functions for getting information about the selected dataset. */
 
-export function getDatasetDetails(state: any): DatasetDetails {
+export function getDatasetDetails(state: RootState): DatasetDetails {
   const datasetDetails: DatasetDetails = {
     name: state.metadata && state.metadata.name,
     description: getDatasetDescription(state),
@@ -15,16 +16,16 @@ export function getDatasetDetails(state: any): DatasetDetails {
   return datasetDetails;
 }
 
-function getCardContextAttr(state: any, attr: string): string | undefined {
+function getCardContextAttr(state: RootState, attr: string): string | undefined {
   if (
     state.metadata &&
     state.metadata.name &&
     state.metadata.card &&
     state.metadata.card.context &&
-    state.metadata.card.context[attr]
+    state.metadata.card.context[attr as keyof typeof state.metadata.card.context]
   ) {
     const datasetId = state.metadata.name;
-    const fallback = state.metadata.card.context[attr];
+    const fallback = state.metadata.card.context[attr as keyof typeof state.metadata.card.context]!;
     return I18n.t(attr,
       {
         scope: ["datasets", datasetId, "card", "context"],
@@ -34,15 +35,15 @@ function getCardContextAttr(state: any, attr: string): string | undefined {
   }
   return undefined;
 }
-function getPotentialUses(state: any): string | undefined {
+function getPotentialUses(state: RootState): string | undefined {
   return getCardContextAttr(state, "potentialUses");
 }
 
-function getPotentialMisuses(state: any): string | undefined {
+function getPotentialMisuses(state: RootState): string | undefined {
   return getCardContextAttr(state, "potentialMisuses");
 }
 
-export function getDatasetDescription(state: any): string | undefined {
+export function getDatasetDescription(state: RootState): string | undefined {
   // If this a dataset from the internal collection that already has a description, use that.
   if (
     state.metadata &&
@@ -68,7 +69,7 @@ export function getDatasetDescription(state: any): string | undefined {
   }
 }
 
-export function isUserUploadedDataset(state: any): boolean {
+export function isUserUploadedDataset(state: RootState): boolean {
   // The csvfile for internally curated datasets are strings; those uploaded by
   // users are objects. Use data type as a proxy to know which case we're in.
   return typeof state.csvfile === "object" && state.csvfile !== null;

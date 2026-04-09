@@ -5,7 +5,7 @@ export interface Dataset {
   id: string;
   name: string;
   isToy?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Cached copy of the localized datasets manifest.

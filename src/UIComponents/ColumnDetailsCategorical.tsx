@@ -1,5 +1,6 @@
 /* React component to handle showing details of categorical columns. */
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { colors, styles } from "../constants";
 import { Bar } from "react-chartjs-2";
 import {
@@ -72,7 +73,7 @@ function ColumnDetailsCategorical({ columnDetails }: ColumnDetailsCategoricalPro
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     columnDetails: getCategoricalColumnDetails(state)
   }),
   {}

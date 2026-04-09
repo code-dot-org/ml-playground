@@ -3,6 +3,7 @@
   for selected columns.
 */
 import { connect } from "react-redux";
+import { RootState } from "../redux";
 import { getCurrentColumnDetails } from "../selectors/currentColumnSelectors";
 import { styles, ColumnTypes } from "../constants";
 import ScatterPlot from "./ScatterPlot";
@@ -21,7 +22,7 @@ import { CurrentColumnInspector } from "../types";
 interface ColumnInspectorProps {
   currentColumnDetails: CurrentColumnInspector | undefined;
   currentPanel: string;
-  datasetId: string;
+  datasetId: string | undefined;
 }
 
 function ColumnInspector({ currentColumnDetails, currentPanel, datasetId }: ColumnInspectorProps) {
@@ -38,7 +39,7 @@ function ColumnInspector({ currentColumnDetails, currentPanel, datasetId }: Colu
   }
 
   const localizedDataType = I18n.t(`columnType_${currentColumnDetails.dataType}`)
-  const localizedColumnName = getLocalizedColumnName(datasetId, currentColumnDetails.id);
+  const localizedColumnName = getLocalizedColumnName(datasetId!, currentColumnDetails.id);
 
   return (
     currentColumnDetails && (
@@ -91,7 +92,7 @@ function ColumnInspector({ currentColumnDetails, currentPanel, datasetId }: Colu
 }
 
 export default connect(
-  (state: any) => ({
+  (state: RootState) => ({
     currentColumnDetails: getCurrentColumnDetails(state),
     currentPanel: state.currentPanel,
     datasetId: state.metadata && state.metadata.name
