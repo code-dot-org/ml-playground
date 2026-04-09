@@ -4,7 +4,7 @@ import {
   areArraysEqual,
   arrayIntersection,
   getRandomInt
-} from '../../src/helpers/utils.js';
+} from '../../src/helpers/utils';
 
 const menu = {
   breakfast: "pancakes",

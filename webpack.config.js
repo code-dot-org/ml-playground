@@ -4,7 +4,7 @@ const path = require("path");
 const commonConfig = {
   devtool: 'eval-cheap-module-source-map',
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
     // Note: Separate aliases are required for aliases to work in unit tests. These should
     // be added in package.json in the jest configuration.
     alias: {
@@ -21,7 +21,7 @@ const commonConfig = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       },
@@ -80,7 +80,7 @@ const externalConfig = {
 const defaultConfig = [
   {
     entry: {
-      assetPath: './src/assetPath.js'
+      assetPath: './src/assetPath.ts'
     },
     ...commonConfig,
     ...firstConfigOnly,
@@ -88,7 +88,7 @@ const defaultConfig = [
   },
   {
     entry: {
-      mainDev: './src/indexDev.js'
+      mainDev: './src/indexDev.tsx'
     },
     ...commonConfig
   }
@@ -97,7 +97,7 @@ const defaultConfig = [
 const productionConfig = [
   {
     entry: {
-      main: './src/indexProd.js'
+      main: './src/indexProd.tsx'
     },
     ...commonConfig,
     ...externalConfig

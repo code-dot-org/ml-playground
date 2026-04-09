@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 import train from "../../src/train";
-import { ResultsGrades } from "../../src/constants.js";
-import { ColumnTypes } from "../../src/constants.js";
+import { ResultsGrades } from "../../src/constants";
+import { ColumnTypes } from "../../src/constants";
 import rootReducer, {
   setFirehoseMetricsLogger,
   setInstructionsKeyCallback,

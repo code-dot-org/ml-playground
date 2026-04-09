@@ -1,4 +1,4 @@
-import { isPanelEnabled } from "../../src/helpers/navigationValidation.js";
+import { isPanelEnabled } from "../../src/helpers/navigationValidation";
 
 const initialState = {
   data: [],
