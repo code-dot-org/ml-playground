@@ -15,7 +15,7 @@ interface DataCardProps {
   removedRowsCount?: number;
 }
 
-function DataCard({ name, metadata, datasetDetails, dataLength, removedRowsCount }: DataCardProps) {
+const DataCard = ({ name, metadata, datasetDetails, dataLength, removedRowsCount }: DataCardProps) => {
   const card = metadata && metadata.card;
 
   const dataLengthLimit = 20000;
@@ -101,7 +101,7 @@ function DataCard({ name, metadata, datasetDetails, dataLength, removedRowsCount
       </div>
     )
   );
-}
+};
 
 export default connect((state: RootState) => ({
   name: state.name,

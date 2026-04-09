@@ -9,7 +9,7 @@ interface AddFeatureButtonProps {
   addSelectedFeature: (column: string) => void;
 }
 
-function AddFeatureButton({ column, addSelectedFeature }: AddFeatureButtonProps) {
+const AddFeatureButton = ({ column, addSelectedFeature }: AddFeatureButtonProps) => {
   const addFeature = (event: React.MouseEvent, column: string) => {
     addSelectedFeature(column);
     event.preventDefault();
@@ -25,7 +25,7 @@ function AddFeatureButton({ column, addSelectedFeature }: AddFeatureButtonProps)
       {I18n.t("addFeatureButton")}
     </button>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({}),

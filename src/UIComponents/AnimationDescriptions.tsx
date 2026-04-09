@@ -5,7 +5,7 @@ interface AnimationDescriptionProps {
   description?: string;
 }
 
-function AnimationDescription({ description }: AnimationDescriptionProps) {
+const AnimationDescription = ({ description }: AnimationDescriptionProps) => {
   return (
     <div id="animation-description" aria-live="polite">
       <div id="animation-description-text" style={{ display: 'none' }}>
@@ -17,22 +17,22 @@ function AnimationDescription({ description }: AnimationDescriptionProps) {
       </div>
     </div>
   );
-}
+};
 
-function TrainingAnimationDescription() {
+const TrainingAnimationDescription = () => {
   return (
     <AnimationDescription
       description={I18n.t("animationDescriptionsTraining")}
     />
   );
-}
+};
 
-function TestingAnimationDescription() {
+const TestingAnimationDescription = () => {
   return (
     <AnimationDescription
       description={I18n.t("animationDescriptionsTesting")}
     />
   );
-}
+};
 
 export { TrainingAnimationDescription, TestingAnimationDescription };

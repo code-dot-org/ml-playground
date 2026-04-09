@@ -25,7 +25,7 @@ interface ResultsDetailsProps {
   incorrectResults: ResultsData;
 }
 
-function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorrect, setShowResultsDetails, correctResults, incorrectResults }: ResultsDetailsProps) {
+const ResultsDetails = ({ resultsTab, selectedFeatures, labelColumn, percentCorrect, setShowResultsDetails, correctResults, incorrectResults }: ResultsDetailsProps) => {
   const onClose = useCallback(() => {
     setShowResultsDetails(false);
   }, [setShowResultsDetails]);
@@ -52,7 +52,7 @@ function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorr
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

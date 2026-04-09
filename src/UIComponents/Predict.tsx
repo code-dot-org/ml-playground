@@ -31,7 +31,7 @@ interface PredictProps {
   datasetId: string | undefined;
 }
 
-function Predict({
+const Predict = ({
   labelColumn,
   selectedCategoricalFeatures,
   selectedNumericalFeatures,
@@ -42,7 +42,7 @@ function Predict({
   getPredictAvailable: predictAvailable,
   extremaByColumn,
   datasetId
-}: PredictProps) {
+}: PredictProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, feature: string) => {
     setTestData(feature, event.target.value);
   };
@@ -139,7 +139,7 @@ function Predict({
       )}
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

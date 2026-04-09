@@ -18,7 +18,7 @@ interface ResultsTableProps {
   datasetId: string | undefined;
 }
 
-function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: isRegressionMode, setResultsHighlightRow, resultsHighlightRow, datasetId }: ResultsTableProps) {
+const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: isRegressionMode, setResultsHighlightRow, resultsHighlightRow, datasetId }: ResultsTableProps) => {
   const getRowCellStyle = useCallback((index: number) => {
     return {
       ...styles.tableCell,
@@ -134,7 +134,7 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

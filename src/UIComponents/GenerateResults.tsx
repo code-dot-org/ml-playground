@@ -23,7 +23,7 @@ interface GenerateResultsProps {
   instructionsOverlayActive: boolean;
 }
 
-function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, instructionsOverlayActive }: GenerateResultsProps) {
+const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, instructionsOverlayActive }: GenerateResultsProps) => {
   const [frame, setFrame] = useState(0);
   const [, setFinished] = useState(false);
   const frameRef = useRef(0);
@@ -208,7 +208,7 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
       <TestingAnimationDescription />
     </div>
   );
-}
+};
 
 export default connect((state: RootState) => ({
   data: getTableData(state, true),

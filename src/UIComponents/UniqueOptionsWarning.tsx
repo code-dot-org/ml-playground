@@ -11,7 +11,7 @@ interface UniqueOptionsWarningProps {
   showWarning?: boolean;
 }
 
-function UniqueOptionsWarning({ showWarning }: UniqueOptionsWarningProps) {
+const UniqueOptionsWarning = ({ showWarning }: UniqueOptionsWarningProps) => {
   if (!showWarning) {
     return null;
   }
@@ -24,7 +24,7 @@ function UniqueOptionsWarning({ showWarning }: UniqueOptionsWarningProps) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

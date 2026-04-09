@@ -24,7 +24,7 @@ interface TrainModelProps {
   instructionsOverlayActive: boolean;
 }
 
-function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, instructionsOverlayActive }: TrainModelProps) {
+const TrainModel = ({ data, readyToTrain: ready, labelColumn, selectedFeatures, instructionsOverlayActive }: TrainModelProps) => {
   const [frame, setFrame] = useState(0);
   const [headOpen, setHeadOpen] = useState(false);
   const [, setFinished] = useState(false);
@@ -186,7 +186,7 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
       <TrainingAnimationDescription />
     </div>
   );
-}
+};
 
 export default connect((state: RootState) => ({
   data: getTableData(state, false),

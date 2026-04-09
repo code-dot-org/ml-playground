@@ -27,7 +27,7 @@ interface SaveModelProps {
   datasetId: string | undefined;
 }
 
-function SaveModel({
+const SaveModel = ({
   trainedModel,
   setTrainedModelDetail,
   trainedModelDetails,
@@ -36,7 +36,7 @@ function SaveModel({
   dataDescription,
   isUserUploadedDataset: isUserUploaded,
   datasetId
-}: SaveModelProps) {
+}: SaveModelProps) => {
   const [showColumnDescriptions, setShowColumnDescriptions] = useState(isUserUploaded);
 
   const toggleColumnDescriptions = () => {
@@ -225,7 +225,7 @@ function SaveModel({
       </ScrollableContent>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

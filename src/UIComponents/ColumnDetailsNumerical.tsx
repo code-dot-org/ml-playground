@@ -10,7 +10,7 @@ interface ColumnDetailsNumericalProps {
   columnDetails: NumericalColumnDetails;
 }
 
-function ColumnDetailsNumerical({ columnDetails }: ColumnDetailsNumericalProps) {
+const ColumnDetailsNumerical = ({ columnDetails }: ColumnDetailsNumericalProps) => {
   const { extrema, containsOnlyNumbers } = columnDetails;
 
   return (
@@ -30,7 +30,7 @@ function ColumnDetailsNumerical({ columnDetails }: ColumnDetailsNumericalProps) 
       )}
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

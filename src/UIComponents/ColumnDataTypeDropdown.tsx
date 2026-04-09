@@ -10,7 +10,7 @@ interface ColumnDataTypeDropdownProps {
   setColumnsByDataType: (column: string, dataType: string) => void;
 }
 
-function ColumnDataTypeDropdown({ columnId, currentDataType, setColumnsByDataType }: ColumnDataTypeDropdownProps) {
+const ColumnDataTypeDropdown = ({ columnId, currentDataType, setColumnsByDataType }: ColumnDataTypeDropdownProps) => {
   const handleChangeDataType = (event: React.ChangeEvent<HTMLSelectElement>, feature: string) => {
     event.preventDefault();
     setColumnsByDataType(feature, event.target.value);
@@ -34,7 +34,7 @@ function ColumnDataTypeDropdown({ columnId, currentDataType, setColumnsByDataTyp
       </select>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({}),
