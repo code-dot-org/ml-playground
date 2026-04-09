@@ -1,4 +1,4 @@
-import { getSelectedColumns } from "../../src/selectors.js";
+import { getSelectedColumns } from "../../src/selectors";
 import {
   getUniqueOptionsCurrentColumn,
   getExtremaCurrentColumn,
