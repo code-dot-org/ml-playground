@@ -21,9 +21,9 @@ interface ModelCardProps {
 
 function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, label, features, datasetDetails }: ModelCardProps) {
   console.log("trainedModelDetails", trainedModelDetails)
-  const localizedLabel = getLocalizedColumnName(datasetDetails.name, label.id);
+  const localizedLabel = getLocalizedColumnName(datasetDetails.name, label!.id!);
   const localizedFeatures =
-    selectedFeatures.map(feature => getLocalizedColumnName(datasetDetails.name, feature));
+    selectedFeatures!.map(feature => getLocalizedColumnName(datasetDetails.name, feature));
   const predictionStatement = I18n.t("predictionStatement",
     {"output": localizedLabel, "inputs": localizedFeatures.join(", ")})
   return (
@@ -98,21 +98,21 @@ function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, labe
           <h5 style={styles.modelCardHeading}>{I18n.t("modelCardLabel")}</h5>
           <div style={styles.modelCardContent}>
             <p style={styles.bold}>{localizedLabel}</p>
-            {label.description && <p>{label.description}</p>}
-            {!label.values && (
+            {label!.description && <p>{label!.description}</p>}
+            {!label!.values && (
               <p style={styles.modelCardDetails}>
                 {I18n.t("modelCardPossibleValues")}
                 <br />
-                {I18n.t("modelCardPossibleValuesMinimum")} {label.min}
+                {I18n.t("modelCardPossibleValuesMinimum")} {label!.min}
                 <br />
-                {I18n.t("modelCardPossibleValuesMaximum")} {label.max}
+                {I18n.t("modelCardPossibleValuesMaximum")} {label!.max}
               </p>
             )}
-            {label.values && (
+            {label!.values && (
               <p style={styles.modelCardDetails}>
                 {I18n.t("modelCardPossibleValues")}
                 <br />
-                {label.values.join(" ")}
+                {label!.values.join(" ")}
               </p>
             )}
           </div>
@@ -120,8 +120,8 @@ function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, labe
         <div style={styles.modelCardSubpanel}>
           <h5 style={styles.modelCardHeading}>{I18n.t("modelCardFeatures")}</h5>
           <div style={styles.modelCardContent}>
-            {features.length > 0 &&
-              features.map((feature, index) => {
+            {features!.length > 0 &&
+              features!.map((feature, index) => {
                 return (
                   <div key={index}>
                     <p style={styles.bold}>{feature.id}</p>

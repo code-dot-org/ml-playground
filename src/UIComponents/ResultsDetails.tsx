@@ -45,7 +45,7 @@ function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorr
         >
           <FontAwesomeIcon icon={faTimes} />
         </div>
-        {!isNaN(percentCorrect) && <ResultsToggle />}
+        {!isNaN(Number(percentCorrect)) && <ResultsToggle />}
         <ResultsTable results={results} />
       </div>
     </div>
@@ -53,7 +53,7 @@ function ResultsDetails({ resultsTab, selectedFeatures, labelColumn, percentCorr
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     resultsTab: state.resultsTab,
     selectedFeatures: state.selectedFeatures,
     labelColumn: state.labelColumn,
@@ -61,8 +61,8 @@ export default connect(
     correctResults: getCorrectResults(state),
     incorrectResults: getIncorrectResults(state)
   }),
-  dispatch => ({
-    setShowResultsDetails(show) {
+  (dispatch: any) => ({
+    setShowResultsDetails(show: boolean) {
       dispatch(setShowResultsDetails(show));
     }
   })

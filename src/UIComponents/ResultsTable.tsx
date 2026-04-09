@@ -18,7 +18,7 @@ interface ResultsTableProps {
 }
 
 function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: isRegressionMode, setResultsHighlightRow, resultsHighlightRow, datasetId }: ResultsTableProps) {
-  const getRowCellStyle = useCallback((index) => {
+  const getRowCellStyle = useCallback((index: number) => {
     return {
       ...styles.tableCell,
       ...(index === resultsHighlightRow &&
@@ -136,16 +136,16 @@ function ResultsTable({ selectedFeatures, labelColumn, results, isRegression: is
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     selectedFeatures: state.selectedFeatures,
     labelColumn: state.labelColumn,
     isRegression: isRegression(state),
     resultsHighlightRow: state.resultsHighlightRow,
     datasetId: state.metadata && state.metadata.name
   }),
-  dispatch => ({
-    setResultsHighlightRow(column) {
-      dispatch(setResultsHighlightRow(column));
+  (dispatch: any) => ({
+    setResultsHighlightRow(column: number | undefined) {
+      dispatch(setResultsHighlightRow(column as any));
     }
   })
 )(ResultsTable);

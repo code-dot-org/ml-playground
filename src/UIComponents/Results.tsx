@@ -90,15 +90,15 @@ function Results({ historicResults, showResultsDetails, setShowResultsDetails, s
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     historicResults: state.historicResults,
     showResultsDetails: state.showResultsDetails
   }),
-  dispatch => ({
-    setResultsPhase(phase) {
+  (dispatch: any) => ({
+    setResultsPhase(phase: number) {
       dispatch(setResultsPhase(phase));
     },
-    setShowResultsDetails(show) {
+    setShowResultsDetails(show: boolean) {
       dispatch(setShowResultsDetails(show));
     }
   })

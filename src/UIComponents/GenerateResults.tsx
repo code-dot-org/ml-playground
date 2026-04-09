@@ -15,7 +15,7 @@ const framesPerCycle = 80;
 const maxNumItems = 7;
 
 interface GenerateResultsProps {
-  data: any[];
+  data: any[] | null;
   readyToTrain: boolean;
   labelColumn: string;
   selectedFeatures: string[];
@@ -34,13 +34,15 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
   }, [instructionsOverlayActive]);
 
   const getNumItems = useCallback(() => {
-    return Math.min(maxNumItems, data.length);
-  }, [data.length]);
+    return Math.min(maxNumItems, data!.length);
+  }, [data]);
+
+  const dataLength = data?.length;
 
   useEffect(() => {
     const animationTimer = setInterval(() => {
       const currentFrame = frameRef.current;
-      const numItems = Math.min(maxNumItems, data.length);
+      const numItems = Math.min(maxNumItems, data!.length);
       const animationStep = Math.floor(currentFrame / framesPerCycle);
 
       if (animationStep >= numItems) {
@@ -56,10 +58,10 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
     return () => {
       clearInterval(animationTimer);
     };
-  }, [data.length]);
+  }, [data, dataLength]);
 
   const getShowItemsFadingOut = () => {
-    return data.length > maxNumItems;
+    return data!.length > maxNumItems;
   };
 
   const getAnimationSubstep = () => {
@@ -199,8 +201,8 @@ function GenerateResults({ data, readyToTrain, labelColumn, selectedFeatures, in
   );
 }
 
-export default connect(state => ({
-  data: getTableData(state, true),
+export default connect((state: any) => ({
+  data: getTableData(state, true) as any[],
   readyToTrain: readyToTrain(state),
   labelColumn: state.labelColumn,
   selectedFeatures: state.selectedFeatures,

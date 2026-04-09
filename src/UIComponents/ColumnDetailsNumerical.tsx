@@ -32,7 +32,8 @@ function ColumnDetailsNumerical({ columnDetails }: ColumnDetailsNumericalProps) 
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     columnDetails: getNumericalColumnDetails(state)
-  })
+  }),
+  {}
 )(ColumnDetailsNumerical);

@@ -16,7 +16,7 @@ const framesPerCycle = 80;
 const maxNumItems = 7;
 
 interface TrainModelProps {
-  data: any[];
+  data: any[] | null;
   readyToTrain: boolean;
   labelColumn: string;
   selectedFeatures: string[];
@@ -50,7 +50,7 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
       }
 
       const animationStep = Math.floor(currentFrame / framesPerCycle);
-      const numItems = Math.min(maxNumItems, data.length);
+      const numItems = Math.min(maxNumItems, data!.length);
 
       if (animationStep >= numItems) {
         headOpenRef.current = false;
@@ -77,11 +77,11 @@ function TrainModel({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
   };
 
   const getNumItems = (): number => {
-    return Math.min(maxNumItems, data.length);
+    return Math.min(maxNumItems, data!.length);
   };
 
   const getShowItemsFadingOut = (): boolean => {
-    return data.length > maxNumItems;
+    return data!.length > maxNumItems;
   };
 
   const getAnimationStep = (): number => {

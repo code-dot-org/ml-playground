@@ -735,7 +735,7 @@ export function readyToTrain(state: RootState): boolean {
 
 /* Functions for processing data to display. */
 
-export function getTableData(state: RootState, useResultsData: boolean): any[] {
+export function getTableData(state: RootState, useResultsData: boolean): any[] | null {
   if (useResultsData) {
     return getResultsDataInDataTableForm(state);
   } else {
@@ -744,7 +744,7 @@ export function getTableData(state: RootState, useResultsData: boolean): any[] {
 }
 
 export function isRegression(state: RootState): boolean {
-  return isColumnNumerical(state, state.labelColumn);
+  return isColumnNumerical(state, state.labelColumn!);
 }
 
 /* Functions for processing data about a trained model to save. */
@@ -756,7 +756,7 @@ export function getFeaturesToSave(state: RootState): any[] {
 }
 
 export function getLabelToSave(state: RootState): any {
-  return getColumnDataToSave(state, state.labelColumn);
+  return getColumnDataToSave(state, state.labelColumn!);
 }
 
 export function getTrainedModelDataToSave(state: RootState): any {
@@ -769,7 +769,7 @@ export function getTrainedModelDataToSave(state: RootState): any {
     ? RegressionTrainer
     : ClassificationTrainer;
   dataToSave.featureNumberKey = state.featureNumberKey;
-  dataToSave.label = getColumnDataToSave(state, state.labelColumn);
+  dataToSave.label = getColumnDataToSave(state, state.labelColumn!);
   dataToSave.features = getFeaturesToSave(state);
   dataToSave.summaryStat = getSummaryStat(state);
   dataToSave.trainedModel = state.trainedModel

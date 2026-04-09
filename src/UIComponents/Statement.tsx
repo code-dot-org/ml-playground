@@ -31,15 +31,15 @@ function Statement({
   datasetId
 }: StatementProps) {
   const removeLabel = () => {
-    setLabelColumn(null);
+    setLabelColumn!(null);
   };
 
   const removeFeature = (id: string) => {
-    removeSelectedFeature(id);
+    removeSelectedFeature!(id);
   };
 
   const labelHTML = (label: string, currentPanel: string) => {
-    const localizedLabel = getLocalizedColumnName(datasetId, label);
+    const localizedLabel = getLocalizedColumnName(datasetId!, label);
     return (
       <div style={styles.statementLabel}>
         {localizedLabel || "____"}
@@ -66,7 +66,7 @@ function Statement({
     return (
       <span>
         {selectedFeatures.map((selectedFeature, index) => {
-          const localizedName = getLocalizedColumnName(datasetId, selectedFeature);
+          const localizedName = getLocalizedColumnName(datasetId!, selectedFeature);
           return (
             <span key={index}>
               <div style={styles.statementFeature}>
@@ -117,13 +117,13 @@ function Statement({
   // "Predict __CDO_OUTPUT__ based on __CDO_INPUTS__" becomes
   // ["Predict ", "__CDO_OUTPUT__", " based on ", "__CDO_INPUTS__"]
   const regex = new RegExp(`(${OUTPUT_KEY}|${INPUTS_KEY})`);
-  const predictionStatementParts = predictionStatement.split(regex).filter((part: string) => part);
+  const predictionStatementParts = predictionStatement!.split(regex).filter((part: string) => part);
   // Swap the OUTPUT and INPUTS placeholders with React components.
   const predictionStatementComponents = predictionStatementParts.map((part: string, index: number) => {
     if (part === OUTPUT_KEY) {
-      return labelHTML(labelColumn, currentPanel);
+      return labelHTML(labelColumn!, currentPanel!);
     } else if (part === INPUTS_KEY) {
-      return selectedFeaturesHTML(selectedFeatures, currentPanel);
+      return selectedFeaturesHTML(selectedFeatures!, currentPanel!);
     } else {
       return part;
     }
@@ -155,7 +155,7 @@ export default connect(
   }),
   dispatch => ({
     setLabelColumn(labelColumn: string | null) {
-      dispatch(setLabelColumn(labelColumn));
+      dispatch(setLabelColumn(labelColumn as string));
     },
     removeSelectedFeature(labelColumn: string) {
       dispatch(removeSelectedFeature(labelColumn));

@@ -19,11 +19,11 @@ export function logFirehoseMetric(action: string, state: any): any {
 }
 
 export function reportPanelView(panel: string): void {
-  if (!window.ga || !panel) {
+  if (!(window as any).ga || !panel) {
     return;
   }
   // Record each panel as a different page view in Google Analytics.
   const syntheticPagePath = window.location.pathname + '/' + panel;
-  window.ga('set', 'page', syntheticPagePath);
-  window.ga('send', 'pageview');
+  (window as any).ga('set', 'page', syntheticPagePath);
+  (window as any).ga('send', 'pageview');
 }

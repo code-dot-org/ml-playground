@@ -72,7 +72,8 @@ function ColumnDetailsCategorical({ columnDetails }: ColumnDetailsCategoricalPro
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     columnDetails: getCategoricalColumnDetails(state)
-  })
+  }),
+  {}
 )(ColumnDetailsCategorical);

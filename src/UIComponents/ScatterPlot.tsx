@@ -19,7 +19,7 @@ const scatterDataBase = {
       pointHoverBackgroundColor: "#59cad3",
       pointHoverBorderColor: "white",
       pointHoverBorderWidth: 2,
-      data: []
+      data: [] as { x: number; y: number }[]
     }
   ]
 };
@@ -94,6 +94,6 @@ function ScatterPlot({ scatterPlotData }: ScatterPlotProps) {
   );
 }
 
-export default connect(state => ({
+export default connect((state: any) => ({
   scatterPlotData: getScatterPlotData(state)
-}))(ScatterPlot);
+}), {})(ScatterPlot);

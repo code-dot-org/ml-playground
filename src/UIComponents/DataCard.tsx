@@ -17,14 +17,14 @@ function DataCard({ name, metadata, datasetDetails, dataLength, removedRowsCount
   const card = metadata && metadata.card;
 
   const dataLengthLimit = 20000;
-  if (dataLength > dataLengthLimit) {
+  if (dataLength! > dataLengthLimit) {
     window.alert(
       I18n.t("dataCardWarningLargeDataset", {"rowCount": dataLengthLimit})
     );
   }
 
   const removedRowsMsg =
-    removedRowsCount > 0
+    removedRowsCount! > 0
       ? I18n.t("dataCardRemovedRows", {"rowCount": removedRowsCount})
       : null;
 
@@ -78,7 +78,7 @@ function DataCard({ name, metadata, datasetDetails, dataLength, removedRowsCount
               )}
             </div>
           )}
-          {!card && dataLength > 0 && (
+          {!card && dataLength! > 0 && (
             <div>
               <br />
               <div style={styles.cardRow}>

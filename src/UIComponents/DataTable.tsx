@@ -6,7 +6,7 @@ import { getLocalizedColumnName } from "../helpers/columnDetails";
 
 interface DataTableProps {
   currentPanel: string;
-  data: any[];
+  data: any[] | null;
   datasetId: string;
   labelColumn: string;
   selectedFeatures: string[];
@@ -14,11 +14,11 @@ interface DataTableProps {
   setHighlightColumn: (column: string | undefined) => void;
   currentColumn: string;
   highlightColumn: string;
-  reducedColumns: boolean;
-  singleRow: number | undefined;
-  startingRow: number | undefined;
-  noLabel: boolean;
-  hideLabel: boolean;
+  reducedColumns?: boolean;
+  singleRow?: number | undefined;
+  startingRow?: number | undefined;
+  noLabel?: boolean;
+  hideLabel?: boolean;
   useResultsData?: boolean;
 }
 
@@ -38,7 +38,7 @@ function DataTable({
   noLabel,
   hideLabel
 }: DataTableProps) {
-  const getColumnHeaderStyle = key => {
+  const getColumnHeaderStyle = (key: string) => {
     let style;
 
     if (key === labelColumn) {
@@ -53,7 +53,7 @@ function DataTable({
     return { ...styles.dataDisplayHeader, ...pointerStyle, ...style };
   };
 
-  const getColumnCellStyle = key => {
+  const getColumnCellStyle = (key: string) => {
     let style;
 
     if (hideLabel && labelColumn === key) {
@@ -77,7 +77,7 @@ function DataTable({
 
   const getColumns = () => {
     if (reducedColumns) {
-      return Object.keys(data[0])
+      return Object.keys(data![0])
         .filter(key => {
           return (
             (!noLabel && labelColumn === key) ||
@@ -89,34 +89,34 @@ function DataTable({
         });
     }
 
-    return Object.keys(data[0]);
+    return Object.keys(data![0]);
   };
 
   const getRows = () => {
     if (singleRow !== undefined) {
       return [
-        data[
-          Math.min(singleRow, data.length - 1)
+        data![
+          Math.min(singleRow, data!.length - 1)
         ]
       ];
     } else {
-      return data.slice(0, 100);
+      return data!.slice(0, 100);
     }
   };
 
-  const handleSetCurrentColumn = columnId => {
+  const handleSetCurrentColumn = (columnId: string) => {
     if (!reducedColumns) {
       setCurrentColumnProp(columnId);
     }
   };
 
-  const handleSetHighlightColumn = columnId => {
+  const handleSetHighlightColumn = (columnId: string | undefined) => {
     if (!reducedColumns) {
       setHighlightColumnProp(columnId);
     }
   };
 
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     return null;
   }
 
@@ -173,8 +173,8 @@ function DataTable({
 }
 
 export default connect(
-  (state, props) => ({
-    data: getTableData(state, props.useResultsData),
+  (state: any, props: any) => ({
+    data: getTableData(state, props.useResultsData) as any[],
     datasetId: state.metadata && state.metadata.name,
     labelColumn: state.labelColumn,
     selectedFeatures: state.selectedFeatures,
@@ -182,12 +182,12 @@ export default connect(
     highlightColumn: state.highlightColumn,
     currentPanel: state.currentPanel
   }),
-  dispatch => ({
-    setCurrentColumn(column) {
-      dispatch(setCurrentColumn(column));
+  (dispatch: any) => ({
+    setCurrentColumn(column: string | undefined) {
+      dispatch(setCurrentColumn(column as any));
     },
-    setHighlightColumn(column) {
-      dispatch(setHighlightColumn(column));
+    setHighlightColumn(column: string | undefined) {
+      dispatch(setHighlightColumn(column as any));
     }
   })
 )(DataTable);
