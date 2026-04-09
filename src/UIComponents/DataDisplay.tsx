@@ -11,7 +11,7 @@ interface DataDisplayProps {
   data?: DataRow[];
 }
 
-function DataDisplay({ data }: DataDisplayProps) {
+const DataDisplay = ({ data }: DataDisplayProps) => {
   if (data!.length === 0) {
     return null;
   }
@@ -32,7 +32,7 @@ function DataDisplay({ data }: DataDisplayProps) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

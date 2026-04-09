@@ -19,7 +19,7 @@ interface StatementProps {
   datasetId?: string;
 }
 
-function Statement({
+const Statement = ({
   shouldShow,
   smallFont,
   data,
@@ -29,7 +29,7 @@ function Statement({
   setLabelColumn,
   removeSelectedFeature,
   datasetId
-}: StatementProps) {
+}: StatementProps) => {
   const removeLabel = () => {
     setLabelColumn!(null);
   };
@@ -140,7 +140,7 @@ function Statement({
       {predictionStatementComponents}
     </div>
   );
-}
+};
 
 export const UnconnectedStatement = Statement;
 

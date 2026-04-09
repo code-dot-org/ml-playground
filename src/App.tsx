@@ -40,7 +40,7 @@ interface PanelButtonsProps {
   shouldDisplaySaveStatus: (saveStatus: string) => boolean;
 }
 
-function PanelButtons({
+const PanelButtons = ({
   panelButtons,
   currentPanel,
   setCurrentPanel,
@@ -51,7 +51,7 @@ function PanelButtons({
   saveResponseData,
   isSaveComplete: isSaveCompleteProp,
   shouldDisplaySaveStatus: shouldDisplaySaveStatusProp
-}: PanelButtonsProps) {
+}: PanelButtonsProps) => {
   const onClickPrev = () => {
     setCurrentPanel(panelButtons.prev!.panel);
   };
@@ -148,47 +148,47 @@ function PanelButtons({
       )}
     </div>
   );
-}
+};
 
 interface BodyContainerProps {
   children: React.ReactNode;
 }
 
-function BodyContainer({ children }: BodyContainerProps) {
+const BodyContainer = ({ children }: BodyContainerProps) => {
   return <div style={styles.bodyContainer}>{children}</div>;
-}
+};
 
 interface ContainerLeftProps {
   children: React.ReactNode;
 }
 
-function ContainerLeft({ children }: ContainerLeftProps) {
+const ContainerLeft = ({ children }: ContainerLeftProps) => {
   return (
     <div style={{ ...styles.panelContainer, ...styles.panelContainerLeft }}>
       {children}
     </div>
   );
-}
+};
 
 interface ContainerRightProps {
   children: React.ReactNode;
 }
 
-function ContainerRight({ children }: ContainerRightProps) {
+const ContainerRight = ({ children }: ContainerRightProps) => {
   return (
     <div style={{ ...styles.panelContainer, ...styles.panelContainerRight }}>
       {children}
     </div>
   );
-}
+};
 
 interface ContainerFullWidthProps {
   children: React.ReactNode;
 }
 
-function ContainerFullWidth({ children }: ContainerFullWidthProps) {
+const ContainerFullWidth = ({ children }: ContainerFullWidthProps) => {
   return <div style={styles.panelContainerFullWidth}>{children}</div>;
-}
+};
 
 interface AppProps {
   panelButtons: PrevNextButtons;
@@ -202,7 +202,7 @@ interface AppProps {
   saveResponseData: SaveResponseData | undefined;
 }
 
-function App({
+const App = ({
   panelButtons,
   currentPanel,
   setCurrentPanel,
@@ -212,7 +212,7 @@ function App({
   dataToSave,
   saveStatus,
   saveResponseData
-}: AppProps) {
+}: AppProps) => {
   return (
     <div style={styles.app}>
       {currentPanel === "selectDataset" && (
@@ -297,7 +297,7 @@ function App({
       />
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

@@ -9,7 +9,7 @@ interface SelectLabelButtonProps {
   setLabelColumn: (column: string) => void;
 }
 
-function SelectLabelButton({ column, setLabelColumn }: SelectLabelButtonProps) {
+const SelectLabelButton = ({ column, setLabelColumn }: SelectLabelButtonProps) => {
   const setPredictColumn = (event: React.MouseEvent, column: string) => {
     setLabelColumn(column);
     event.preventDefault();
@@ -25,7 +25,7 @@ function SelectLabelButton({ column, setLabelColumn }: SelectLabelButtonProps) {
       {I18n.t("selectLabelButton")}
     </button>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({}),

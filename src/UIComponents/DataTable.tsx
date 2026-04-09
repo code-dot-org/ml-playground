@@ -24,7 +24,7 @@ interface DataTableProps {
   useResultsData?: boolean;
 }
 
-function DataTable({
+const DataTable = ({
   currentPanel,
   data,
   datasetId,
@@ -39,7 +39,7 @@ function DataTable({
   startingRow,
   noLabel,
   hideLabel
-}: DataTableProps) {
+}: DataTableProps) => {
   const getColumnHeaderStyle = (key: string) => {
     let style;
 
@@ -172,7 +172,7 @@ function DataTable({
       </tbody>
     </table>
   );
-}
+};
 
 export default connect(
   (state: RootState, props: { useResultsData?: boolean }) => ({

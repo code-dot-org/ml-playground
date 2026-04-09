@@ -11,7 +11,7 @@ interface ResultsToggleProps {
   setResultsTab?: (key: string) => void;
 }
 
-function ResultsToggle({ resultsTab, setResultsTab }: ResultsToggleProps) {
+const ResultsToggle = ({ resultsTab, setResultsTab }: ResultsToggleProps) => {
   const getTogglePillStyle = (key: string) => {
     let style;
     if (key === resultsTab) {
@@ -56,7 +56,7 @@ function ResultsToggle({ resultsTab, setResultsTab }: ResultsToggleProps) {
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

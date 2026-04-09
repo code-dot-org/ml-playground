@@ -17,7 +17,7 @@ interface ResultsProps {
   setResultsPhase: (phase: number) => void;
 }
 
-function Results({ historicResults, showResultsDetails, setShowResultsDetails, setResultsPhase }: ResultsProps) {
+const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, setResultsPhase }: ResultsProps) => {
   useEffect(() => {
     setResultsPhase(0);
     const timer = setTimeout(() => {
@@ -89,7 +89,7 @@ function Results({ historicResults, showResultsDetails, setShowResultsDetails, s
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

@@ -32,7 +32,7 @@ interface SelectDatasetProps {
   invalidData: string | undefined;
 }
 
-function SelectDataset({
+const SelectDataset = ({
   setSelectedName,
   setSelectedCSV,
   setSelectedJSON,
@@ -42,7 +42,7 @@ function SelectDataset({
   name,
   highlightDataset,
   invalidData
-}: SelectDatasetProps) {
+}: SelectDatasetProps) => {
   const [, setDownload] = useState(false);
 
   const handleDatasetClick = (id: string) => {
@@ -156,7 +156,7 @@ function SelectDataset({
       )}
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

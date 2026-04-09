@@ -19,7 +19,7 @@ interface ModelCardProps {
   datasetDetails: DatasetDetails;
 }
 
-function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, label, features, datasetDetails }: ModelCardProps) {
+const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, label, features, datasetDetails }: ModelCardProps) => {
   console.log("trainedModelDetails", trainedModelDetails)
   const localizedLabel = getLocalizedColumnName(datasetDetails.name!, label!.id!);
   const localizedFeatures =
@@ -150,7 +150,7 @@ function ModelCard({ trainedModelDetails, selectedFeatures, percentCorrect, labe
       </div>
     </div>
   );
-}
+};
 
 export default connect((state: RootState) => ({
   trainedModelDetails: state.trainedModelDetails,

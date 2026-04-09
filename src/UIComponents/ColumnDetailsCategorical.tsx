@@ -27,7 +27,7 @@ const chartOptions = {
   maintainAspectRatio: false
 };
 
-function ColumnDetailsCategorical({ columnDetails }: ColumnDetailsCategoricalProps) {
+const ColumnDetailsCategorical = ({ columnDetails }: ColumnDetailsCategoricalProps) => {
   const { id, uniqueOptions, frequencies } = columnDetails;
   const labels = uniqueOptions && Object.values(uniqueOptions);
   const barData = {
@@ -70,7 +70,7 @@ function ColumnDetailsCategorical({ columnDetails }: ColumnDetailsCategoricalPro
       </div>
     </div>
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({

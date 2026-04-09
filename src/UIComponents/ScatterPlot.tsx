@@ -62,7 +62,7 @@ interface ScatterPlotProps {
   } | null;
 }
 
-function ScatterPlot({ scatterPlotData }: ScatterPlotProps) {
+const ScatterPlot = ({ scatterPlotData }: ScatterPlotProps) => {
   const scatterDataCombined = {
     ...scatterDataBase
   };
@@ -93,7 +93,7 @@ function ScatterPlot({ scatterPlotData }: ScatterPlotProps) {
       </div>
     )
   );
-}
+};
 
 export default connect((state: RootState) => ({
   scatterPlotData: getScatterPlotData(state)

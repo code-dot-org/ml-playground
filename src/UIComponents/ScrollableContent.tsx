@@ -6,7 +6,7 @@ interface ScrollableContentProps {
   children?: ReactNode;
 }
 
-export default function ScrollableContent({ tinted, children }: ScrollableContentProps) {
+const ScrollableContent = ({ tinted, children }: ScrollableContentProps) => {
   return (
     <div
       style={
@@ -16,4 +16,6 @@ export default function ScrollableContent({ tinted, children }: ScrollableConten
       <div style={styles.scrollingContents}>{children}</div>
     </div>
   );
-}
+};
+
+export default ScrollableContent;

@@ -16,7 +16,7 @@ interface CrossTabProps {
   crossTabData: CrossTabData | null;
 }
 
-function CrossTab({ crossTabData }: CrossTabProps) {
+const CrossTab = ({ crossTabData }: CrossTabProps) => {
   const getCellStyle = useCallback((percent: number) => {
     return {
       ...(styles as Record<string, React.CSSProperties>)["crossTabCell" + Math.round(percent / 20)],
@@ -131,7 +131,7 @@ function CrossTab({ crossTabData }: CrossTabProps) {
       )}
     </div>
   );
-}
+};
 
 export default connect((state: RootState) => ({
   crossTabData: getCrossTabData(state)

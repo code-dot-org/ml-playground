@@ -25,7 +25,7 @@ interface ColumnInspectorProps {
   datasetId: string | undefined;
 }
 
-function ColumnInspector({ currentColumnDetails, currentPanel, datasetId }: ColumnInspectorProps) {
+const ColumnInspector = ({ currentColumnDetails, currentPanel, datasetId }: ColumnInspectorProps) => {
   const selectingFeatures = currentPanel === "dataDisplayFeatures";
   const selectingLabel = currentPanel === "dataDisplayLabel";
 
@@ -89,7 +89,7 @@ function ColumnInspector({ currentColumnDetails, currentPanel, datasetId }: Colu
       </div>
     )
   );
-}
+};
 
 export default connect(
   (state: RootState) => ({
