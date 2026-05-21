@@ -1,22 +1,22 @@
 /* React component to handle predicting and displaying predictions. */
-import React from "react";
-import { connect } from "react-redux";
-import { store } from "../index";
-import train from "../train";
-import { setTestData, getPredictAvailable, RootState } from "../redux";
-import { Dispatch } from "redux";
-import { getConvertedPredictedLabel } from "../helpers/valueConversion";
+import React from 'react';
+import {connect} from 'react-redux';
+import {store} from '../index';
+import train from '../train';
+import {setTestData, getPredictAvailable, RootState} from '../redux';
+import {Dispatch} from 'redux';
+import {getConvertedPredictedLabel} from '../helpers/valueConversion';
 import {
   getSelectedCategoricalFeatures,
   getSelectedNumericalFeatures,
   getUniqueOptionsByColumn,
-  getExtremaByColumn
-} from "../selectors";
-import { styles } from "../constants";
-import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
-import ScrollableContent from "./ScrollableContent";
-import I18n from "../i18n";
-import { getLocalizedColumnName } from "../helpers/columnDetails";
+  getExtremaByColumn,
+} from '../selectors';
+import {styles} from '../constants';
+import aiBotBorder from '@public/images/ai-bot/ai-bot-border.png';
+import ScrollableContent from './ScrollableContent';
+import I18n from '../i18n';
+import {getLocalizedColumnName} from '../helpers/columnDetails';
 
 interface PredictProps {
   labelColumn: string | undefined;
@@ -27,7 +27,7 @@ interface PredictProps {
   setTestData: (feature: string, value: string | number) => void;
   predictedLabel: string | number;
   getPredictAvailable: boolean;
-  extremaByColumn: Record<string, { min: number; max: number }>;
+  extremaByColumn: Record<string, {min: number; max: number}>;
   datasetId: string | undefined;
 }
 
@@ -41,9 +41,12 @@ const Predict = ({
   predictedLabel,
   getPredictAvailable: predictAvailable,
   extremaByColumn,
-  datasetId
+  datasetId,
 }: PredictProps) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, feature: string) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    feature: string,
+  ) => {
     setTestData(feature, event.target.value);
   };
 
@@ -52,8 +55,8 @@ const Predict = ({
   };
 
   return (
-    <div id="predict" style={{ ...styles.panel, ...styles.rightPanel }}>
-      <div style={styles.largeText}>{I18n.t("predictHeader")}</div>
+    <div id="predict" style={{...styles.panel, ...styles.rightPanel}}>
+      <div style={styles.largeText}>{I18n.t('predictHeader')}</div>
       <ScrollableContent>
         <div>
           {selectedNumericalFeatures.map((feature, index) => {
@@ -68,10 +71,11 @@ const Predict = ({
                   <input
                     type="number"
                     onChange={event => handleChange(event, feature)}
-                    value={testData[feature] || ""}
-                    placeholder={I18n.t(
-                      "predictPlaceholder",
-                      {"minimum": +min, "maximum": +max})}
+                    value={testData[feature] || ''}
+                    placeholder={I18n.t('predictPlaceholder', {
+                      minimum: +min,
+                      maximum: +max,
+                    })}
                   />
                 </label>
               </div>
@@ -88,7 +92,7 @@ const Predict = ({
                     onChange={event => handleChange(event, feature)}
                     value={testData[feature]}
                   >
-                    <option>{""}</option>
+                    <option>{''}</option>
                     {uniqueOptionsByColumn[feature]
                       .sort()
                       .map((option, index) => {
@@ -109,15 +113,11 @@ const Predict = ({
       <div>
         <button
           type="button"
-          style={
-            !predictAvailable
-              ? styles.disabledButton
-              : undefined
-          }
+          style={!predictAvailable ? styles.disabledButton : undefined}
           onClick={onClickPredict}
           disabled={!predictAvailable}
         >
-          {I18n.t("predictButton")}
+          {I18n.t('predictButton')}
         </button>
       </div>
       {predictedLabel && (
@@ -127,13 +127,15 @@ const Predict = ({
               className="ailab-image-hover"
               style={styles.predictBot}
               src={aiBotBorder}
-              alt={I18n.t("aiBotAltText")}
+              alt={I18n.t('aiBotAltText')}
             />
           </div>
           <div style={styles.predictBotRight}>
-            <div style={styles.statement}>{I18n.t("predictAIBotPredicts")}</div>
+            <div style={styles.statement}>{I18n.t('predictAIBotPredicts')}</div>
             <div>{getLocalizedColumnName(datasetId!, labelColumn!)}</div>
-            <div>{getLocalizedColumnName(datasetId!, String(predictedLabel))}</div>
+            <div>
+              {getLocalizedColumnName(datasetId!, String(predictedLabel))}
+            </div>
           </div>
         </div>
       )}
@@ -151,11 +153,11 @@ export default connect(
     uniqueOptionsByColumn: getUniqueOptionsByColumn(state),
     getPredictAvailable: getPredictAvailable(state),
     extremaByColumn: getExtremaByColumn(state),
-    datasetId: state.metadata && state.metadata.name
+    datasetId: state.metadata && state.metadata.name,
   }),
   (dispatch: Dispatch) => ({
     setTestData(feature: string, value: string | number) {
       dispatch(setTestData(feature, value));
-    }
-  })
+    },
+  }),
 )(Predict);

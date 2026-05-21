@@ -1,7 +1,7 @@
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
+import {createRoot} from 'react-dom/client';
+import App from './App';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 import rootReducer, {
   setMode,
   setCurrentPanel,
@@ -11,27 +11,39 @@ import rootReducer, {
   setSaveStatus,
   setReserveLocation,
   setInstructionsDismissed,
-  setFirehoseMetricsLogger
-} from "./redux";
-import { getDatasets, Dataset } from "./datasetManifest";
-import { parseCSV } from "./csvReaderWrapper";
-import { parseJSON } from "./jsonReaderWrapper";
-import { TestDataLocations } from "./constants";
-import I18n from "./i18n";
-import { Mode, ModelDataToSave, SaveResponse } from "./types";
+  setFirehoseMetricsLogger,
+} from './redux';
+import {getDatasets, Dataset} from './datasetManifest';
+import {parseCSV} from './csvReaderWrapper';
+import {parseJSON} from './jsonReaderWrapper';
+import {TestDataLocations} from './constants';
+import I18n from './i18n';
+import {Mode, ModelDataToSave, SaveResponse} from './types';
 
 export const store = createStore(rootReducer);
 
-let saveTrainedModel: ((dataToSave: ModelDataToSave, callback: (response: SaveResponse) => void) => void) | null | undefined = null;
+let saveTrainedModel:
+  | ((
+      dataToSave: ModelDataToSave,
+      callback: (response: SaveResponse) => void,
+    ) => void)
+  | null
+  | undefined = null;
 let onContinue: (() => void) | null | undefined = null;
 
 interface InitAllOptions {
   i18n?: Record<string, string>;
   mode?: Mode;
   onContinue?: () => void;
-  saveTrainedModel?: (dataToSave: ModelDataToSave, callback: (response: SaveResponse) => void) => void;
+  saveTrainedModel?: (
+    dataToSave: ModelDataToSave,
+    callback: (response: SaveResponse) => void,
+  ) => void;
   logMetric?: (eventName: string, details: Record<string, unknown>) => void;
-  setInstructionsKey?: (key: string, options: { showOverlay?: boolean } | null) => void;
+  setInstructionsKey?: (
+    key: string,
+    options: {showOverlay?: boolean} | null,
+  ) => void;
 }
 
 /**
@@ -53,24 +65,25 @@ export const initAll = function (options: InitAllOptions): void {
   store.dispatch(setMode(mode as Mode));
   processMode(mode);
 
-  const root = createRoot(document.getElementById("root")!);
+  const root = createRoot(document.getElementById('root')!);
   root.render(
     <Provider store={store}>
       <App
         onContinue={onContinue!}
         startSaveTrainedModel={startSaveTrainedModel}
       />
-    </Provider>
+    </Provider>,
   );
 };
 
-export const instructionsDismissed = function(): void {
+export const instructionsDismissed = function (): void {
   store.dispatch(setInstructionsDismissed());
-}
+};
 
 // Process an optional mode.
 const processMode = (mode: Mode | undefined): void => {
-  const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
+  const assetPath = (global as unknown as Record<string, string>)
+    .__ml_playground_asset_public_path__;
   let panelSet = false;
 
   if (mode) {
@@ -87,33 +100,33 @@ const processMode = (mode: Mode | undefined): void => {
       parseJSON(assetPath + item.metadataPath);
 
       if (mode.hideSelectLabel) {
-        store.dispatch(setCurrentPanel("dataDisplayFeatures"));
+        store.dispatch(setCurrentPanel('dataDisplayFeatures'));
       } else {
-        store.dispatch(setCurrentPanel("dataDisplayLabel"));
+        store.dispatch(setCurrentPanel('dataDisplayLabel'));
       }
       panelSet = true;
     }
 
     if (mode.randomizeTestData) {
-      store.dispatch(setReserveLocation(TestDataLocations.RANDOM))
+      store.dispatch(setReserveLocation(TestDataLocations.RANDOM));
     }
   }
 
   if (!panelSet) {
-    store.dispatch(setCurrentPanel("selectDataset"));
+    store.dispatch(setCurrentPanel('selectDataset'));
   }
 };
 
 // Do the asynchronous save of a model.
 const startSaveTrainedModel = (dataToSave: ModelDataToSave): void => {
-  store.dispatch(setSaveStatus("started"));
+  store.dispatch(setSaveStatus('started'));
   saveTrainedModel!(dataToSave, (response: SaveResponse) => {
     store.dispatch(setSaveStatus(response.status, response.data));
-    if (response.status === "success") {
-      store.dispatch(setCurrentPanel("modelSummary"));
+    if (response.status === 'success') {
+      store.dispatch(setCurrentPanel('modelSummary'));
     } else {
-      store.dispatch(setCurrentPanel("saveModel"));
-      console.log("Save data", response.data);
+      store.dispatch(setCurrentPanel('saveModel'));
+      console.log('Save data', response.data);
     }
   });
 };

@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
-import { styles } from "../constants";
+import {ReactNode} from 'react';
+import {styles} from '../constants';
 
 interface ScrollableContentProps {
   tinted?: boolean;
   children?: ReactNode;
 }
 
-const ScrollableContent = ({ tinted, children }: ScrollableContentProps) => {
+const ScrollableContent = ({tinted, children}: ScrollableContentProps) => {
   return (
     <div
       style={

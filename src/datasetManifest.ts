@@ -1,5 +1,5 @@
-import I18n from "./i18n";
-import datasetsManifest from "../public/datasets-manifest.json";
+import I18n from './i18n';
+import datasetsManifest from '../public/datasets-manifest.json';
 
 export interface Dataset {
   id: string;
@@ -14,9 +14,10 @@ let allDatasets: Dataset[] | undefined;
 export function getAvailableDatasets(specificDatasets?: string[]): Dataset[] {
   const datasets = getDatasets();
   // Filter datasets by a specified array (in Levelbuilder) or filter out toy datasets.
-  const availableDatasets = (specificDatasets && specificDatasets.length > 1) ?
-    datasets.filter(dataset => specificDatasets.includes(dataset.id)) :
-    datasets.filter(dataset => !dataset.isToy);
+  const availableDatasets =
+    specificDatasets && specificDatasets.length > 1
+      ? datasets.filter(dataset => specificDatasets.includes(dataset.id))
+      : datasets.filter(dataset => !dataset.isToy);
 
   // Sort dataset names by alphabetical order.
   return availableDatasets.sort((a, b) => a.name.localeCompare(b.name));
@@ -43,7 +44,7 @@ export function localizeDatasets(datasets: Dataset[]): Dataset[] {
   return datasets.map(dataset => {
     dataset.name = getDatasetName(dataset);
     return dataset;
-  })
+  });
 }
 
 /**
@@ -53,5 +54,8 @@ export function localizeDatasets(datasets: Dataset[]): Dataset[] {
  */
 function getDatasetName(dataset: Dataset): string {
   const fallback = dataset.name;
-  return I18n.t("name", { scope: ["datasets", dataset.id], default: fallback}) ?? fallback
+  return (
+    I18n.t('name', {scope: ['datasets', dataset.id], default: fallback}) ??
+    fallback
+  );
 }

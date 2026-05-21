@@ -1,6 +1,9 @@
 /* Generic helper functions. */
 
-export function getKeyByValue(object: Record<string, number>, value: number): string | undefined {
+export function getKeyByValue(
+  object: Record<string, number>,
+  value: number,
+): string | undefined {
   return Object.keys(object).find(key => object[key] === value);
 }
 

@@ -1,5 +1,5 @@
 import uiStrings from '../i18n/mlPlayground.json';
-import MessageFormat from 'messageformat'
+import MessageFormat from 'messageformat';
 
 let messages: Record<string, unknown> | undefined;
 
@@ -26,12 +26,12 @@ interface I18nOptions {
 
 const t = (key: string, options: I18nOptions = {}): string | undefined => {
   if (!messages) {
-    throw "I18n must be initialized before calling t";
+    throw 'I18n must be initialized before calling t';
   }
   // The default value to return if no string is found for the given key
-  const defaultValue = options["default"];
+  const defaultValue = options['default'];
 
-  const scope = options["scope"] || [];
+  const scope = options['scope'] || [];
   let scopedMessages: Record<string, unknown> | undefined = messages;
   scope.forEach(s => {
     if (scopedMessages !== undefined) {
@@ -58,10 +58,10 @@ const t = (key: string, options: I18nOptions = {}): string | undefined => {
  */
 const reset = (): void => {
   messages = undefined;
-}
+};
 
 export default {
   initI18n,
   t,
-  reset
+  reset,
 };

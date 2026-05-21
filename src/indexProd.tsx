@@ -1,1 +1,1 @@
-export { initAll, instructionsDismissed } from "./index";
+export {initAll, instructionsDismissed} from './index';

@@ -1,16 +1,16 @@
 /* React component to handle training. */
-import { useState, useEffect, useRef, useCallback } from "react";
-import { connect } from "react-redux";
-import { getTableData, readyToTrain, RootState } from "../redux";
-import { styles, getFadeOpacity } from "../constants";
-import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
-import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
-import blueScanner from "@public/images/ai-bot/blue-scanner.png";
-import background from "@public/images/results-background-light.jpg";
-import DataTable from "./DataTable";
-import { TestingAnimationDescription } from "./AnimationDescriptions";
-import I18n from "../i18n";
-import { DataRow } from "../types";
+import {useState, useEffect, useRef, useCallback} from 'react';
+import {connect} from 'react-redux';
+import {getTableData, readyToTrain, RootState} from '../redux';
+import {styles, getFadeOpacity} from '../constants';
+import aiBotHead from '@public/images/ai-bot/ai-bot-head.png';
+import aiBotBody from '@public/images/ai-bot/ai-bot-body.png';
+import blueScanner from '@public/images/ai-bot/blue-scanner.png';
+import background from '@public/images/results-background-light.jpg';
+import DataTable from './DataTable';
+import {TestingAnimationDescription} from './AnimationDescriptions';
+import I18n from '../i18n';
+import {DataRow} from '../types';
 
 const framesPerCycle = 80;
 const maxNumItems = 7;
@@ -23,7 +23,13 @@ interface GenerateResultsProps {
   instructionsOverlayActive: boolean;
 }
 
-const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, instructionsOverlayActive }: GenerateResultsProps) => {
+const GenerateResults = ({
+  data,
+  readyToTrain,
+  labelColumn,
+  selectedFeatures,
+  instructionsOverlayActive,
+}: GenerateResultsProps) => {
   const [frame, setFrame] = useState(0);
   const [, setFinished] = useState(false);
   const frameRef = useRef(0);
@@ -96,55 +102,52 @@ const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, in
   const opacity = getFadeOpacity(animationProgress);
   const hideLabel = getAnimationSubstep() < framesPerCycle / 2;
   const showAnimation = getAnimationStep() < numItems;
-  const startFadingAtItem =
-    numItems - (getShowItemsFadingOut() ? 1.5 : 0);
+  const startFadingAtItem = numItems - (getShowItemsFadingOut() ? 1.5 : 0);
   const maxFrames = framesPerCycle * startFadingAtItem;
   const tableOpacity =
     frame < framesPerCycle
       ? frame / framesPerCycle
-      : frame >= maxFrames &&
-        frame < maxFrames + framesPerCycle
-      ? 1 - (frame - maxFrames) / framesPerCycle
-      : frame >= maxFrames + framesPerCycle
-      ? 0
-      : 1;
+      : frame >= maxFrames && frame < maxFrames + framesPerCycle
+        ? 1 - (frame - maxFrames) / framesPerCycle
+        : frame >= maxFrames + framesPerCycle
+          ? 0
+          : 1;
   const headMoveAmount =
     frame < framesPerCycle / 4
       ? frame / (framesPerCycle / 4)
       : frame >= maxFrames + framesPerCycle &&
-        frame <= maxFrames + 2 * framesPerCycle
-      ? 1 - (frame - (maxFrames + framesPerCycle)) / framesPerCycle
-      : frame >= maxFrames + 2 * framesPerCycle
-      ? 0
-      : 1;
+          frame <= maxFrames + 2 * framesPerCycle
+        ? 1 - (frame - (maxFrames + framesPerCycle)) / framesPerCycle
+        : frame >= maxFrames + 2 * framesPerCycle
+          ? 0
+          : 1;
   const botTransformY = -50 - headMoveAmount * 50;
   const botContainerTransform = `translateX(-25%) translateY(${botTransformY}%)`;
 
   // Let's still show the starting row on our very first frame, because we might
   // be paused waiting for the overlay to be dismissed.
-  const startingRow =
-    frame === 0 ? undefined : getAnimationStep();
+  const startingRow = frame === 0 ? undefined : getAnimationStep();
 
   return (
     <div
       id="train-model"
       style={{
         ...styles.panel,
-        justifyContent: "center",
-        backgroundSize: "cover",
-        backgroundPosition: "50% 50%",
-        backgroundImage: "url(" + background + ")"
+        justifyContent: 'center',
+        backgroundSize: 'cover',
+        backgroundPosition: '50% 50%',
+        backgroundImage: 'url(' + background + ')',
       }}
     >
       <div style={styles.statementWithBackgroundAbsolute}>
-        {I18n.t("generateResultsHeader")}
+        {I18n.t('generateResultsHeader')}
       </div>
 
       <div style={styles.generateResultsContainer}>
         <div
           style={{
             ...styles.generateResultsDataTable,
-            opacity: tableOpacity
+            opacity: tableOpacity,
           }}
         >
           <DataTable
@@ -158,13 +161,13 @@ const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, in
         {showAnimation && (
           <div
             style={{
-              position: "absolute",
-              transformOrigin: "center center",
-              bottom: translateY + "%",
-              left: translateX + "%",
+              position: 'absolute',
+              transformOrigin: 'center center',
+              bottom: translateY + '%',
+              left: translateX + '%',
               transform: transform,
               opacity: opacity * tableOpacity,
-              zIndex: 1
+              zIndex: 1,
             }}
           >
             <DataTable
@@ -180,27 +183,25 @@ const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, in
       <div
         style={{
           ...styles.generateResultsBotContainer,
-          transform: botContainerTransform
+          transform: botContainerTransform,
         }}
       >
         <div className="ailab-image-hover" style={styles.trainBot}>
           <img
             src={aiBotHead}
             style={styles.trainBotHead}
-            alt={I18n.t("aiBotHeadAltText")}
+            alt={I18n.t('aiBotHeadAltText')}
           />
           <img
             src={aiBotBody}
             style={styles.trainBotBody}
-            alt={I18n.t("aiBotBodyAltText")}
+            alt={I18n.t('aiBotBodyAltText')}
           />
-          <div
-            style={{ width: 150, position: "absolute", top: 140, zIndex: -1 }}
-          >
+          <div style={{width: 150, position: 'absolute', top: 140, zIndex: -1}}>
             <img
               src={blueScanner}
-              style={{ width: "100%", opacity: tableOpacity }}
-              alt={I18n.t("aiBotBeamAltText")}
+              style={{width: '100%', opacity: tableOpacity}}
+              alt={I18n.t('aiBotBeamAltText')}
             />
           </div>
         </div>
@@ -215,5 +216,5 @@ export default connect((state: RootState) => ({
   readyToTrain: readyToTrain(state),
   labelColumn: state.labelColumn,
   selectedFeatures: state.selectedFeatures,
-  instructionsOverlayActive: state.instructionsOverlayActive
+  instructionsOverlayActive: state.instructionsOverlayActive,
 }))(GenerateResults);

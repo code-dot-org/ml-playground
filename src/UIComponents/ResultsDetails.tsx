@@ -1,19 +1,19 @@
 /* React component to handle displaying accuracy results. */
-import { useCallback } from "react";
-import { connect } from "react-redux";
-import { setShowResultsDetails, RootState } from "../redux";
-import { Dispatch } from "redux";
-import { ResultsData } from "../types";
+import {useCallback} from 'react';
+import {connect} from 'react-redux';
+import {setShowResultsDetails, RootState} from '../redux';
+import {Dispatch} from 'redux';
+import {ResultsData} from '../types';
 import {
   getPercentCorrect,
   getCorrectResults,
-  getIncorrectResults
-} from "../helpers/accuracy";
-import { ResultsGrades, styles } from "../constants";
-import ResultsToggle from "./ResultsToggle";
-import ResultsTable from "./ResultsTable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+  getIncorrectResults,
+} from '../helpers/accuracy';
+import {ResultsGrades, styles} from '../constants';
+import ResultsToggle from './ResultsToggle';
+import ResultsTable from './ResultsTable';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 interface ResultsDetailsProps {
   resultsTab: string;
@@ -25,15 +25,21 @@ interface ResultsDetailsProps {
   incorrectResults: ResultsData;
 }
 
-const ResultsDetails = ({ resultsTab, selectedFeatures, labelColumn, percentCorrect, setShowResultsDetails, correctResults, incorrectResults }: ResultsDetailsProps) => {
+const ResultsDetails = ({
+  resultsTab,
+  selectedFeatures,
+  labelColumn,
+  percentCorrect,
+  setShowResultsDetails,
+  correctResults,
+  incorrectResults,
+}: ResultsDetailsProps) => {
   const onClose = useCallback(() => {
     setShowResultsDetails(false);
   }, [setShowResultsDetails]);
 
   const results =
-    resultsTab === ResultsGrades.CORRECT
-      ? correctResults
-      : incorrectResults;
+    resultsTab === ResultsGrades.CORRECT ? correctResults : incorrectResults;
 
   return (
     <div style={styles.panelPopupContainer}>
@@ -61,11 +67,11 @@ export default connect(
     labelColumn: state.labelColumn,
     percentCorrect: getPercentCorrect(state),
     correctResults: getCorrectResults(state),
-    incorrectResults: getIncorrectResults(state)
+    incorrectResults: getIncorrectResults(state),
   }),
   (dispatch: Dispatch) => ({
     setShowResultsDetails(show: boolean) {
       dispatch(setShowResultsDetails(show));
-    }
-  })
+    },
+  }),
 )(ResultsDetails);

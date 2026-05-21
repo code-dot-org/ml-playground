@@ -1,16 +1,16 @@
 /* React component to handle animation descriptions for screen readers. */
-import I18n from "../i18n";
+import I18n from '../i18n';
 
 interface AnimationDescriptionProps {
   description?: string;
 }
 
-const AnimationDescription = ({ description }: AnimationDescriptionProps) => {
+const AnimationDescription = ({description}: AnimationDescriptionProps) => {
   return (
     <div id="animation-description" aria-live="polite">
-      <div id="animation-description-text" style={{ display: 'none' }}>
+      <div id="animation-description-text" style={{display: 'none'}}>
         <p>
-          <strong>{I18n.t("animationDescriptionsHeader")}</strong>
+          <strong>{I18n.t('animationDescriptionsHeader')}</strong>
           <br />
           {description}
         </p>
@@ -22,7 +22,7 @@ const AnimationDescription = ({ description }: AnimationDescriptionProps) => {
 const TrainingAnimationDescription = () => {
   return (
     <AnimationDescription
-      description={I18n.t("animationDescriptionsTraining")}
+      description={I18n.t('animationDescriptionsTraining')}
     />
   );
 };
@@ -30,9 +30,9 @@ const TrainingAnimationDescription = () => {
 const TestingAnimationDescription = () => {
   return (
     <AnimationDescription
-      description={I18n.t("animationDescriptionsTesting")}
+      description={I18n.t('animationDescriptionsTesting')}
     />
   );
 };
 
-export { TrainingAnimationDescription, TestingAnimationDescription };
+export {TrainingAnimationDescription, TestingAnimationDescription};

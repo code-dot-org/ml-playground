@@ -1,8 +1,8 @@
 /* React component to handle setting datatype for selected columns. */
-import { connect } from "react-redux";
-import { RootState, setColumnsByDataType } from "../redux";
-import { ColumnTypes } from "../constants";
-import I18n from "../i18n";
+import {connect} from 'react-redux';
+import {RootState, setColumnsByDataType} from '../redux';
+import {ColumnTypes} from '../constants';
+import I18n from '../i18n';
 
 interface ColumnDataTypeDropdownProps {
   columnId?: string;
@@ -10,8 +10,15 @@ interface ColumnDataTypeDropdownProps {
   setColumnsByDataType: (column: string, dataType: string) => void;
 }
 
-const ColumnDataTypeDropdown = ({ columnId, currentDataType, setColumnsByDataType }: ColumnDataTypeDropdownProps) => {
-  const handleChangeDataType = (event: React.ChangeEvent<HTMLSelectElement>, feature: string) => {
+const ColumnDataTypeDropdown = ({
+  columnId,
+  currentDataType,
+  setColumnsByDataType,
+}: ColumnDataTypeDropdownProps) => {
+  const handleChangeDataType = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    feature: string,
+  ) => {
     event.preventDefault();
     setColumnsByDataType(feature, event.target.value);
   };
@@ -19,9 +26,7 @@ const ColumnDataTypeDropdown = ({ columnId, currentDataType, setColumnsByDataTyp
   return (
     <div>
       <select
-        onChange={event =>
-          handleChangeDataType(event, columnId!)
-        }
+        onChange={event => handleChangeDataType(event, columnId!)}
         value={currentDataType}
       >
         {Object.values(ColumnTypes).map((option, index) => {
@@ -41,6 +46,6 @@ export default connect(
   dispatch => ({
     setColumnsByDataType(column: string, dataType: string) {
       dispatch(setColumnsByDataType(column, dataType));
-    }
-  })
+    },
+  }),
 )(ColumnDataTypeDropdown);

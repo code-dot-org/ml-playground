@@ -1,6 +1,6 @@
 /* React component to handle importing CSVs and pushing data to Redux store. */
-import { useState } from "react";
-import { connect } from "react-redux";
+import {useState} from 'react';
+import {connect} from 'react-redux';
 import {
   setSelectedName,
   setSelectedCSV,
@@ -8,15 +8,15 @@ import {
   resetState,
   getSpecifiedDatasets,
   setHighlightDataset,
-  RootState
-} from "../redux";
-import { Dispatch } from "redux";
-import { parseCSV, MIN_CSV_ROWS, MIN_CSV_COLUMNS } from "../csvReaderWrapper";
-import { parseJSON } from "../jsonReaderWrapper";
-import { getDatasets, getAvailableDatasets } from "../datasetManifest";
-import { styles } from "../constants";
-import ScrollableContent from "./ScrollableContent";
-import I18n from "../i18n";
+  RootState,
+} from '../redux';
+import {Dispatch} from 'redux';
+import {parseCSV, MIN_CSV_ROWS, MIN_CSV_COLUMNS} from '../csvReaderWrapper';
+import {parseJSON} from '../jsonReaderWrapper';
+import {getDatasets, getAvailableDatasets} from '../datasetManifest';
+import {styles} from '../constants';
+import ScrollableContent from './ScrollableContent';
+import I18n from '../i18n';
 
 interface SelectDatasetProps {
   setSelectedName: (name: string) => void;
@@ -41,12 +41,13 @@ const SelectDataset = ({
   specifiedDatasets,
   name,
   highlightDataset,
-  invalidData
+  invalidData,
 }: SelectDatasetProps) => {
   const [, setDownload] = useState(false);
 
   const handleDatasetClick = (id: string) => {
-    const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
+    const assetPath = (global as unknown as Record<string, string>)
+      .__ml_playground_asset_public_path__;
     const dataset = getDatasets().find(dataset => dataset.id === id);
 
     // Don't process the click if we're just clicking the current
@@ -75,14 +76,16 @@ const SelectDataset = ({
   };
 
   const getInvalidDataMessage = () => {
-    if (invalidData === "tooFewRows") {
-      return I18n.t(
-        "selectDatasetErrorTooFewRows",
-        {"count": MIN_CSV_ROWS, "fileType": "CSV"});
-    } else if (invalidData === "tooFewColumns") {
-      return I18n.t(
-        "selectDatasetErrorTooFewColumns",
-        {"count": MIN_CSV_COLUMNS, "fileType": "CSV"});
+    if (invalidData === 'tooFewRows') {
+      return I18n.t('selectDatasetErrorTooFewRows', {
+        count: MIN_CSV_ROWS,
+        fileType: 'CSV',
+      });
+    } else if (invalidData === 'tooFewColumns') {
+      return I18n.t('selectDatasetErrorTooFewColumns', {
+        count: MIN_CSV_COLUMNS,
+        fileType: 'CSV',
+      });
     } else {
       return null;
     }
@@ -90,7 +93,8 @@ const SelectDataset = ({
 
   const datasets = getAvailableDatasets(specifiedDatasets);
 
-  const assetPath = ((global as unknown) as Record<string, string>).__ml_playground_asset_public_path__;
+  const assetPath = (global as unknown as Record<string, string>)
+    .__ml_playground_asset_public_path__;
 
   return (
     <div id="select-dataset" style={styles.panel}>
@@ -102,16 +106,13 @@ const SelectDataset = ({
                 ...styles.selectDatasetItem,
                 ...(highlightDataset === dataset.name &&
                   styles.selectDatasetItemHighlighted),
-                ...(name === dataset.name &&
-                  styles.selectDatasetItemSelected),
-                ...(index % 3 === 0 && { clear: "both" })
+                ...(name === dataset.name && styles.selectDatasetItemSelected),
+                ...(index % 3 === 0 && {clear: 'both'}),
               }}
               key={dataset.id}
               onClick={() => handleDatasetClick(dataset.id)}
               onKeyDown={() => handleDatasetClick(dataset.id)}
-              onMouseEnter={() =>
-                setHighlightDataset(dataset.name)
-              }
+              onMouseEnter={() => setHighlightDataset(dataset.name)}
               onMouseLeave={() => setHighlightDataset(undefined)}
               role="button"
               tabIndex={0}
@@ -133,7 +134,7 @@ const SelectDataset = ({
       {!specifiedDatasets && (
         <div style={styles.contentsCsvButton}>
           <label style={styles.uploadCsvButton}>
-            {I18n.t("selectDatasetUploadFileButton", {"fileType": "CSV"})}
+            {I18n.t('selectDatasetUploadFileButton', {fileType: 'CSV'})}
             {/* Setting value to empty here allows us to receive an
                 onChange event for the same file as previously selected,
                 which allows the user to upload a file, then choose an
@@ -165,7 +166,7 @@ export default connect(
     specifiedDatasets: getSpecifiedDatasets(state),
     name: state.name,
     highlightDataset: state.highlightDataset,
-    invalidData: state.invalidData
+    invalidData: state.invalidData,
   }),
   (dispatch: Dispatch) => ({
     resetState() {
@@ -182,6 +183,6 @@ export default connect(
     },
     setHighlightDataset(id: string | undefined) {
       dispatch(setHighlightDataset(id as string));
-    }
-  })
+    },
+  }),
 )(SelectDataset);

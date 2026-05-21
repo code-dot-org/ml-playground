@@ -1,10 +1,15 @@
 /* React component to handle displaying imported data. */
-import { connect } from "react-redux";
-import { getTableData, setCurrentColumn, setHighlightColumn, RootState } from "../redux";
-import { Dispatch } from "redux";
-import { styles } from "../constants";
-import { getLocalizedColumnName } from "../helpers/columnDetails";
-import { DataRow } from "../types";
+import {connect} from 'react-redux';
+import {
+  getTableData,
+  setCurrentColumn,
+  setHighlightColumn,
+  RootState,
+} from '../redux';
+import {Dispatch} from 'redux';
+import {styles} from '../constants';
+import {getLocalizedColumnName} from '../helpers/columnDetails';
+import {DataRow} from '../types';
 
 interface DataTableProps {
   currentPanel: string;
@@ -38,7 +43,7 @@ const DataTable = ({
   singleRow,
   startingRow,
   noLabel,
-  hideLabel
+  hideLabel,
 }: DataTableProps) => {
   const getColumnHeaderStyle = (key: string) => {
     let style;
@@ -49,10 +54,9 @@ const DataTable = ({
       style = styles.dataDisplayHeaderFeature;
     }
 
-    const pointerStyle =
-      !reducedColumns && styles.dataDisplayHeaderClickable;
+    const pointerStyle = !reducedColumns && styles.dataDisplayHeaderClickable;
 
-    return { ...styles.dataDisplayHeader, ...pointerStyle, ...style };
+    return {...styles.dataDisplayHeader, ...pointerStyle, ...style};
   };
 
   const getColumnCellStyle = (key: string) => {
@@ -61,20 +65,20 @@ const DataTable = ({
     if (hideLabel && labelColumn === key) {
       style = styles.dataDisplayCellHidden;
     } else if (key === currentColumn) {
-      if (currentPanel === "dataDisplayLabel") {
+      if (currentPanel === 'dataDisplayLabel') {
         style = styles.dataDisplayCellSelectedLabel;
       } else {
         style = styles.dataDisplayCellSelected;
       }
     } else if (key === highlightColumn) {
-      if (currentPanel === "dataDisplayLabel") {
+      if (currentPanel === 'dataDisplayLabel') {
         style = styles.dataDisplayCellHighlightedLabel;
       } else {
         style = styles.dataDisplayCellHighlighted;
       }
     }
 
-    return { ...styles.dataDisplayCell, ...style };
+    return {...styles.dataDisplayCell, ...style};
   };
 
   const getColumns = () => {
@@ -86,8 +90,7 @@ const DataTable = ({
       return Object.keys(data[0])
         .filter(key => {
           return (
-            (!noLabel && labelColumn === key) ||
-            selectedFeatures.includes(key)
+            (!noLabel && labelColumn === key) || selectedFeatures.includes(key)
           );
         })
         .sort((key1, key2) => {
@@ -104,11 +107,7 @@ const DataTable = ({
     }
 
     if (singleRow !== undefined) {
-      return [
-        data[
-          Math.min(singleRow, data.length - 1)
-        ]
-      ];
+      return [data[Math.min(singleRow, data.length - 1)]];
     } else {
       return data.slice(0, 100);
     }
@@ -183,14 +182,14 @@ const DataTable = ({
 };
 
 export default connect(
-  (state: RootState, props: { useResultsData?: boolean }) => ({
+  (state: RootState, props: {useResultsData?: boolean}) => ({
     data: getTableData(state, !!props.useResultsData),
     datasetId: state.metadata && state.metadata.name,
     labelColumn: state.labelColumn,
     selectedFeatures: state.selectedFeatures,
     currentColumn: state.currentColumn,
     highlightColumn: state.highlightColumn,
-    currentPanel: state.currentPanel
+    currentPanel: state.currentPanel,
   }),
   (dispatch: Dispatch) => ({
     setCurrentColumn(column: string | undefined) {
@@ -198,6 +197,6 @@ export default connect(
     },
     setHighlightColumn(column: string | undefined) {
       dispatch(setHighlightColumn(column as string));
-    }
-  })
+    },
+  }),
 )(DataTable);

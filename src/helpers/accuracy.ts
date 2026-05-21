@@ -6,18 +6,14 @@
   of the range of labels to count as "correct".
 */
 
-import {
-  ResultsGrades,
-  REGRESSION_ERROR_TOLERANCE,
-  MLTypes
-} from "../constants";
-import { getExtrema } from "./columnDetails";
+import {ResultsGrades, REGRESSION_ERROR_TOLERANCE, MLTypes} from '../constants';
+import {getExtrema} from './columnDetails';
 import {
   getConvertedLabels,
-  getConvertedAccuracyCheckExamples
-} from "./valueConversion";
-import { isRegression, RootState } from "../redux";
-import { ResultsData, DataRow } from "../types";
+  getConvertedAccuracyCheckExamples,
+} from './valueConversion';
+import {isRegression, RootState} from '../redux';
+import {ResultsData, DataRow} from '../types';
 
 // Return results data so that it looks like regular data provided to the
 // DataTable.
@@ -38,7 +34,7 @@ export function getResultsDataInDataTableForm(state: RootState): DataRow[] {
 
     state.selectedFeatures.map((feature: string, index: number) => {
       results[i][feature] = resultsByGrades.examples[i][index];
-    })
+    });
 
     results[i][state.labelColumn!] = resultsByGrades.predictedLabels[i];
   }
@@ -58,18 +54,28 @@ export function getIncorrectResults(state: RootState): ResultsData {
   return getResultsByGrade(state, ResultsGrades.INCORRECT);
 }
 
-export function getResultsByGrade(state: RootState, grade: string): ResultsData {
+export function getResultsByGrade(
+  state: RootState,
+  grade: string,
+): ResultsData {
   const accuracyGrades = getAccuracyGrades(state);
-  const examples = getConvertedAccuracyCheckExamples(state).filter((_example: (string | number)[], index: number) => {
+  const examples = getConvertedAccuracyCheckExamples(state).filter(
+    (_example: (string | number)[], index: number) => {
+      return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
+    },
+  );
+  const labels = getConvertedLabels(state, state.accuracyCheckLabels).filter(
+    (_label: string | number, index: number) => {
+      return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
+    },
+  );
+  const predictedLabels = getConvertedLabels(
+    state,
+    state.accuracyCheckPredictedLabels,
+  ).filter((_label: string | number, index: number) => {
     return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
   });
-  const labels = getConvertedLabels(state, state.accuracyCheckLabels).filter((_label: string | number, index: number) => {
-    return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
-  });
-  const predictedLabels = getConvertedLabels(state, state.accuracyCheckPredictedLabels).filter((_label: string | number, index: number) => {
-    return grade === ResultsGrades.ALL || grade === accuracyGrades[index];
-  });
-  return { examples, labels, predictedLabels };
+  return {examples, labels, predictedLabels};
 }
 
 export function getAccuracyGrades(state: RootState): string[] {
@@ -79,10 +85,10 @@ export function getAccuracyGrades(state: RootState): string[] {
   return grades;
 }
 
-export function getSummaryStat(state: RootState): { type: string; stat: string } {
+export function getSummaryStat(state: RootState): {type: string; stat: string} {
   return {
     type: isRegression(state) ? MLTypes.REGRESSION : MLTypes.CLASSIFICATION,
-    stat: getPercentCorrect(state)
+    stat: getPercentCorrect(state),
   };
 }
 
@@ -93,7 +99,10 @@ export function getPercentCorrect(state: RootState): string {
   return percentCorrect;
 }
 
-export function getAccuracyClassification(state: RootState): { percentCorrect: string; grades: string[] } {
+export function getAccuracyClassification(state: RootState): {
+  percentCorrect: string;
+  grades: string[];
+} {
   let numCorrect = 0;
   const grades = [];
   const numPredictedLabels = state.accuracyCheckPredictedLabels
@@ -112,11 +121,14 @@ export function getAccuracyClassification(state: RootState): { percentCorrect: s
   }
   return {
     percentCorrect: ((numCorrect / numPredictedLabels) * 100).toFixed(2),
-    grades
+    grades,
   };
 }
 
-export function getAccuracyRegression(state: RootState): { percentCorrect: string; grades: string[] } {
+export function getAccuracyRegression(state: RootState): {
+  percentCorrect: string;
+  grades: string[];
+} {
   let numCorrect = 0;
   const grades: string[] = [];
   const range = getExtrema(state.data, state.labelColumn!).range;
@@ -124,7 +136,8 @@ export function getAccuracyRegression(state: RootState): { percentCorrect: strin
   const numPredictedLabels = state.accuracyCheckPredictedLabels.length;
   for (let i = 0; i < numPredictedLabels; i++) {
     const diff = Math.abs(
-      Number(state.accuracyCheckLabels[i]) - Number(state.accuracyCheckPredictedLabels[i])
+      Number(state.accuracyCheckLabels[i]) -
+        Number(state.accuracyCheckPredictedLabels[i]),
     );
     if (diff <= errorTolerance) {
       numCorrect++;
@@ -135,6 +148,6 @@ export function getAccuracyRegression(state: RootState): { percentCorrect: strin
   }
   return {
     percentCorrect: ((numCorrect / numPredictedLabels) * 100).toFixed(2),
-    grades
+    grades,
   };
 }

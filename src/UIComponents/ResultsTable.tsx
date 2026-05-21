@@ -1,12 +1,12 @@
 /* React component to handle displaying test data and A.I. Bot's guesses. */
-import { useCallback } from "react";
-import { connect } from "react-redux";
-import { isRegression, setResultsHighlightRow, RootState } from "../redux";
-import { Dispatch } from "redux";
-import { styles, colors, REGRESSION_ERROR_TOLERANCE } from "../constants";
-import I18n from "../i18n";
-import { getLocalizedColumnName } from "../helpers/columnDetails";
-import { ResultsData } from "../types";
+import {useCallback} from 'react';
+import {connect} from 'react-redux';
+import {isRegression, setResultsHighlightRow, RootState} from '../redux';
+import {Dispatch} from 'redux';
+import {styles, colors, REGRESSION_ERROR_TOLERANCE} from '../constants';
+import I18n from '../i18n';
+import {getLocalizedColumnName} from '../helpers/columnDetails';
+import {ResultsData} from '../types';
 
 interface ResultsTableProps {
   selectedFeatures: string[];
@@ -18,14 +18,24 @@ interface ResultsTableProps {
   datasetId: string | undefined;
 }
 
-const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: isRegressionMode, setResultsHighlightRow, resultsHighlightRow, datasetId }: ResultsTableProps) => {
-  const getRowCellStyle = useCallback((index: number) => {
-    return {
-      ...styles.tableCell,
-      ...(index === resultsHighlightRow &&
-        styles.resultsCellHighlight)
-    };
-  }, [resultsHighlightRow]);
+const ResultsTable = ({
+  selectedFeatures,
+  labelColumn,
+  results,
+  isRegression: isRegressionMode,
+  setResultsHighlightRow,
+  resultsHighlightRow,
+  datasetId,
+}: ResultsTableProps) => {
+  const getRowCellStyle = useCallback(
+    (index: number) => {
+      return {
+        ...styles.tableCell,
+        ...(index === resultsHighlightRow && styles.resultsCellHighlight),
+      };
+    },
+    [resultsHighlightRow],
+  );
 
   const featureCount = selectedFeatures.length;
 
@@ -33,10 +43,9 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
     <div style={styles.panel}>
       {isRegressionMode && (
         <div style={styles.smallTextRight}>
-          {I18n.t(
-            "resultsTablePredictionRange",
-            {"percentage": REGRESSION_ERROR_TOLERANCE}
-          )}
+          {I18n.t('resultsTablePredictionRange', {
+            percentage: REGRESSION_ERROR_TOLERANCE,
+          })}
         </div>
       )}
 
@@ -48,26 +57,26 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
                 colSpan={featureCount}
                 style={{
                   ...styles.tableHeader,
-                  ...styles.resultsTableFirstHeader
+                  ...styles.resultsTableFirstHeader,
                 }}
               >
-                {I18n.t("resultsTableFeatureHeader")}
+                {I18n.t('resultsTableFeatureHeader')}
               </th>
               <th
                 style={{
                   ...styles.tableHeader,
-                  ...styles.resultsTableFirstHeader
+                  ...styles.resultsTableFirstHeader,
                 }}
               >
-                {I18n.t("resultsTableActualValueHeader")}
+                {I18n.t('resultsTableActualValueHeader')}
               </th>
               <th
                 style={{
                   ...styles.tableHeader,
-                  ...styles.resultsTableFirstHeader
+                  ...styles.resultsTableFirstHeader,
                 }}
               >
-                {I18n.t("resultsTablePredictedValueHeader")}
+                {I18n.t('resultsTablePredictedValueHeader')}
               </th>
             </tr>
             <tr>
@@ -77,7 +86,7 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
                     style={{
                       ...styles.tableHeader,
                       backgroundColor: colors.feature,
-                      ...styles.resultsTableSecondHeader
+                      ...styles.resultsTableSecondHeader,
                     }}
                     key={index}
                   >
@@ -89,7 +98,7 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
                 style={{
                   ...styles.tableHeader,
                   backgroundColor: colors.label,
-                  ...styles.resultsTableSecondHeader
+                  ...styles.resultsTableSecondHeader,
                 }}
               >
                 {getLocalizedColumnName(datasetId!, labelColumn!)}
@@ -98,7 +107,7 @@ const ResultsTable = ({ selectedFeatures, labelColumn, results, isRegression: is
                 style={{
                   ...styles.tableHeader,
                   backgroundColor: colors.label,
-                  ...styles.resultsTableSecondHeader
+                  ...styles.resultsTableSecondHeader,
                 }}
               >
                 {getLocalizedColumnName(datasetId!, labelColumn!)}
@@ -142,11 +151,11 @@ export default connect(
     labelColumn: state.labelColumn,
     isRegression: isRegression(state),
     resultsHighlightRow: state.resultsHighlightRow,
-    datasetId: state.metadata && state.metadata.name
+    datasetId: state.metadata && state.metadata.name,
   }),
   (dispatch: Dispatch) => ({
     setResultsHighlightRow(column: number | undefined) {
       dispatch(setResultsHighlightRow(column as number));
-    }
-  })
+    },
+  }),
 )(ResultsTable);

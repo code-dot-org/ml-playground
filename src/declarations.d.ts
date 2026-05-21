@@ -1,51 +1,55 @@
-declare module "*.png" {
+declare module '*.png' {
   const src: string;
   export default src;
 }
 
-declare module "*.jpg" {
+declare module '*.jpg' {
   const src: string;
   export default src;
 }
 
-declare module "@public/*.png" {
+declare module '@public/*.png' {
   const src: string;
   export default src;
 }
 
-declare module "@public/*.jpg" {
+declare module '@public/*.jpg' {
   const src: string;
   export default src;
 }
 
-declare module "*.css" {
+declare module '*.css' {
   const content: Record<string, string>;
   export default content;
 }
 
-declare module "react-chartjs-2" {
-  export const Bar: import("react").ComponentType<{
+declare module 'react-chartjs-2' {
+  export const Bar: import('react').ComponentType<{
     data: object;
     width?: number;
     height?: number;
     options?: object;
   }>;
-  export const Scatter: import("react").ComponentType<{
+  export const Scatter: import('react').ComponentType<{
     data: object;
     options?: object;
   }>;
 }
 
-declare module "ml-knn" {
+declare module 'ml-knn' {
   export default class KNN {
-    constructor(dataset: number[][], labels: (number | string)[], options?: { k?: number });
+    constructor(
+      dataset: number[][],
+      labels: (number | string)[],
+      options?: {k?: number},
+    );
     predict(dataset: number[][]): (number | string)[];
     toJSON(): object;
   }
 }
 
-declare module "react-papaparse" {
-  export const CSVReader: import("react").ComponentType<{
+declare module 'react-papaparse' {
+  export const CSVReader: import('react').ComponentType<{
     onFileLoaded?: (data: Record<string, string>[], fileInfo: object) => void;
     onError?: (error: Error) => void;
     parserOptions?: object;
@@ -54,12 +58,14 @@ declare module "react-papaparse" {
   }>;
 }
 
-declare module "query-string" {
-  export function parse(query: string): Record<string, string | string[] | null | undefined>;
+declare module 'query-string' {
+  export function parse(
+    query: string,
+  ): Record<string, string | string[] | null | undefined>;
   export function stringify(obj: Record<string, unknown>): string;
 }
 
-declare module "messageformat" {
+declare module 'messageformat' {
   export default class MessageFormat {
     constructor(locale: string);
     compile(message: string | Record<string, unknown>): Record<string, unknown>;

@@ -1,15 +1,18 @@
 /* React component to handle selecting a column as the label. */
-import { connect } from "react-redux";
-import { RootState, setLabelColumn } from "../redux";
-import { styles } from "../constants";
-import I18n from "../i18n";
+import {connect} from 'react-redux';
+import {RootState, setLabelColumn} from '../redux';
+import {styles} from '../constants';
+import I18n from '../i18n';
 
 interface SelectLabelButtonProps {
   column?: string;
   setLabelColumn: (column: string) => void;
 }
 
-const SelectLabelButton = ({ column, setLabelColumn }: SelectLabelButtonProps) => {
+const SelectLabelButton = ({
+  column,
+  setLabelColumn,
+}: SelectLabelButtonProps) => {
   const setPredictColumn = (event: React.MouseEvent, column: string) => {
     setLabelColumn(column);
     event.preventDefault();
@@ -22,7 +25,7 @@ const SelectLabelButton = ({ column, setLabelColumn }: SelectLabelButtonProps) =
       onClick={event => setPredictColumn(event, column!)}
       style={styles.selectLabelButton}
     >
-      {I18n.t("selectLabelButton")}
+      {I18n.t('selectLabelButton')}
     </button>
   );
 };
@@ -32,6 +35,6 @@ export default connect(
   dispatch => ({
     setLabelColumn(column: string) {
       dispatch(setLabelColumn(column));
-    }
-  })
+    },
+  }),
 )(SelectLabelButton);

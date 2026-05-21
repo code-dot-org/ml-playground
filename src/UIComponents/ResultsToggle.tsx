@@ -1,21 +1,21 @@
 /* React component to handle toggling between correct/incorrect test results */
-import { connect } from "react-redux";
-import { setResultsTab, RootState } from "../redux";
-import { ResultsGrades, styles } from "../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
-import I18n from "../i18n";
+import {connect} from 'react-redux';
+import {setResultsTab, RootState} from '../redux';
+import {ResultsGrades, styles} from '../constants';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
+import I18n from '../i18n';
 
 interface ResultsToggleProps {
   resultsTab?: string;
   setResultsTab?: (key: string) => void;
 }
 
-const ResultsToggle = ({ resultsTab, setResultsTab }: ResultsToggleProps) => {
+const ResultsToggle = ({resultsTab, setResultsTab}: ResultsToggleProps) => {
   const getTogglePillStyle = (key: string) => {
     let style;
     if (key === resultsTab) {
-      style = { ...styles.pill, ...styles.selectedPill };
+      style = {...styles.pill, ...styles.selectedPill};
     } else {
       style = styles.pill;
     }
@@ -25,16 +25,16 @@ const ResultsToggle = ({ resultsTab, setResultsTab }: ResultsToggleProps) => {
   const resultsTabs = [
     {
       key: ResultsGrades.CORRECT,
-      headerText: I18n.t("correctAnswer"),
+      headerText: I18n.t('correctAnswer'),
       icon: faCheck,
-      iconStyle: styles.correct
+      iconStyle: styles.correct,
     },
     {
       key: ResultsGrades.INCORRECT,
-      headerText: I18n.t("incorrectAnswer"),
+      headerText: I18n.t('incorrectAnswer'),
       icon: faTimes,
-      iconStyle: styles.error
-    }
+      iconStyle: styles.error,
+    },
   ];
 
   return (
@@ -49,7 +49,7 @@ const ResultsToggle = ({ resultsTab, setResultsTab }: ResultsToggleProps) => {
             role="button"
             tabIndex={0}
           >
-            <FontAwesomeIcon icon={tab.icon} style={tab.iconStyle} />{" "}
+            <FontAwesomeIcon icon={tab.icon} style={tab.iconStyle} />{' '}
             {tab.headerText}
           </div>
         ))}
@@ -60,11 +60,11 @@ const ResultsToggle = ({ resultsTab, setResultsTab }: ResultsToggleProps) => {
 
 export default connect(
   (state: RootState) => ({
-    resultsTab: state.resultsTab
+    resultsTab: state.resultsTab,
   }),
   dispatch => ({
     setResultsTab(key: string) {
       dispatch(setResultsTab(key));
-    }
-  })
+    },
+  }),
 )(ResultsToggle);

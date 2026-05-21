@@ -1,15 +1,18 @@
 /* React component to handle selecting columns as features. */
-import { connect } from "react-redux";
-import { RootState, addSelectedFeature } from "../redux";
-import { styles } from "../constants";
-import I18n from "../i18n";
+import {connect} from 'react-redux';
+import {RootState, addSelectedFeature} from '../redux';
+import {styles} from '../constants';
+import I18n from '../i18n';
 
 interface AddFeatureButtonProps {
   column?: string;
   addSelectedFeature: (column: string) => void;
 }
 
-const AddFeatureButton = ({ column, addSelectedFeature }: AddFeatureButtonProps) => {
+const AddFeatureButton = ({
+  column,
+  addSelectedFeature,
+}: AddFeatureButtonProps) => {
   const addFeature = (event: React.MouseEvent, column: string) => {
     addSelectedFeature(column);
     event.preventDefault();
@@ -22,7 +25,7 @@ const AddFeatureButton = ({ column, addSelectedFeature }: AddFeatureButtonProps)
       onClick={event => addFeature(event, column!)}
       style={styles.selectFeaturesButton}
     >
-      {I18n.t("addFeatureButton")}
+      {I18n.t('addFeatureButton')}
     </button>
   );
 };
@@ -32,6 +35,6 @@ export default connect(
   dispatch => ({
     addSelectedFeature(column: string) {
       dispatch(addSelectedFeature(column));
-    }
-  })
+    },
+  }),
 )(AddFeatureButton);

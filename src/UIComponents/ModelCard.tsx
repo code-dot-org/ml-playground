@@ -1,14 +1,18 @@
 /* React component to handle displaying the model card. */
-import { connect } from "react-redux";
-import { styles } from "../constants";
-import { getLabelToSave, getFeaturesToSave, RootState } from "../redux";
-import { getPercentCorrect } from "../helpers/accuracy";
-import { getDatasetDetails } from "../helpers/datasetDetails";
-import Statement from "./Statement";
-import aiBotBorder from "@public/images/ai-bot/ai-bot-border.png";
-import I18n from "../i18n";
-import { getLocalizedColumnName } from "../helpers/columnDetails";
-import { ModelCardColumn, TrainedModelDetailsSave, DatasetDetails } from "../types";
+import {connect} from 'react-redux';
+import {styles} from '../constants';
+import {getLabelToSave, getFeaturesToSave, RootState} from '../redux';
+import {getPercentCorrect} from '../helpers/accuracy';
+import {getDatasetDetails} from '../helpers/datasetDetails';
+import Statement from './Statement';
+import aiBotBorder from '@public/images/ai-bot/ai-bot-border.png';
+import I18n from '../i18n';
+import {getLocalizedColumnName} from '../helpers/columnDetails';
+import {
+  ModelCardColumn,
+  TrainedModelDetailsSave,
+  DatasetDetails,
+} from '../types';
 
 interface ModelCardProps {
   trainedModelDetails: TrainedModelDetailsSave;
@@ -19,12 +23,22 @@ interface ModelCardProps {
   datasetDetails: DatasetDetails;
 }
 
-const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, label, features, datasetDetails }: ModelCardProps) => {
+const ModelCard = ({
+  trainedModelDetails,
+  selectedFeatures,
+  percentCorrect,
+  label,
+  features,
+  datasetDetails,
+}: ModelCardProps) => {
   const localizedLabel = getLocalizedColumnName(datasetDetails.name, label.id);
-  const localizedFeatures =
-    selectedFeatures.map(feature => getLocalizedColumnName(datasetDetails.name, feature));
-  const predictionStatement = I18n.t("predictionStatement",
-    {"output": localizedLabel, "inputs": localizedFeatures.join(", ")})
+  const localizedFeatures = selectedFeatures.map(feature =>
+    getLocalizedColumnName(datasetDetails.name, feature),
+  );
+  const predictionStatement = I18n.t('predictionStatement', {
+    output: localizedLabel,
+    inputs: localizedFeatures.join(', '),
+  });
   return (
     <div style={styles.panel}>
       <Statement />
@@ -33,23 +47,23 @@ const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, labe
           src={aiBotBorder}
           className="ailab-image-hover"
           style={styles.summaryScreenBotImage}
-          alt={I18n.t("aiBotAltText")}
+          alt={I18n.t('aiBotAltText')}
         />
       </div>
       <div id="uitest-model-card" style={styles.modelCardContainer}>
         <h3 style={styles.modelCardHeader}>{trainedModelDetails.name}</h3>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardAccuracy")}</h5>
+          <h5 style={styles.modelCardHeading}>{I18n.t('modelCardAccuracy')}</h5>
           <div style={styles.modelCardContent}>
             <p style={styles.modelCardDetails}>
-              <span>
-                {percentCorrect}%
-              </span>
+              <span>{percentCorrect}%</span>
             </p>
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardIntendedUse")}</h5>
+          <h5 style={styles.modelCardHeading}>
+            {I18n.t('modelCardIntendedUse')}
+          </h5>
           <div style={styles.modelCardContent}>
             {trainedModelDetails.potentialUses && (
               <p style={styles.modelCardDetails}>
@@ -59,7 +73,9 @@ const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, labe
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardLimitations")}</h5>
+          <h5 style={styles.modelCardHeading}>
+            {I18n.t('modelCardLimitations')}
+          </h5>
           <div style={styles.modelCardContent}>
             {trainedModelDetails.potentialMisuses && (
               <p style={styles.modelCardDetails}>
@@ -69,7 +85,9 @@ const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, labe
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardDatasetDetails")}</h5>
+          <h5 style={styles.modelCardHeading}>
+            {I18n.t('modelCardDatasetDetails')}
+          </h5>
           <div style={styles.modelCardContent}>
             {datasetDetails.description && (
               <p style={styles.modelCardDetails}>
@@ -78,46 +96,48 @@ const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, labe
             )}
             {datasetDetails.numRows && (
               <p style={styles.modelCardDetails}>
-                {I18n.t("modelCardDatasetDetailsSize")}
+                {I18n.t('modelCardDatasetDetailsSize')}
                 <br />
-                {I18n.t(
-                  "modelCardDatasetDetailsSizeCount",
-                  { "rowCount": datasetDetails.numRows})}
+                {I18n.t('modelCardDatasetDetailsSizeCount', {
+                  rowCount: datasetDetails.numRows,
+                })}
               </p>
             )}
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardFeaturesAndLabel")}</h5>
+          <h5 style={styles.modelCardHeading}>
+            {I18n.t('modelCardFeaturesAndLabel')}
+          </h5>
           <div style={styles.modelCardContent}>
             <p style={styles.modelCardDetails}>{predictionStatement}</p>
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardLabel")}</h5>
+          <h5 style={styles.modelCardHeading}>{I18n.t('modelCardLabel')}</h5>
           <div style={styles.modelCardContent}>
             <p style={styles.bold}>{localizedLabel}</p>
             {label.description && <p>{label.description}</p>}
             {!label.values && (
               <p style={styles.modelCardDetails}>
-                {I18n.t("modelCardPossibleValues")}
+                {I18n.t('modelCardPossibleValues')}
                 <br />
-                {I18n.t("modelCardPossibleValuesMinimum")} {label.min}
+                {I18n.t('modelCardPossibleValuesMinimum')} {label.min}
                 <br />
-                {I18n.t("modelCardPossibleValuesMaximum")} {label.max}
+                {I18n.t('modelCardPossibleValuesMaximum')} {label.max}
               </p>
             )}
             {label.values && (
               <p style={styles.modelCardDetails}>
-                {I18n.t("modelCardPossibleValues")}
+                {I18n.t('modelCardPossibleValues')}
                 <br />
-                {label.values.join(" ")}
+                {label.values.join(' ')}
               </p>
             )}
           </div>
         </div>
         <div style={styles.modelCardSubpanel}>
-          <h5 style={styles.modelCardHeading}>{I18n.t("modelCardFeatures")}</h5>
+          <h5 style={styles.modelCardHeading}>{I18n.t('modelCardFeatures')}</h5>
           <div style={styles.modelCardContent}>
             {features.length > 0 &&
               features.map((feature, index) => {
@@ -127,18 +147,18 @@ const ModelCard = ({ trainedModelDetails, selectedFeatures, percentCorrect, labe
                     {feature.description && <p>{feature.description}</p>}
                     {!feature.values && (
                       <p>
-                        {I18n.t("modelCardPossibleValues")}
+                        {I18n.t('modelCardPossibleValues')}
                         <br />
-                        {I18n.t("modelCardPossibleValuesMinimum")} {feature.min}
+                        {I18n.t('modelCardPossibleValuesMinimum')} {feature.min}
                         <br />
-                        {I18n.t("modelCardPossibleValuesMaximum")} {feature.max}
+                        {I18n.t('modelCardPossibleValuesMaximum')} {feature.max}
                       </p>
                     )}
                     {feature.values && (
                       <p>
-                        {I18n.t("modelCardPossibleValues")}
+                        {I18n.t('modelCardPossibleValues')}
                         <br />
-                        {feature.values.join(" ")}
+                        {feature.values.join(' ')}
                       </p>
                     )}
                   </div>
@@ -157,5 +177,5 @@ export default connect((state: RootState) => ({
   percentCorrect: getPercentCorrect(state),
   label: getLabelToSave(state),
   features: getFeaturesToSave(state),
-  datasetDetails: getDatasetDetails(state)
+  datasetDetails: getDatasetDetails(state),
 }))(ModelCard);

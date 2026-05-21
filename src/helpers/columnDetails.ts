@@ -1,10 +1,16 @@
-import I18n from "../i18n";
+import I18n from '../i18n';
 
 /* Helper functions for getting information about a column and its data. */
 
-import { ColumnTypes, UNIQUE_OPTIONS_MAX } from "../constants";
-import { RootState } from "../redux";
-import { DataRow, Metadata, MetadataField, TrainedModelDetailsSave, ModelCardColumn } from "../types";
+import {ColumnTypes, UNIQUE_OPTIONS_MAX} from '../constants';
+import {RootState} from '../redux';
+import {
+  DataRow,
+  Metadata,
+  MetadataField,
+  TrainedModelDetailsSave,
+  ModelCardColumn,
+} from '../types';
 
 export interface Extrema {
   max: number;
@@ -13,16 +19,19 @@ export interface Extrema {
 }
 
 export function isColumnCategorical(state: RootState, column: string): boolean {
-  return (state.columnsByDataType[column] === ColumnTypes.CATEGORICAL);
+  return state.columnsByDataType[column] === ColumnTypes.CATEGORICAL;
 }
 
 export function isColumnNumerical(state: RootState, column: string): boolean {
-  return (state.columnsByDataType[column] === ColumnTypes.NUMERICAL);
+  return state.columnsByDataType[column] === ColumnTypes.NUMERICAL;
 }
 
-export function filterColumnsByType(columnsByDataType: Record<string, string>, columnType: string): string[] {
+export function filterColumnsByType(
+  columnsByDataType: Record<string, string>,
+  columnType: string,
+): string[] {
   return Object.keys(columnsByDataType).filter(
-    column => columnsByDataType[column] === columnType
+    column => columnsByDataType[column] === columnType,
   );
 }
 /*
@@ -34,10 +43,13 @@ export function tooManyUniqueOptions(uniqueOptionsCount: number): boolean {
   return uniqueOptionsCount > UNIQUE_OPTIONS_MAX;
 }
 
-export function getUniqueOptions(data: DataRow[], column: string): (string | number)[] {
+export function getUniqueOptions(
+  data: DataRow[],
+  column: string,
+): (string | number)[] {
   const columnData = getColumnData(data, column);
   return Array.from(new Set(columnData)).filter(
-    option => option !== undefined && option !== ""
+    option => option !== undefined && option !== '',
   );
 }
 
@@ -62,7 +74,7 @@ export function getExtrema(data: DataRow[], column: string): Extrema {
   const extrema: Extrema = {
     max: Math.max(...numericData),
     min: Math.min(...numericData),
-    range: 0
+    range: 0,
   };
   extrema.range = Math.abs(extrema.max - extrema.min);
 
@@ -74,20 +86,30 @@ export function containsOnlyNumbers(data: DataRow[], column: string): boolean {
   return columnData.every(cell => !isNaN(Number(cell)));
 }
 
-export function getColumnDescription(columnId: string, metadata: Metadata, trainedModelDetails: TrainedModelDetailsSave): string | null {
+export function getColumnDescription(
+  columnId: string,
+  metadata: Metadata,
+  trainedModelDetails: TrainedModelDetailsSave,
+): string | null {
   // Use metadata if available.
   if (columnId && metadata && metadata.fields) {
     const field = metadata.fields.find((field: MetadataField) => {
       return field.id === columnId;
     });
-    return getLocalizedColumnDescription(metadata.name!, columnId, field?.description ?? "");
+    return getLocalizedColumnDescription(
+      metadata.name!,
+      columnId,
+      field?.description ?? '',
+    );
   }
 
   // Try using a user-entered column description if available.
   if (trainedModelDetails && trainedModelDetails.columns) {
-    const matchedColumn = trainedModelDetails.columns.find((column: { id: string; description: string }) => {
-      return column.id === columnId;
-    });
+    const matchedColumn = trainedModelDetails.columns.find(
+      (column: {id: string; description: string}) => {
+        return column.id === columnId;
+      },
+    );
     if (matchedColumn) {
       return matchedColumn.description;
     }
@@ -107,18 +129,27 @@ export function getColumnDescription(columnId: string, metadata: Metadata, train
     ...
   }
   */
-export function buildOptionNumberKey(state: RootState, feature: string): Record<string, number> {
+export function buildOptionNumberKey(
+  state: RootState,
+  feature: string,
+): Record<string, number> {
   const optionsMappedToNumbers: Record<string, number> = {};
   const uniqueOptions = getUniqueOptions(state.data, feature);
   uniqueOptions.forEach(
-    (option: string | number) => (optionsMappedToNumbers[String(option)] = uniqueOptions.indexOf(option))
+    (option: string | number) =>
+      (optionsMappedToNumbers[String(option)] = uniqueOptions.indexOf(option)),
   );
   return optionsMappedToNumbers;
 }
 
-export function getColumnDataToSave(state: RootState, column: string): ModelCardColumn {
-  const columnData: ModelCardColumn = { id: column };
-  columnData.description = getColumnDescription(column, state.metadata, state.trainedModelDetails) ?? undefined;
+export function getColumnDataToSave(
+  state: RootState,
+  column: string,
+): ModelCardColumn {
+  const columnData: ModelCardColumn = {id: column};
+  columnData.description =
+    getColumnDescription(column, state.metadata, state.trainedModelDetails) ??
+    undefined;
   if (isColumnCategorical(state, column)) {
     columnData.values = getUniqueOptions(state.data, column).map(String);
   } else if (isColumnNumerical(state, column)) {
@@ -129,19 +160,36 @@ export function getColumnDataToSave(state: RootState, column: string): ModelCard
   return columnData;
 }
 
-export function getLocalizedColumnName(datasetId: string, columnId: string): string {
-  return getLocalizedColumnAttr(datasetId, columnId, "id", columnId);
+export function getLocalizedColumnName(
+  datasetId: string,
+  columnId: string,
+): string {
+  return getLocalizedColumnAttr(datasetId, columnId, 'id', columnId);
 }
 
-function getLocalizedColumnDescription(datasetId: string, columnId: string, description: string): string {
-  return getLocalizedColumnAttr(datasetId, columnId, "description", description);
+function getLocalizedColumnDescription(
+  datasetId: string,
+  columnId: string,
+  description: string,
+): string {
+  return getLocalizedColumnAttr(
+    datasetId,
+    columnId,
+    'description',
+    description,
+  );
 }
 
-function getLocalizedColumnAttr(datasetId: string, columnId: string, attribute: string, fallback: string): string {
-  return I18n.t(attribute,
-    {
-      scope: ["datasets", datasetId, "fields", columnId],
-      default: fallback
-    }
-  ) ?? fallback;
+function getLocalizedColumnAttr(
+  datasetId: string,
+  columnId: string,
+  attribute: string,
+  fallback: string,
+): string {
+  return (
+    I18n.t(attribute, {
+      scope: ['datasets', datasetId, 'fields', columnId],
+      default: fallback,
+    }) ?? fallback
+  );
 }

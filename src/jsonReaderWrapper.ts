@@ -1,17 +1,17 @@
-import { store } from "./index";
+import {store} from './index';
 import {
   setImportedMetadata,
   setColumnsByDataType,
-  setLabelColumn
-} from "./redux";
-import { ColumnTypes } from "./constants";
-import { Metadata } from "./types";
+  setLabelColumn,
+} from './redux';
+import {ColumnTypes} from './constants';
+import {Metadata} from './types';
 
 export const parseJSON = (jsonfile: string): void => {
   const rawFile = new XMLHttpRequest();
-  rawFile.overrideMimeType("application/json");
-  rawFile.open("GET", jsonfile, true);
-  rawFile.onreadystatechange = function() {
+  rawFile.overrideMimeType('application/json');
+  rawFile.open('GET', jsonfile, true);
+  rawFile.onreadystatechange = function () {
     if (rawFile.readyState === 4 && rawFile.status === 200) {
       updateData(rawFile.responseText);
     }

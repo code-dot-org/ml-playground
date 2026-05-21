@@ -1,28 +1,28 @@
-import { connect } from "react-redux";
-import { RootState } from "../redux";
-import { getScatterPlotData } from "../selectors/visualizationSelectors";
-import { styles, colors } from "../constants";
-import { Scatter } from "react-chartjs-2";
-import I18n from "../i18n";
+import {connect} from 'react-redux';
+import {RootState} from '../redux';
+import {getScatterPlotData} from '../selectors/visualizationSelectors';
+import {styles, colors} from '../constants';
+import {Scatter} from 'react-chartjs-2';
+import I18n from '../i18n';
 
 const scatterDataBase = {
-  labels: ["Scatter"],
+  labels: ['Scatter'],
   datasets: [
     {
-      label: "",
+      label: '',
       fill: true,
       pointRadius: 4,
       pointHitRadius: 10,
       pointBorderWidth: 1,
-      pointBorderColor: "white",
+      pointBorderColor: 'white',
       pointBackgroundColor: colors.teal,
       pointHoverRadius: 6,
-      pointHoverBackgroundColor: "#59cad3",
-      pointHoverBorderColor: "white",
+      pointHoverBackgroundColor: '#59cad3',
+      pointHoverBorderColor: 'white',
       pointHoverBorderWidth: 2,
-      data: [] as { x: number; y: number }[]
-    }
-  ]
+      data: [] as {x: number; y: number}[],
+    },
+  ],
 };
 
 const chartOptionsBase = {
@@ -30,45 +30,45 @@ const chartOptionsBase = {
     xAxes: [
       {
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
-          labelString: ""
-        }
-      }
+          labelString: '',
+        },
+      },
     ],
     yAxes: [
       {
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
         },
         scaleLabel: {
           display: true,
-          labelString: ""
-        }
-      }
-    ]
+          labelString: '',
+        },
+      },
+    ],
   },
-  legend: { display: false },
-  maintainAspectRatio: false
+  legend: {display: false},
+  maintainAspectRatio: false,
 };
 
 interface ScatterPlotProps {
   scatterPlotData: {
-    coordinates: { x: number; y: number }[];
+    coordinates: {x: number; y: number}[];
     feature: string;
     label: string;
   } | null;
 }
 
-const ScatterPlot = ({ scatterPlotData }: ScatterPlotProps) => {
+const ScatterPlot = ({scatterPlotData}: ScatterPlotProps) => {
   const scatterDataCombined = {
-    ...scatterDataBase
+    ...scatterDataBase,
   };
 
   const chartOptionsCombined = {
-    ...chartOptionsBase
+    ...chartOptionsBase,
   };
 
   if (scatterPlotData) {
@@ -83,18 +83,18 @@ const ScatterPlot = ({ scatterPlotData }: ScatterPlotProps) => {
   return (
     scatterPlotData && (
       <div id="scatter-plot">
-        <div style={styles.bold}>{I18n.t("scatterPlotLabel")}</div>
+        <div style={styles.bold}>{I18n.t('scatterPlotLabel')}</div>
         <div style={styles.scatterPlot}>
-          <Scatter
-            data={scatterDataCombined}
-            options={chartOptionsCombined}
-          />
+          <Scatter data={scatterDataCombined} options={chartOptionsCombined} />
         </div>
       </div>
     )
   );
 };
 
-export default connect((state: RootState) => ({
-  scatterPlotData: getScatterPlotData(state)
-}), {})(ScatterPlot);
+export default connect(
+  (state: RootState) => ({
+    scatterPlotData: getScatterPlotData(state),
+  }),
+  {},
+)(ScatterPlot);

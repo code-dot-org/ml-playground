@@ -1,4 +1,4 @@
-import KNN from "ml-knn";
+import KNN from 'ml-knn';
 
 export type DataRow = Record<string, string | number>;
 
@@ -26,7 +26,7 @@ export interface CategoricalColumnDetails {
 
 export interface NumericalColumnDetails {
   id: string;
-  extrema?: { min: number; max: number; range: number };
+  extrema?: {min: number; max: number; range: number};
   containsOnlyNumbers: boolean;
 }
 
@@ -78,7 +78,7 @@ export interface MetadataCard {
 export interface MetadataField {
   id?: string;
   description?: string;
-  type?: "numerical" | "categorical";
+  type?: 'numerical' | 'categorical';
 }
 
 export interface Metadata {
@@ -105,8 +105,8 @@ export interface TrainedModelDetailsSave {
   potentialUses?: string;
   potentialMisuses?: string;
   datasetDescription?: string;
-  columns?: { id: string; description: string }[];
-  [key: string]: string | { id: string; description: string }[] | undefined;
+  columns?: {id: string; description: string}[];
+  [key: string]: string | {id: string; description: string}[] | undefined;
 }
 
 export interface ModelCardColumn {
@@ -152,7 +152,7 @@ export interface ModelDataToSave {
   featureNumberKey: Record<string, Record<string, number>>;
   label: ModelCardColumn;
   features: ModelCardColumn[];
-  summaryStat: { type: string; stat: string };
+  summaryStat: {type: string; stat: string};
   trainedModel: object | null;
   kValue: number | null;
 }

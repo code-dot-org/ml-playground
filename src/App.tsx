@@ -1,31 +1,31 @@
-import React from "react";
-import SelectDataset from "./UIComponents/SelectDataset";
-import DataDisplay from "./UIComponents/DataDisplay";
-import ColumnInspector from "./UIComponents/ColumnInspector";
-import DataCard from "./UIComponents/DataCard";
-import TrainModel from "./UIComponents/TrainModel";
-import GenerateResults from "./UIComponents/GenerateResults";
-import Results from "./UIComponents/Results";
-import Predict from "./UIComponents/Predict";
-import SaveModel from "./UIComponents/SaveModel";
-import ModelCard from "./UIComponents/ModelCard";
-import { styles } from "./constants";
-import { connect } from "react-redux";
+import React from 'react';
+import SelectDataset from './UIComponents/SelectDataset';
+import DataDisplay from './UIComponents/DataDisplay';
+import ColumnInspector from './UIComponents/ColumnInspector';
+import DataCard from './UIComponents/DataCard';
+import TrainModel from './UIComponents/TrainModel';
+import GenerateResults from './UIComponents/GenerateResults';
+import Results from './UIComponents/Results';
+import Predict from './UIComponents/Predict';
+import SaveModel from './UIComponents/SaveModel';
+import ModelCard from './UIComponents/ModelCard';
+import {styles} from './constants';
+import {connect} from 'react-redux';
 import {
   getPanelButtons,
   setCurrentPanel,
   getTrainedModelDataToSave,
-  RootState
-} from "./redux";
+  RootState,
+} from './redux';
 import {
   isSaveComplete,
-  shouldDisplaySaveStatus
-} from "./helpers/navigationValidation";
-import { PrevNextButtons, ModelDataToSave, SaveResponseData } from "./types";
-import { Dispatch } from "redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import I18n from "./i18n";
+  shouldDisplaySaveStatus,
+} from './helpers/navigationValidation';
+import {PrevNextButtons, ModelDataToSave, SaveResponseData} from './types';
+import {Dispatch} from 'redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import I18n from './i18n';
 
 interface PanelButtonsProps {
   panelButtons: PrevNextButtons;
@@ -50,7 +50,7 @@ const PanelButtons = ({
   saveStatus,
   saveResponseData,
   isSaveComplete: isSaveCompleteProp,
-  shouldDisplaySaveStatus: shouldDisplaySaveStatusProp
+  shouldDisplaySaveStatus: shouldDisplaySaveStatusProp,
 }: PanelButtonsProps) => {
   const onClickPrev = () => {
     if (panelButtons.prev) {
@@ -60,9 +60,9 @@ const PanelButtons = ({
 
   const onClickNext = () => {
     if (panelButtons.next) {
-      if (["continue", "finish"].includes(panelButtons.next.panel)) {
+      if (['continue', 'finish'].includes(panelButtons.next.panel)) {
         onContinue();
-      } else if (currentPanel === "saveModel") {
+      } else if (currentPanel === 'saveModel') {
         startSaveTrainedModel(dataToSave);
       } else {
         setCurrentPanel(panelButtons.next.panel);
@@ -71,18 +71,20 @@ const PanelButtons = ({
   };
 
   const localizedSaveMessage = (saveStatus: string): string => {
-    return I18n.t(`saveStatus_${saveStatus}`) ?? "";
+    return I18n.t(`saveStatus_${saveStatus}`) ?? '';
   };
 
-  const saveResponseDataMessage = (saveResponseData: SaveResponseData | undefined): string | undefined => {
+  const saveResponseDataMessage = (
+    saveResponseData: SaveResponseData | undefined,
+  ): string | undefined => {
     // The list of known error types from share_filtering.rb.
-    const errorTypes = ["email", "address", "phone", "profanity"];
+    const errorTypes = ['email', 'address', 'phone', 'profanity'];
 
     if (!saveResponseData) {
       return undefined;
     }
 
-    const index = errorTypes.indexOf(saveResponseData.type || "");
+    const index = errorTypes.indexOf(saveResponseData.type || '');
     if (index !== -1) {
       return `(${index})`;
     } else {
@@ -110,7 +112,7 @@ const PanelButtons = ({
               ...styles.navButton,
               ...(!panelButtons.prev.enabled
                 ? styles.disabledButton
-                : undefined)
+                : undefined),
             }}
             onClick={onClickPrev}
             disabled={!panelButtons.prev.enabled}
@@ -121,7 +123,7 @@ const PanelButtons = ({
       )}
 
       {shouldDisplaySaveStatusProp(saveStatus) &&
-        currentPanel === "saveModel" && (
+        currentPanel === 'saveModel' && (
           <div style={styles.modelSaveMessage}>
             {loadSaveStatus}
             {loadSaveResponseData && (
@@ -141,7 +143,7 @@ const PanelButtons = ({
               ...styles.navButton,
               ...(!panelButtons.next.enabled
                 ? styles.disabledButton
-                : undefined)
+                : undefined),
             }}
             onClick={onClickNext}
             disabled={!panelButtons.next.enabled}
@@ -158,7 +160,7 @@ interface BodyContainerProps {
   children: React.ReactNode;
 }
 
-const BodyContainer = ({ children }: BodyContainerProps) => {
+const BodyContainer = ({children}: BodyContainerProps) => {
   return <div style={styles.bodyContainer}>{children}</div>;
 };
 
@@ -166,9 +168,9 @@ interface ContainerLeftProps {
   children: React.ReactNode;
 }
 
-const ContainerLeft = ({ children }: ContainerLeftProps) => {
+const ContainerLeft = ({children}: ContainerLeftProps) => {
   return (
-    <div style={{ ...styles.panelContainer, ...styles.panelContainerLeft }}>
+    <div style={{...styles.panelContainer, ...styles.panelContainerLeft}}>
       {children}
     </div>
   );
@@ -178,9 +180,9 @@ interface ContainerRightProps {
   children: React.ReactNode;
 }
 
-const ContainerRight = ({ children }: ContainerRightProps) => {
+const ContainerRight = ({children}: ContainerRightProps) => {
   return (
-    <div style={{ ...styles.panelContainer, ...styles.panelContainerRight }}>
+    <div style={{...styles.panelContainer, ...styles.panelContainerRight}}>
       {children}
     </div>
   );
@@ -190,7 +192,7 @@ interface ContainerFullWidthProps {
   children: React.ReactNode;
 }
 
-const ContainerFullWidth = ({ children }: ContainerFullWidthProps) => {
+const ContainerFullWidth = ({children}: ContainerFullWidthProps) => {
   return <div style={styles.panelContainerFullWidth}>{children}</div>;
 };
 
@@ -215,11 +217,11 @@ const App = ({
   startSaveTrainedModel,
   dataToSave,
   saveStatus,
-  saveResponseData
+  saveResponseData,
 }: AppProps) => {
   return (
     <div style={styles.app}>
-      {currentPanel === "selectDataset" && (
+      {currentPanel === 'selectDataset' && (
         <BodyContainer>
           <ContainerLeft>
             <SelectDataset />
@@ -230,7 +232,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {["dataDisplayLabel", "dataDisplayFeatures"].includes(currentPanel) && (
+      {['dataDisplayLabel', 'dataDisplayFeatures'].includes(currentPanel) && (
         <BodyContainer>
           <ContainerLeft>
             <DataDisplay />
@@ -242,7 +244,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {currentPanel === "trainModel" && (
+      {currentPanel === 'trainModel' && (
         <BodyContainer>
           <ContainerFullWidth>
             <TrainModel />
@@ -250,7 +252,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {currentPanel === "generateResults" && (
+      {currentPanel === 'generateResults' && (
         <BodyContainer>
           <ContainerFullWidth>
             <GenerateResults />
@@ -258,7 +260,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {currentPanel === "results" && (
+      {currentPanel === 'results' && (
         <BodyContainer>
           <ContainerLeft>
             <Results />
@@ -271,7 +273,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {currentPanel === "saveModel" && (
+      {currentPanel === 'saveModel' && (
         <BodyContainer>
           <ContainerFullWidth>
             <SaveModel />
@@ -279,7 +281,7 @@ const App = ({
         </BodyContainer>
       )}
 
-      {currentPanel === "modelSummary" && (
+      {currentPanel === 'modelSummary' && (
         <BodyContainer>
           <ContainerFullWidth>
             <ModelCard />
@@ -310,11 +312,11 @@ export default connect(
     resultsPhase: state.resultsPhase,
     dataToSave: getTrainedModelDataToSave(state),
     saveStatus: state.saveStatus,
-    saveResponseData: state.saveResponseData
+    saveResponseData: state.saveResponseData,
   }),
   (dispatch: Dispatch) => ({
     setCurrentPanel(panel: string) {
       dispatch(setCurrentPanel(panel));
-    }
-  })
+    },
+  }),
 )(App);

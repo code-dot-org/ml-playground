@@ -1,13 +1,11 @@
 /* React component to handle showing details of categorical columns. */
-import { connect } from "react-redux";
-import { RootState } from "../redux";
-import { colors, styles } from "../constants";
-import { Bar } from "react-chartjs-2";
-import {
-  getCategoricalColumnDetails
-} from "../selectors/currentColumnSelectors";
-import I18n from "../i18n";
-import { CategoricalColumnDetails } from "../types";
+import {connect} from 'react-redux';
+import {RootState} from '../redux';
+import {colors, styles} from '../constants';
+import {Bar} from 'react-chartjs-2';
+import {getCategoricalColumnDetails} from '../selectors/currentColumnSelectors';
+import I18n from '../i18n';
+import {CategoricalColumnDetails} from '../types';
 
 interface ColumnDetailsCategoricalProps {
   columnDetails: CategoricalColumnDetails;
@@ -18,17 +16,19 @@ const chartOptions = {
     yAxes: [
       {
         ticks: {
-          beginAtZero: true
-        }
-      }
-    ]
+          beginAtZero: true,
+        },
+      },
+    ],
   },
-  legend: { display: false },
-  maintainAspectRatio: false
+  legend: {display: false},
+  maintainAspectRatio: false,
 };
 
-const ColumnDetailsCategorical = ({ columnDetails }: ColumnDetailsCategoricalProps) => {
-  const { id, uniqueOptions, frequencies } = columnDetails;
+const ColumnDetailsCategorical = ({
+  columnDetails,
+}: ColumnDetailsCategoricalProps) => {
+  const {id, uniqueOptions, frequencies} = columnDetails;
   const labels = uniqueOptions && Object.values(uniqueOptions);
   const barData = {
     labels,
@@ -38,32 +38,27 @@ const ColumnDetailsCategorical = ({ columnDetails }: ColumnDetailsCategoricalPro
         backgroundColor: colors.tealTransparent,
         borderColor: colors.teal,
         borderWidth: 1,
-        hoverBackgroundColor: "#59cad3",
-        hoverBorderColor: "white",
-        data: labels.map(option => frequencies[option])
-      }
-    ]
+        hoverBackgroundColor: '#59cad3',
+        hoverBorderColor: 'white',
+        data: labels.map(option => frequencies[option]),
+      },
+    ],
   };
 
   const maxLabelsInHistogram = 5;
 
   return (
     <div>
-      <div style={styles.bold}>{I18n.t("columnDetailsInformation")}</div>
+      <div style={styles.bold}>{I18n.t('columnDetailsInformation')}</div>
       <div style={styles.barChart}>
         {labels.length <= maxLabelsInHistogram && (
-          <Bar
-            data={barData}
-            width={100}
-            height={150}
-            options={chartOptions}
-          />
+          <Bar data={barData} width={100} height={150} options={chartOptions} />
         )}
         {labels.length > maxLabelsInHistogram && (
           <div>
-            {I18n.t("columnDetailsTooManyLabels", {
-              "labelCount": labels.length,
-              "maxLabelCount": maxLabelsInHistogram
+            {I18n.t('columnDetailsTooManyLabels', {
+              labelCount: labels.length,
+              maxLabelCount: maxLabelsInHistogram,
             })}
           </div>
         )}
@@ -74,7 +69,7 @@ const ColumnDetailsCategorical = ({ columnDetails }: ColumnDetailsCategoricalPro
 
 export default connect(
   (state: RootState) => ({
-    columnDetails: getCategoricalColumnDetails(state)
+    columnDetails: getCategoricalColumnDetails(state),
   }),
-  {}
+  {},
 )(ColumnDetailsCategorical);

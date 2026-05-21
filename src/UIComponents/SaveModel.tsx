@@ -1,27 +1,31 @@
 /* React component to handle saving a trained model. */
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { setTrainedModelDetail, RootState } from "../redux";
-import { Dispatch } from "redux";
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import {setTrainedModelDetail, RootState} from '../redux';
+import {Dispatch} from 'redux';
 import {
   getDatasetDescription,
-  isUserUploadedDataset
-} from "../helpers/datasetDetails";
-import { getSelectedColumnsDescriptions } from "../selectors";
-import { styles, ModelNameMaxLength } from "../constants";
-import Statement from "./Statement";
-import ScrollableContent from "./ScrollableContent";
-import I18n from "../i18n";
-import { getLocalizedColumnName } from "../helpers/columnDetails";
-import { TrainedModelDetailsSave } from "../types";
-import KNN from "ml-knn";
+  isUserUploadedDataset,
+} from '../helpers/datasetDetails';
+import {getSelectedColumnsDescriptions} from '../selectors';
+import {styles, ModelNameMaxLength} from '../constants';
+import Statement from './Statement';
+import ScrollableContent from './ScrollableContent';
+import I18n from '../i18n';
+import {getLocalizedColumnName} from '../helpers/columnDetails';
+import {TrainedModelDetailsSave} from '../types';
+import KNN from 'ml-knn';
 
 interface SaveModelProps {
   trainedModel: KNN | undefined;
-  setTrainedModelDetail: (field: string, value: string, isColumn: boolean) => void;
+  setTrainedModelDetail: (
+    field: string,
+    value: string,
+    isColumn: boolean,
+  ) => void;
   trainedModelDetails: TrainedModelDetailsSave;
   labelColumn: string | undefined;
-  columnDescriptions: { id: string; description: string | null }[];
+  columnDescriptions: {id: string; description: string | null}[];
   dataDescription: string | undefined;
   isUserUploadedDataset: boolean;
   datasetId: string | undefined;
@@ -35,76 +39,96 @@ const SaveModel = ({
   columnDescriptions,
   dataDescription,
   isUserUploadedDataset: isUserUploaded,
-  datasetId
+  datasetId,
 }: SaveModelProps) => {
-  const [showColumnDescriptions, setShowColumnDescriptions] = useState(isUserUploaded);
+  const [showColumnDescriptions, setShowColumnDescriptions] =
+    useState(isUserUploaded);
 
   const toggleColumnDescriptions = () => {
     setShowColumnDescriptions(!showColumnDescriptions);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string, isColumn: boolean) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: string,
+    isColumn: boolean,
+  ) => {
     setTrainedModelDetail(field, event.target.value, isColumn);
   };
 
   const getColumnFields = () => {
-    const fields: { id: string; isColumn: boolean; columnType: string | undefined; answer: string | null; localizedName: string; placeholder?: string }[] = [];
+    const fields: {
+      id: string;
+      isColumn: boolean;
+      columnType: string | undefined;
+      answer: string | null;
+      localizedName: string;
+      placeholder?: string;
+    }[] = [];
 
     for (const columnDescription of columnDescriptions) {
-      const labelType = I18n.t("saveModelColumnTypeLabel");
-      const featureType = I18n.t("saveModelColumnTypeFeature");
+      const labelType = I18n.t('saveModelColumnTypeLabel');
+      const featureType = I18n.t('saveModelColumnTypeFeature');
       const columnType =
-        columnDescription.id === labelColumn ? labelType : featureType
+        columnDescription.id === labelColumn ? labelType : featureType;
       fields.push({
         id: columnDescription.id,
         isColumn: true,
         columnType,
         answer: columnDescription.description,
-        localizedName: getLocalizedColumnName(datasetId!, columnDescription.id)
+        localizedName: getLocalizedColumnName(datasetId!, columnDescription.id),
       });
     }
     return fields;
   };
 
   const getUsesFields = () => {
-    const fields: { id: string; text: string | undefined; description: string | undefined; descriptionDetails?: (string | undefined)[]; placeholder: string | undefined; isColumn?: boolean; answer?: string }[] = [];
+    const fields: {
+      id: string;
+      text: string | undefined;
+      description: string | undefined;
+      descriptionDetails?: (string | undefined)[];
+      placeholder: string | undefined;
+      isColumn?: boolean;
+      answer?: string;
+    }[] = [];
     fields.push({
-      id: "potentialUses",
-      text: I18n.t("potentialUsesLabel"),
-      description: I18n.t("potentialUsesDescription"),
-      placeholder: I18n.t("potentialUsesPlaceholder")
+      id: 'potentialUses',
+      text: I18n.t('potentialUsesLabel'),
+      description: I18n.t('potentialUsesDescription'),
+      placeholder: I18n.t('potentialUsesPlaceholder'),
     });
     fields.push({
-      id: "potentialMisuses",
-      text: I18n.t("potentialMisusesLabel"),
-      description: I18n.t("potentialMisusesDescription"),
+      id: 'potentialMisuses',
+      text: I18n.t('potentialMisusesLabel'),
+      description: I18n.t('potentialMisusesDescription'),
       descriptionDetails: [
-        I18n.t("potentialMisusesDescriptionRepresent"),
-        I18n.t("potentialMisusesDescriptionEnough"),
-        I18n.t("potentialMisusesDescriptionSituations")
+        I18n.t('potentialMisusesDescriptionRepresent'),
+        I18n.t('potentialMisusesDescriptionEnough'),
+        I18n.t('potentialMisusesDescriptionSituations'),
       ],
-      placeholder: I18n.t("potentialMisusesPlaceholder")
+      placeholder: I18n.t('potentialMisusesPlaceholder'),
     });
 
     return fields;
   };
 
   const nameField = {
-    id: "name",
-    text: I18n.t("modelNameLabel"),
-    isColumn: false
+    id: 'name',
+    text: I18n.t('modelNameLabel'),
+    isColumn: false,
   };
 
   const dataDescriptionField = {
-    id: "datasetDescription",
-    text: I18n.t("datasetDescriptionLabel"),
-    placeholder: I18n.t("datasetDescriptionPlaceholder"),
-    answer: dataDescription
+    id: 'datasetDescription',
+    text: I18n.t('datasetDescriptionLabel'),
+    placeholder: I18n.t('datasetDescriptionPlaceholder'),
+    answer: dataDescription,
   };
 
   const arrowIcon = showColumnDescriptions
-    ? "fa fa-caret-up"
-    : "fa fa-caret-down";
+    ? 'fa fa-caret-up'
+    : 'fa fa-caret-down';
 
   const columnCount = getColumnFields().length;
 
@@ -115,7 +139,9 @@ const SaveModel = ({
         <div key={nameField.id} style={styles.cardRow}>
           <span style={styles.bold}>{nameField.text}</span>
           &nbsp;
-          <span style={styles.italic}>({I18n.t("saveModelFieldRequired")})</span>
+          <span style={styles.italic}>
+            ({I18n.t('saveModelFieldRequired')})
+          </span>
           <div>
             <input
               id="uitest-model-name-input"
@@ -134,13 +160,15 @@ const SaveModel = ({
                 <div>{field.description}</div>
                 <ul>
                   {field.descriptionDetails &&
-                    field.descriptionDetails.map((detail: string | undefined, index: number) => {
-                      return (
-                        <li style={styles.regularText} key={index}>
-                          {detail}
-                        </li>
-                      );
-                    })}
+                    field.descriptionDetails.map(
+                      (detail: string | undefined, index: number) => {
+                        return (
+                          <li style={styles.regularText} key={index}>
+                            {detail}
+                          </li>
+                        );
+                      },
+                    )}
                 </ul>
                 {!field.answer && (
                   <div>
@@ -173,9 +201,7 @@ const SaveModel = ({
               />
             </div>
           )}
-          {!isUserUploaded && (
-            <div>{dataDescriptionField.answer}</div>
-          )}
+          {!isUserUploaded && <div>{dataDescriptionField.answer}</div>}
         </div>
         <div>
           <span
@@ -187,9 +213,10 @@ const SaveModel = ({
           >
             <i className={arrowIcon} />
             &nbsp;
-            <span style={styles.bold}>{I18n.t("saveModelColumnCountLabel")}</span>
-            &nbsp;
-            ({columnCount})
+            <span style={styles.bold}>
+              {I18n.t('saveModelColumnCountLabel')}
+            </span>
+            &nbsp; ({columnCount})
           </span>
           {showColumnDescriptions && (
             <div style={styles.saveModelToggleContents}>
@@ -208,14 +235,12 @@ const SaveModel = ({
                             handleChange(event, field.id, !!field.isColumn)
                           }
                           placeholder={field.placeholder}
-                          value={field.answer || ""}
+                          value={field.answer || ''}
                           style={styles.saveInputsWidth}
                         />
                       </div>
                     )}
-                    {!isUserUploaded && (
-                      <div>{field.answer}</div>
-                    )}
+                    {!isUserUploaded && <div>{field.answer}</div>}
                   </div>
                 );
               })}
@@ -235,11 +260,11 @@ export default connect(
     columnDescriptions: getSelectedColumnsDescriptions(state),
     dataDescription: getDatasetDescription(state),
     isUserUploadedDataset: isUserUploadedDataset(state),
-    datasetId: state.metadata && state.metadata.name
+    datasetId: state.metadata && state.metadata.name,
   }),
   (dispatch: Dispatch) => ({
     setTrainedModelDetail(field: string, value: string, isColumn: boolean) {
       dispatch(setTrainedModelDetail(field, value, isColumn));
-    }
-  })
+    },
+  }),
 )(SaveModel);

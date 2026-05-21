@@ -1,6 +1,6 @@
-import I18n from "../i18n";
-import { RootState } from "../redux";
-import { NavButton, PrevNextButtons } from "../types";
+import I18n from '../i18n';
+import {RootState} from '../redux';
+import {NavButton, PrevNextButtons} from '../types';
 /*
 Validation checks to determine if app set up is ready for machine learning
 training. Panels prompt users to incrementally complete actions in preparation
@@ -25,37 +25,37 @@ const panelList = [
 // Is a panel ready to be visited?  This determines whether a visible
 // nav button is enabled or disabled.
 export function isPanelEnabled(state: RootState, panelId: string): boolean {
-  if (panelId === "dataDisplayLabel") {
+  if (panelId === 'dataDisplayLabel') {
     if (!isDataUploaded(state)) {
       return false;
     }
   }
 
-  if (panelId === "dataDisplayFeatures") {
+  if (panelId === 'dataDisplayFeatures') {
     if (!labelSelected(state)) {
       return false;
     }
   }
 
-  if (panelId === "selectFeatures") {
+  if (panelId === 'selectFeatures') {
     if (!minOneFeatureSelected(state)) {
       return false;
     }
   }
 
-  if (panelId === "trainModel") {
+  if (panelId === 'trainModel') {
     if (!uniqLabelFeaturesSelected(state)) {
       return false;
     }
   }
 
-  if (panelId === "results") {
+  if (panelId === 'results') {
     if (!resultsAvailable(state)) {
       return false;
     }
   }
 
-  if (panelId === "modelSummary") {
+  if (panelId === 'modelSummary') {
     if (isSaveInProgress(state)) {
       return false;
     }
@@ -73,19 +73,19 @@ export function isPanelEnabled(state: RootState, panelId: string): boolean {
 function isPanelAvailable(state: RootState, panelId: string): boolean {
   const mode = state.mode;
 
-  if (panelId === "selectDataset") {
+  if (panelId === 'selectDataset') {
     if (mode && mode.datasets && mode.datasets.length === 1) {
       return false;
     }
   }
 
-  if (panelId === "dataDisplayLabel") {
+  if (panelId === 'dataDisplayLabel') {
     if (mode && mode.hideSelectLabel) {
       return false;
     }
   }
 
-  if (panelId === "saveModel") {
+  if (panelId === 'saveModel') {
     if ((mode && mode.hideSave) || didSaveSucceed(state)) {
       return false;
     }
@@ -122,23 +122,23 @@ function resultsAvailable(state: RootState): boolean {
 }
 
 function isSaveInProgress(state: RootState): boolean {
-  return state.saveStatus === "started";
+  return state.saveStatus === 'started';
 }
 
 function didSaveSucceed(state: RootState): boolean {
-  return state.saveStatus === "success";
+  return state.saveStatus === 'success';
 }
 
 export function isSaveComplete(saveStatus: string): boolean {
-  return ["success", "failure", "piiProfanity"].includes(saveStatus);
+  return ['success', 'failure', 'piiProfanity'].includes(saveStatus);
 }
 
 export function shouldDisplaySaveStatus(saveStatus: string): boolean {
-  return ["success", "failure", "started", "piiProfanity"].includes(saveStatus);
+  return ['success', 'failure', 'started', 'piiProfanity'].includes(saveStatus);
 }
 
 function isModelNamed(state: RootState): boolean {
-  return ![undefined, ""].includes(state.trainedModelDetails.name);
+  return ![undefined, ''].includes(state.trainedModelDetails.name);
 }
 
 function isAccuracyAcceptable(state: RootState): boolean {
@@ -159,57 +159,57 @@ function isAccuracyAcceptable(state: RootState): boolean {
 export function prevNextButtons(state: RootState): PrevNextButtons {
   let prev: NavButton | undefined, next: NavButton | undefined;
 
-  if (state.currentPanel === "selectDataset") {
+  if (state.currentPanel === 'selectDataset') {
     prev = undefined;
-    next = isPanelAvailable(state, "dataDisplayLabel")
-      ? { panel: "dataDisplayLabel", text: I18n.t("navigateForward") }
-      : isPanelAvailable(state, "dataDisplayFeatures")
-      ? { panel: "dataDisplayFeatures", text: I18n.t("navigateForward") }
+    next = isPanelAvailable(state, 'dataDisplayLabel')
+      ? {panel: 'dataDisplayLabel', text: I18n.t('navigateForward')}
+      : isPanelAvailable(state, 'dataDisplayFeatures')
+        ? {panel: 'dataDisplayFeatures', text: I18n.t('navigateForward')}
+        : undefined;
+  } else if (state.currentPanel === 'dataDisplayLabel') {
+    prev = isPanelAvailable(state, 'selectDataset')
+      ? {panel: 'selectDataset', text: I18n.t('navigateBack')}
       : undefined;
-  } else if (state.currentPanel === "dataDisplayLabel") {
-    prev = isPanelAvailable(state, "selectDataset")
-      ? { panel: "selectDataset", text: I18n.t("navigateBack") }
+    next = isPanelAvailable(state, 'dataDisplayFeatures')
+      ? {panel: 'dataDisplayFeatures', text: I18n.t('navigateForward')}
       : undefined;
-    next = isPanelAvailable(state, "dataDisplayFeatures")
-      ? { panel: "dataDisplayFeatures", text: I18n.t("navigateForward") }
+  } else if (state.currentPanel === 'dataDisplayFeatures') {
+    prev = isPanelAvailable(state, 'dataDisplayLabel')
+      ? {panel: 'dataDisplayLabel', text: I18n.t('navigateBack')}
       : undefined;
-  } else if (state.currentPanel === "dataDisplayFeatures") {
-    prev = isPanelAvailable(state, "dataDisplayLabel")
-      ? { panel: "dataDisplayLabel", text: I18n.t("navigateBack") }
+    next = isPanelAvailable(state, 'trainModel')
+      ? {panel: 'trainModel', text: I18n.t('trainModelButtonText')}
       : undefined;
-    next = isPanelAvailable(state, "trainModel")
-      ? { panel: "trainModel", text: I18n.t('trainModelButtonText') }
-      : undefined;
-  } else if (state.currentPanel === "trainModel") {
+  } else if (state.currentPanel === 'trainModel') {
     if (state.trainedModel) {
       prev = undefined;
-      next = { panel: "generateResults", text: I18n.t("navigateForward") };
+      next = {panel: 'generateResults', text: I18n.t('navigateForward')};
     }
-  } else if (state.currentPanel === "generateResults") {
+  } else if (state.currentPanel === 'generateResults') {
     if (state.trainedModel) {
       prev = undefined;
-      next = { panel: "results", text: I18n.t("navigateForward") };
+      next = {panel: 'results', text: I18n.t('navigateForward')};
     }
-  } else if (state.currentPanel === "results") {
-    prev = isPanelAvailable(state, "dataDisplayFeatures")
-      ? { panel: "dataDisplayFeatures", text: I18n.t("tryAgain") }
+  } else if (state.currentPanel === 'results') {
+    prev = isPanelAvailable(state, 'dataDisplayFeatures')
+      ? {panel: 'dataDisplayFeatures', text: I18n.t('tryAgain')}
       : undefined;
     next = !isAccuracyAcceptable(state)
       ? undefined
-      : isPanelAvailable(state, "saveModel")
-      ? { panel: "saveModel", text: I18n.t("navigateForward") }
-      : { panel: "continue", text: I18n.t("navigateDone") };
-  } else if (state.currentPanel === "saveModel") {
-    prev = { panel: "results", text: I18n.t("navigateBack") };
-    next = isPanelAvailable(state, "modelSummary")
-      ? { panel: "modelSummary", text: I18n.t("saveProgress") }
+      : isPanelAvailable(state, 'saveModel')
+        ? {panel: 'saveModel', text: I18n.t('navigateForward')}
+        : {panel: 'continue', text: I18n.t('navigateDone')};
+  } else if (state.currentPanel === 'saveModel') {
+    prev = {panel: 'results', text: I18n.t('navigateBack')};
+    next = isPanelAvailable(state, 'modelSummary')
+      ? {panel: 'modelSummary', text: I18n.t('saveProgress')}
       : undefined;
-  } else if (state.currentPanel === "modelSummary") {
-    prev = isPanelAvailable(state, "saveModel")
-      ? { panel: "saveModel", text: I18n.t("navigateBack") }
+  } else if (state.currentPanel === 'modelSummary') {
+    prev = isPanelAvailable(state, 'saveModel')
+      ? {panel: 'saveModel', text: I18n.t('navigateBack')}
       : undefined;
-    next = isPanelAvailable(state, "finish")
-      ? { panel: "finish", text: I18n.t("navigateDone") }
+    next = isPanelAvailable(state, 'finish')
+      ? {panel: 'finish', text: I18n.t('navigateDone')}
       : undefined;
   }
 
@@ -220,5 +220,5 @@ export function prevNextButtons(state: RootState): PrevNextButtons {
     next.enabled = isPanelEnabled(state, next.panel);
   }
 
-  return { prev, next };
+  return {prev, next};
 }

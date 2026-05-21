@@ -3,24 +3,26 @@
   each active combination of features values, and corresponding percentage of
   label values, with a heatmap style applied.
 */
-import { useCallback } from "react";
-import { connect } from "react-redux";
-import { RootState } from "../redux";
-import { getCrossTabData } from "../selectors/visualizationSelectors";
-import { styles } from "../constants";
-import ScrollableContent from "./ScrollableContent";
-import I18n from "../i18n";
-import { CrossTabData } from "../types";
+import {useCallback} from 'react';
+import {connect} from 'react-redux';
+import {RootState} from '../redux';
+import {getCrossTabData} from '../selectors/visualizationSelectors';
+import {styles} from '../constants';
+import ScrollableContent from './ScrollableContent';
+import I18n from '../i18n';
+import {CrossTabData} from '../types';
 
 interface CrossTabProps {
   crossTabData: CrossTabData | null;
 }
 
-const CrossTab = ({ crossTabData }: CrossTabProps) => {
+const CrossTab = ({crossTabData}: CrossTabProps) => {
   const getCellStyle = useCallback((percent: number) => {
     return {
-      ...(styles as Record<string, React.CSSProperties>)["crossTabCell" + Math.round(percent / 20)],
-      ...styles.crossTabTableCell
+      ...(styles as Record<string, React.CSSProperties>)[
+        'crossTabCell' + Math.round(percent / 20)
+      ],
+      ...styles.crossTabTableCell,
     };
   }, []);
 
@@ -43,16 +45,16 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
     <div id="cross-tab">
       {crossTabData && !showTable && (
         <div>
-          <div style={styles.bold}>{I18n.t("crossTabRelationshipHeader")}</div>
+          <div style={styles.bold}>{I18n.t('crossTabRelationshipHeader')}</div>
 
-          <div>{I18n.t("crossTabTooMuchData")}</div>
+          <div>{I18n.t('crossTabTooMuchData')}</div>
           <br />
         </div>
       )}
 
       {showTable && (
         <div>
-          <div style={styles.bold}>{I18n.t("crossTabRelationshipHeader")}</div>
+          <div style={styles.bold}>{I18n.t('crossTabRelationshipHeader')}</div>
           <ScrollableContent>
             <table style={styles.crossTabTable}>
               <thead>
@@ -66,7 +68,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                   </th>
                   <th
                     colSpan={crossTabData.uniqueLabelValues.length}
-                    style={{ ...styles.crosssTabHeader, ...styles.bold }}
+                    style={{...styles.crosssTabHeader, ...styles.bold}}
                   >
                     {crossTabData.labelName}
                   </th>
@@ -78,7 +80,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                     <div
                       style={{
                         ...styles.bold,
-                        ...styles.crossTabLeftColumn
+                        ...styles.crossTabLeftColumn,
                       }}
                     >
                       {crossTabData.featureNames[0]}
@@ -92,7 +94,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                           {uniqueLabelValue}
                         </td>
                       );
-                    }
+                    },
                   )}
                 </tr>
                 {crossTabData.results.map((result, resultIndex) => {
@@ -105,7 +107,7 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                               {featureValue}
                             </td>
                           );
-                        }
+                        },
                       )}
                       {crossTabData.uniqueLabelValues.map(
                         (uniqueLabelValue, labelIndex) => {
@@ -113,13 +115,13 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
                             <td
                               key={labelIndex}
                               style={getCellStyle(
-                                result.labelPercents?.[uniqueLabelValue] ?? 0
+                                result.labelPercents?.[uniqueLabelValue] ?? 0,
                               )}
                             >
                               {result.labelPercents?.[uniqueLabelValue] || 0}%
                             </td>
                           );
-                        }
+                        },
                       )}
                     </tr>
                   );
@@ -134,5 +136,5 @@ const CrossTab = ({ crossTabData }: CrossTabProps) => {
 };
 
 export default connect((state: RootState) => ({
-  crossTabData: getCrossTabData(state)
+  crossTabData: getCrossTabData(state),
 }))(CrossTab);

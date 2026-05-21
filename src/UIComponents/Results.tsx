@@ -1,14 +1,14 @@
 /* React component to handle displaying accuracy results. */
-import { useEffect, useCallback } from "react";
-import { connect } from "react-redux";
-import { styles } from "../constants";
-import { UnconnectedStatement } from "./Statement";
-import { setShowResultsDetails, setResultsPhase, RootState } from "../redux";
-import { Dispatch } from "redux";
-import { HistoricResult } from "../types";
-import ResultsDetails from "./ResultsDetails";
-import ScrollableContent from "./ScrollableContent";
-import I18n from "../i18n";
+import {useEffect, useCallback} from 'react';
+import {connect} from 'react-redux';
+import {styles} from '../constants';
+import {UnconnectedStatement} from './Statement';
+import {setShowResultsDetails, setResultsPhase, RootState} from '../redux';
+import {Dispatch} from 'redux';
+import {HistoricResult} from '../types';
+import ResultsDetails from './ResultsDetails';
+import ScrollableContent from './ScrollableContent';
+import I18n from '../i18n';
 
 interface ResultsProps {
   historicResults: HistoricResult[];
@@ -17,7 +17,12 @@ interface ResultsProps {
   setResultsPhase: (phase: number) => void;
 }
 
-const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, setResultsPhase }: ResultsProps) => {
+const Results = ({
+  historicResults,
+  showResultsDetails,
+  setShowResultsDetails,
+  setResultsPhase,
+}: ResultsProps) => {
   useEffect(() => {
     setResultsPhase(0);
     const timer = setTimeout(() => {
@@ -37,8 +42,10 @@ const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, s
       <div id="results" style={styles.panel}>
         <ScrollableContent>
           <div style={styles.largeText}>
-            <div style={styles.resultsHeader}>{I18n.t("resultsHeader")}</div>
-            <div style={styles.resultsHeaderAccuracy}>{I18n.t("resultsAccuracy")}</div>
+            <div style={styles.resultsHeader}>{I18n.t('resultsHeader')}</div>
+            <div style={styles.resultsHeaderAccuracy}>
+              {I18n.t('resultsAccuracy')}
+            </div>
           </div>
           {historicResults.map((historicResult, index) => {
             return (
@@ -51,7 +58,7 @@ const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, s
                     selectedFeatures={historicResult.features}
                   />
                 </div>
-                <div style={{ ...styles.resultsAccuracy, ...styles.bold }}>
+                <div style={{...styles.resultsAccuracy, ...styles.bold}}>
                   {historicResult.accuracy}%
                 </div>
                 {index === 0 && (
@@ -62,7 +69,7 @@ const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, s
                       onClick={showDetails}
                       style={styles.resultsDetailsButton}
                     >
-                      {I18n.t("resultsDetailsButton")}
+                      {I18n.t('resultsDetailsButton')}
                     </button>
                   </div>
                 )}
@@ -70,15 +77,15 @@ const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, s
                   <div
                     style={{
                       ...styles.largeText,
-                      clear: "both",
-                      paddingTop: 40
+                      clear: 'both',
+                      paddingTop: 40,
                     }}
                   >
                     <div style={styles.resultsHeader}>
-                      {I18n.t("resultsPreviousResults")}
+                      {I18n.t('resultsPreviousResults')}
                     </div>
                     <div style={styles.resultsHeaderAccuracy}>
-                      {I18n.t("resultsAccuracy")}
+                      {I18n.t('resultsAccuracy')}
                     </div>
                   </div>
                 )}
@@ -94,7 +101,7 @@ const Results = ({ historicResults, showResultsDetails, setShowResultsDetails, s
 export default connect(
   (state: RootState) => ({
     historicResults: state.historicResults,
-    showResultsDetails: state.showResultsDetails
+    showResultsDetails: state.showResultsDetails,
   }),
   (dispatch: Dispatch) => ({
     setResultsPhase(phase: number) {
@@ -102,6 +109,6 @@ export default connect(
     },
     setShowResultsDetails(show: boolean) {
       dispatch(setShowResultsDetails(show));
-    }
-  })
+    },
+  }),
 )(Results);

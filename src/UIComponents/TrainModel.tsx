@@ -1,17 +1,17 @@
 /* React component to handle training. */
-import { useState, useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { store } from "../index";
-import train from "../train";
-import { getTableData, readyToTrain, RootState } from "../redux";
-import { styles, getFadeOpacity } from "../constants";
-import aiBotHead from "@public/images/ai-bot/ai-bot-head.png";
-import aiBotBody from "@public/images/ai-bot/ai-bot-body.png";
-import background from "@public/images/results-background-light.jpg";
-import DataTable from "./DataTable";
-import { TrainingAnimationDescription } from "./AnimationDescriptions";
-import I18n from "../i18n";
-import { DataRow } from "../types";
+import {useState, useEffect, useRef} from 'react';
+import {connect} from 'react-redux';
+import {store} from '../index';
+import train from '../train';
+import {getTableData, readyToTrain, RootState} from '../redux';
+import {styles, getFadeOpacity} from '../constants';
+import aiBotHead from '@public/images/ai-bot/ai-bot-head.png';
+import aiBotBody from '@public/images/ai-bot/ai-bot-body.png';
+import background from '@public/images/results-background-light.jpg';
+import DataTable from './DataTable';
+import {TrainingAnimationDescription} from './AnimationDescriptions';
+import I18n from '../i18n';
+import {DataRow} from '../types';
 
 const framesPerCycle = 80;
 const maxNumItems = 7;
@@ -24,7 +24,13 @@ interface TrainModelProps {
   instructionsOverlayActive: boolean;
 }
 
-const TrainModel = ({ data, readyToTrain: ready, labelColumn, selectedFeatures, instructionsOverlayActive }: TrainModelProps) => {
+const TrainModel = ({
+  data,
+  readyToTrain: ready,
+  labelColumn,
+  selectedFeatures,
+  instructionsOverlayActive,
+}: TrainModelProps) => {
   const [frame, setFrame] = useState(0);
   const [headOpen, setHeadOpen] = useState(false);
   const [, setFinished] = useState(false);
@@ -106,41 +112,40 @@ const TrainModel = ({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
   const transform = `translateX(-50%) translateY(-50%) rotateZ(${rotateZ}deg)`;
   const opacity = getFadeOpacity(animationProgress);
   const showAnimation = getAnimationStep() < getNumItems();
-  const startFadingAtItem =
-    getNumItems() - (getShowItemsFadingOut() ? 1.5 : 0);
+  const startFadingAtItem = getNumItems() - (getShowItemsFadingOut() ? 1.5 : 0);
   const maxFrames = framesPerCycle * startFadingAtItem;
   const tableOpacity =
     frame < framesPerCycle
       ? frame / framesPerCycle
-      : frame >= maxFrames &&
-        frame < maxFrames + framesPerCycle
-      ? 1 - (frame - maxFrames) / framesPerCycle
-      : frame >= maxFrames + framesPerCycle
-      ? 0
-      : 1;
+      : frame >= maxFrames && frame < maxFrames + framesPerCycle
+        ? 1 - (frame - maxFrames) / framesPerCycle
+        : frame >= maxFrames + framesPerCycle
+          ? 0
+          : 1;
 
   // Let's still show the starting row on our very first frame, because we might
   // be paused waiting for the overlay to be dismissed.
-  const startingRow =
-    frame === 0 ? undefined : getAnimationStep();
+  const startingRow = frame === 0 ? undefined : getAnimationStep();
 
   return (
     <div
       id="train-model"
       style={{
         ...styles.panel,
-        justifyContent: "center",
-        backgroundSize: "cover",
-        backgroundPosition: "50% 50%",
-        backgroundImage: "url(" + background + ")"
+        justifyContent: 'center',
+        backgroundSize: 'cover',
+        backgroundPosition: '50% 50%',
+        backgroundImage: 'url(' + background + ')',
       }}
     >
-      <div style={styles.statementWithBackgroundAbsolute}>{I18n.t("trainModelHeading")}</div>
+      <div style={styles.statementWithBackgroundAbsolute}>
+        {I18n.t('trainModelHeading')}
+      </div>
 
       <div
         style={{
           ...styles.trainModelDataTable,
-          opacity: tableOpacity
+          opacity: tableOpacity,
         }}
       >
         <DataTable reducedColumns={true} startingRow={startingRow} />
@@ -150,18 +155,15 @@ const TrainModel = ({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
         {showAnimation && (
           <div
             style={{
-              position: "absolute",
-              transformOrigin: "center center",
-              top: translateY + "%",
-              left: translateX + "%",
+              position: 'absolute',
+              transformOrigin: 'center center',
+              top: translateY + '%',
+              left: translateX + '%',
               transform: transform,
-              opacity: opacity * tableOpacity
+              opacity: opacity * tableOpacity,
             }}
           >
-            <DataTable
-              reducedColumns={true}
-              singleRow={getAnimationStep()}
-            />
+            <DataTable reducedColumns={true} singleRow={getAnimationStep()} />
           </div>
         )}
       </div>
@@ -172,14 +174,14 @@ const TrainModel = ({ data, readyToTrain: ready, labelColumn, selectedFeatures, 
             src={aiBotHead}
             style={{
               ...styles.trainBotHead,
-              ...(headOpen && styles.trainBotOpen)
+              ...(headOpen && styles.trainBotOpen),
             }}
-            alt={I18n.t("aiBotHeadAltText")}
+            alt={I18n.t('aiBotHeadAltText')}
           />
           <img
             src={aiBotBody}
             style={styles.trainBotBody}
-            alt={I18n.t("aiBotBodyAltText")}
+            alt={I18n.t('aiBotBodyAltText')}
           />
         </div>
       </div>
@@ -193,5 +195,5 @@ export default connect((state: RootState) => ({
   readyToTrain: readyToTrain(state),
   labelColumn: state.labelColumn,
   selectedFeatures: state.selectedFeatures,
-  instructionsOverlayActive: state.instructionsOverlayActive
+  instructionsOverlayActive: state.instructionsOverlayActive,
 }))(TrainModel);
