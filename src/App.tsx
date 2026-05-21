@@ -53,16 +53,20 @@ const PanelButtons = ({
   shouldDisplaySaveStatus: shouldDisplaySaveStatusProp
 }: PanelButtonsProps) => {
   const onClickPrev = () => {
-    setCurrentPanel(panelButtons.prev!.panel);
+    if (panelButtons.prev) {
+      setCurrentPanel(panelButtons.prev.panel);
+    }
   };
 
   const onClickNext = () => {
-    if (["continue", "finish"].includes(panelButtons.next!.panel)) {
-      onContinue();
-    } else if (currentPanel === "saveModel") {
-      startSaveTrainedModel(dataToSave);
-    } else {
-      setCurrentPanel(panelButtons.next!.panel);
+    if (panelButtons.next) {
+      if (["continue", "finish"].includes(panelButtons.next.panel)) {
+        onContinue();
+      } else if (currentPanel === "saveModel") {
+        startSaveTrainedModel(dataToSave);
+      } else {
+        setCurrentPanel(panelButtons.next.panel);
+      }
     }
   };
 

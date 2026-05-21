@@ -6,7 +6,7 @@ import { RootState } from "../redux";
 
 export function getDatasetDetails(state: RootState): DatasetDetails {
   const datasetDetails: DatasetDetails = {
-    name: state.metadata && state.metadata.name,
+    name: state.metadata?.name || '',
     description: getDatasetDescription(state),
     numRows: state.data.length,
     isUserUploaded: isUserUploadedDataset(state),
@@ -18,10 +18,8 @@ export function getDatasetDetails(state: RootState): DatasetDetails {
 
 function getCardContextAttr(state: RootState, attr: string): string | undefined {
   if (
-    state.metadata &&
-    state.metadata.name &&
-    state.metadata.card &&
-    state.metadata.card.context &&
+    state.metadata?.name &&
+    state.metadata?.card?.context &&
     state.metadata.card.context[attr as keyof typeof state.metadata.card.context]
   ) {
     const datasetId = state.metadata.name;
@@ -43,13 +41,11 @@ function getPotentialMisuses(state: RootState): string | undefined {
   return getCardContextAttr(state, "potentialMisuses");
 }
 
-export function getDatasetDescription(state: RootState): string | undefined {
+export function getDatasetDescription(state: RootState): string {
   // If this a dataset from the internal collection that already has a description, use that.
   if (
-    state.metadata &&
-    state.metadata.name &&
-    state.metadata.card &&
-    state.metadata.card.description
+    state.metadata?.name &&
+    state.metadata?.card?.description
   ) {
     const datasetId = state.metadata.name;
     const fallback = state.metadata.card.description;
@@ -58,14 +54,13 @@ export function getDatasetDescription(state: RootState): string | undefined {
         scope: ["datasets", datasetId, "card"],
         default: fallback
       }
-    );
+    ) || fallback;
   } else if (
-    state.trainedModelDetails &&
-    state.trainedModelDetails.datasetDescription
+    state.trainedModelDetails?.datasetDescription
   ) {
     return state.trainedModelDetails.datasetDescription;
   } else {
-    return undefined;
+    return '';
   }
 }
 

@@ -8,15 +8,15 @@ import I18n from "../i18n";
 import { DataRow } from "../types";
 
 interface DataDisplayProps {
-  data?: DataRow[];
+  data: DataRow[];
 }
 
 const DataDisplay = ({ data }: DataDisplayProps) => {
-  if (data!.length === 0) {
+  if (data.length === 0) {
     return null;
   }
 
-  const rowCount = data!.length;
+  const rowCount = data.length;
   const rowLimit = 100;
   const rowCountMessage = (rowCount <= rowLimit) ?
     I18n.t("dataDisplayRowCount", {"rowCount": rowCount}) :

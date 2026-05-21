@@ -157,45 +157,45 @@ function isAccuracyAcceptable(state: RootState): boolean {
 
 // Given the current panel, return the appropriate previous & next buttons.
 export function prevNextButtons(state: RootState): PrevNextButtons {
-  let prev: NavButton | null | undefined, next: NavButton | null | undefined;
+  let prev: NavButton | undefined, next: NavButton | undefined;
 
   if (state.currentPanel === "selectDataset") {
-    prev = null;
+    prev = undefined;
     next = isPanelAvailable(state, "dataDisplayLabel")
       ? { panel: "dataDisplayLabel", text: I18n.t("navigateForward") }
       : isPanelAvailable(state, "dataDisplayFeatures")
       ? { panel: "dataDisplayFeatures", text: I18n.t("navigateForward") }
-      : null;
+      : undefined;
   } else if (state.currentPanel === "dataDisplayLabel") {
     prev = isPanelAvailable(state, "selectDataset")
       ? { panel: "selectDataset", text: I18n.t("navigateBack") }
-      : null;
+      : undefined;
     next = isPanelAvailable(state, "dataDisplayFeatures")
       ? { panel: "dataDisplayFeatures", text: I18n.t("navigateForward") }
-      : null;
+      : undefined;
   } else if (state.currentPanel === "dataDisplayFeatures") {
     prev = isPanelAvailable(state, "dataDisplayLabel")
       ? { panel: "dataDisplayLabel", text: I18n.t("navigateBack") }
-      : null;
+      : undefined;
     next = isPanelAvailable(state, "trainModel")
       ? { panel: "trainModel", text: I18n.t('trainModelButtonText') }
-      : null;
+      : undefined;
   } else if (state.currentPanel === "trainModel") {
     if (state.trainedModel) {
-      prev = null;
+      prev = undefined;
       next = { panel: "generateResults", text: I18n.t("navigateForward") };
     }
   } else if (state.currentPanel === "generateResults") {
     if (state.trainedModel) {
-      prev = null;
+      prev = undefined;
       next = { panel: "results", text: I18n.t("navigateForward") };
     }
   } else if (state.currentPanel === "results") {
     prev = isPanelAvailable(state, "dataDisplayFeatures")
       ? { panel: "dataDisplayFeatures", text: I18n.t("tryAgain") }
-      : null;
+      : undefined;
     next = !isAccuracyAcceptable(state)
-      ? null
+      ? undefined
       : isPanelAvailable(state, "saveModel")
       ? { panel: "saveModel", text: I18n.t("navigateForward") }
       : { panel: "continue", text: I18n.t("navigateDone") };
@@ -203,14 +203,14 @@ export function prevNextButtons(state: RootState): PrevNextButtons {
     prev = { panel: "results", text: I18n.t("navigateBack") };
     next = isPanelAvailable(state, "modelSummary")
       ? { panel: "modelSummary", text: I18n.t("saveProgress") }
-      : null;
+      : undefined;
   } else if (state.currentPanel === "modelSummary") {
     prev = isPanelAvailable(state, "saveModel")
       ? { panel: "saveModel", text: I18n.t("navigateBack") }
-      : null;
+      : undefined;
     next = isPanelAvailable(state, "finish")
       ? { panel: "finish", text: I18n.t("navigateDone") }
-      : null;
+      : undefined;
   }
 
   if (prev) {

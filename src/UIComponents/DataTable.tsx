@@ -8,17 +8,17 @@ import { DataRow } from "../types";
 
 interface DataTableProps {
   currentPanel: string;
-  data: DataRow[] | null;
-  datasetId: string | undefined;
-  labelColumn: string | undefined;
+  data: DataRow[];
+  datasetId?: string;
+  labelColumn?: string;
   selectedFeatures: string[];
-  setCurrentColumn: (column: string | undefined) => void;
-  setHighlightColumn: (column: string | undefined) => void;
-  currentColumn: string | undefined;
-  highlightColumn: string | undefined;
+  setCurrentColumn: (column?: string) => void;
+  setHighlightColumn: (column?: string) => void;
+  currentColumn?: string;
+  highlightColumn?: string;
   reducedColumns?: boolean;
-  singleRow?: number | undefined;
-  startingRow?: number | undefined;
+  singleRow?: number;
+  startingRow?: number;
   noLabel?: boolean;
   hideLabel?: boolean;
   useResultsData?: boolean;
@@ -78,8 +78,12 @@ const DataTable = ({
   };
 
   const getColumns = () => {
+    if (data.length === 0) {
+      return [];
+    }
+
     if (reducedColumns) {
-      return Object.keys(data![0])
+      return Object.keys(data[0])
         .filter(key => {
           return (
             (!noLabel && labelColumn === key) ||
@@ -91,18 +95,22 @@ const DataTable = ({
         });
     }
 
-    return Object.keys(data![0]);
+    return Object.keys(data[0]);
   };
 
   const getRows = () => {
+    if (data.length === 0) {
+      return [];
+    }
+
     if (singleRow !== undefined) {
       return [
-        data![
-          Math.min(singleRow, data!.length - 1)
+        data[
+          Math.min(singleRow, data.length - 1)
         ]
       ];
     } else {
-      return data!.slice(0, 100);
+      return data.slice(0, 100);
     }
   };
 

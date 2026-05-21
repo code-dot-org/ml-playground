@@ -133,12 +133,12 @@ const init = (store: Store<RootState>): void => {
 };
 
 const onClickTrain = (store: Store<RootState>): void => {
-  trainingState.trainer!.startTraining(store);
+  trainingState.trainer?.startTraining(store);
 };
 
 const onClickPredict = (store: Store<RootState>): void => {
   const testValues = prepareTestData(store);
-  trainingState.trainer!.predict(testValues);
+  trainingState.trainer?.predict(testValues);
 };
 
 export default {

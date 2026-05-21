@@ -83,7 +83,7 @@ export interface MetadataField {
 
 export interface Metadata {
   name?: string;
-  card?: MetadataCard;
+  card: MetadataCard;
   defaultLabelColumn?: string;
   fields?: MetadataField[];
 }
@@ -110,7 +110,7 @@ export interface TrainedModelDetailsSave {
 }
 
 export interface ModelCardColumn {
-  id?: string;
+  id: string;
   description?: string;
   min?: number;
   max?: number;
@@ -118,8 +118,8 @@ export interface ModelCardColumn {
 }
 
 export interface DatasetDetails {
-  name?: string;
-  description?: string;
+  name: string;
+  description: string;
   isUserUploaded: boolean;
   numRows: number;
   potentialUses?: string;
@@ -164,6 +164,6 @@ export interface NavButton {
 }
 
 export interface PrevNextButtons {
-  prev: NavButton | null | undefined;
-  next: NavButton | null | undefined;
+  prev?: NavButton;
+  next?: NavButton;
 }

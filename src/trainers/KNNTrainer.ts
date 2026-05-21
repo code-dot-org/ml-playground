@@ -124,15 +124,22 @@ export default class KNNTrainer {
   }
 
   batchPredict(accuracyCheckExamples: number[][]): (number | string)[] {
-    const predictedLabels = this.knn!.predict(accuracyCheckExamples);
+    if (!this.knn) {
+      return [];
+    }
+
+    const predictedLabels = this.knn.predict(accuracyCheckExamples);
     this.store.dispatch(setAccuracyCheckPredictedLabels(predictedLabels));
     return predictedLabels;
   }
 
   predict(testValues: number[]): void {
     const state = this.store.getState();
-    const predictions = state.trainedModel!.predict([testValues]);
-    this.store.dispatch(setPrediction(predictions[0]));
+
+    if (state.trainedModel) {
+      const predictions = state.trainedModel.predict([testValues]);
+      this.store.dispatch(setPrediction(predictions[0]));
+    }
   }
 
   storeTrainedModel(store: Store<RootState>, trainedModel: KNNTrainedModelDetails): void {

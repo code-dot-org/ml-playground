@@ -9,14 +9,14 @@ import { Metadata, DatasetDetails } from "../types";
 
 interface DataCardProps {
   name?: string;
-  metadata?: Metadata;
-  datasetDetails?: DatasetDetails;
+  metadata: Metadata;
+  datasetDetails: DatasetDetails;
   dataLength?: number;
   removedRowsCount?: number;
 }
 
 const DataCard = ({ name, metadata, datasetDetails, dataLength, removedRowsCount }: DataCardProps) => {
-  const card = metadata && metadata.card;
+  const card = metadata?.card;
 
   const dataLengthLimit = 20000;
   if (dataLength! > dataLengthLimit) {
@@ -37,12 +37,12 @@ const DataCard = ({ name, metadata, datasetDetails, dataLength, removedRowsCount
         <ScrollableContent>
           {card && (
             <div>
-              <div style={styles.cardRow}>{datasetDetails!.description}</div>
+              <div style={styles.cardRow}>{datasetDetails.description}</div>
               <div style={styles.cardRow}>
                 <span style={styles.italic}>
                   {I18n.t("dataCardSource")}
                   <br />
-                  {metadata!.card!.source}
+                  {metadata.card.source}
                 </span>
               </div>
               <div style={styles.cardRow}>
@@ -52,29 +52,29 @@ const DataCard = ({ name, metadata, datasetDetails, dataLength, removedRowsCount
                   {dataLength}
                 </span>
               </div>
-              {metadata!.card!.lastUpdated && (
+              {metadata.card.lastUpdated && (
                 <div style={styles.cardRow}>
                   <span style={styles.italic}>
                     {I18n.t("dataCardLastUpdated")}
                     <br />
-                    {metadata!.card!.lastUpdated}
+                    {metadata.card.lastUpdated}
                   </span>
                 </div>
               )}
 
-              {metadata!.card!.context?.potentialUses && (
+              {metadata.card.context?.potentialUses && (
                 <div style={styles.cardRow}>
                   <div style={styles.bold}>{I18n.t("dataCardPotentialUses")}</div>
                   <div style={styles.italic}>
-                    {datasetDetails!.potentialUses}
+                    {datasetDetails.potentialUses}
                   </div>
                 </div>
               )}
-              {metadata!.card!.context?.potentialMisuses && (
+              {metadata.card.context?.potentialMisuses && (
                 <div style={styles.cardRow}>
                   <div style={styles.bold}>{I18n.t("dataCardPotentialMisuses")}</div>
                   <div style={styles.italic}>
-                    {datasetDetails!.potentialMisuses}
+                    {datasetDetails.potentialMisuses}
                   </div>
                 </div>
               )}

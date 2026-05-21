@@ -112,12 +112,12 @@ const Statement = ({
   // The "Predict ___ based on ___" sentence translators receive. The OUTPUT and INPUTS
   // placeholders will be replaced with React components.
   const predictionStatement = I18n.t("predictionStatement",
-    {"output": OUTPUT_KEY, "inputs": INPUTS_KEY});
+    {"output": OUTPUT_KEY, "inputs": INPUTS_KEY}) || '';
   // Regex to split the "Predict..." statement and isolate the dynamic content parts.
   // "Predict __CDO_OUTPUT__ based on __CDO_INPUTS__" becomes
   // ["Predict ", "__CDO_OUTPUT__", " based on ", "__CDO_INPUTS__"]
   const regex = new RegExp(`(${OUTPUT_KEY}|${INPUTS_KEY})`);
-  const predictionStatementParts = predictionStatement!.split(regex).filter((part: string) => part);
+  const predictionStatementParts = predictionStatement.split(regex).filter((part: string) => part);
   // Swap the OUTPUT and INPUTS placeholders with React components.
   const predictionStatementComponents = predictionStatementParts.map((part: string, index: number) => {
     if (part === OUTPUT_KEY) {

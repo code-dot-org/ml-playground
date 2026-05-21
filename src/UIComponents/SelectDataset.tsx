@@ -51,12 +51,12 @@ const SelectDataset = ({
 
     // Don't process the click if we're just clicking the current
     // dataset again.
-    if (dataset!.name !== name) {
-      const csvPath = assetPath + dataset!.path;
-      const jsonPath = assetPath + dataset!.metadataPath;
+    if (dataset && dataset.name !== name) {
+      const csvPath = assetPath + dataset.path;
+      const jsonPath = assetPath + dataset.metadataPath;
 
       resetState();
-      setSelectedName(dataset!.name);
+      setSelectedName(dataset.name);
       setSelectedCSV(csvPath);
       setSelectedJSON(jsonPath);
       setDownload(true);

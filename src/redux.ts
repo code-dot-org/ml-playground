@@ -297,7 +297,9 @@ const initialState: RootState = {
   // Possible values for invalidData: "tooFewRows", and "tooFewColumns".
   invalidData: undefined,
   data: [],
-  metadata: {},
+  metadata: {
+    card: {},
+  },
   removedRowsCount: 0,
   highlightDataset: undefined,
   highlightColumn: undefined,

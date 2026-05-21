@@ -16,7 +16,7 @@ const framesPerCycle = 80;
 const maxNumItems = 7;
 
 interface GenerateResultsProps {
-  data: DataRow[] | null;
+  data: DataRow[];
   readyToTrain: boolean;
   labelColumn: string | undefined;
   selectedFeatures: string[];
@@ -40,7 +40,7 @@ const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, in
   }, [data]);
 
   const getNumItems = useCallback(() => {
-    return Math.min(maxNumItems, data!.length);
+    return Math.min(maxNumItems, data.length);
   }, [data]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const GenerateResults = ({ data, readyToTrain, labelColumn, selectedFeatures, in
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getShowItemsFadingOut = () => {
-    return data!.length > maxNumItems;
+    return data.length > maxNumItems;
   };
 
   const getAnimationSubstep = () => {

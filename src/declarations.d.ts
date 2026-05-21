@@ -1,5 +1,3 @@
-import { ComponentType } from "react";
-
 declare module "*.png" {
   const src: string;
   export default src;
@@ -10,19 +8,29 @@ declare module "*.jpg" {
   export default src;
 }
 
+declare module "@public/*.png" {
+  const src: string;
+  export default src;
+}
+
+declare module "@public/*.jpg" {
+  const src: string;
+  export default src;
+}
+
 declare module "*.css" {
   const content: Record<string, string>;
   export default content;
 }
 
 declare module "react-chartjs-2" {
-  export const Bar: ComponentType<{
+  export const Bar: import("react").ComponentType<{
     data: object;
     width?: number;
     height?: number;
     options?: object;
   }>;
-  export const Scatter: ComponentType<{
+  export const Scatter: import("react").ComponentType<{
     data: object;
     options?: object;
   }>;
@@ -37,7 +45,7 @@ declare module "ml-knn" {
 }
 
 declare module "react-papaparse" {
-  export const CSVReader: ComponentType<{
+  export const CSVReader: import("react").ComponentType<{
     onFileLoaded?: (data: Record<string, string>[], fileInfo: object) => void;
     onError?: (error: Error) => void;
     parserOptions?: object;
