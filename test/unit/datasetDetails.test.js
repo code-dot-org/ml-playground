@@ -58,7 +58,7 @@ describe('getDatasetDescription', () => {
 describe('getDatasetDetails', () => {
   test('user uploaded dataset', async () => {
     const details = getDatasetDetails(userUploadedDatasetState);
-    expect(details.name).toBe(undefined);
+    expect(details.name).toBe('');
     expect(details.description).toBe(playDatasetDescription);
     expect(details.numRows).toBe(userUploadedDatasetState.data.length);
     expect(details.isUserUploaded).toBe(true);
