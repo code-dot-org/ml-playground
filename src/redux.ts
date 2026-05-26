@@ -421,13 +421,15 @@ export default function rootReducer(
       // (and a getState cascade) into this dispatch and trip the
       // "getState() while reducer is executing" guard. Defer to a
       // microtask so the dispatch fully unwinds before the callback fires.
-      const callback = state.instructionsKeyCallback!;
-      queueMicrotask(() =>
-        callback(
-          action.userUploadedData ? 'uploadedDataset' : 'selectedDataset',
-          null,
-        ),
-      );
+      if (state.instructionsKeyCallback) {
+        const callback = state.instructionsKeyCallback;
+        queueMicrotask(() =>
+          callback(
+            action.userUploadedData ? 'uploadedDataset' : 'selectedDataset',
+            null,
+          ),
+        );
+      }
     }
 
     return {
@@ -685,8 +687,10 @@ export default function rootReducer(
       // If column is selected, then deselect.
       if (state.currentPanel === 'dataDisplayFeatures') {
         // Deferred — see SET_IMPORTED_DATA comment.
-        const callback = state.instructionsKeyCallback!;
-        queueMicrotask(() => callback('dataDisplayFeatures', null));
+        if (state.instructionsKeyCallback) {
+          const callback = state.instructionsKeyCallback;
+          queueMicrotask(() => callback('dataDisplayFeatures', null));
+        }
       }
       return {
         ...state,
@@ -695,17 +699,19 @@ export default function rootReducer(
     } else {
       if (state.currentPanel === 'dataDisplayFeatures') {
         // Deferred — see SET_IMPORTED_DATA comment.
-        const callback = state.instructionsKeyCallback!;
-        if (
-          state.columnsByDataType[action.currentColumn] ===
-          ColumnTypes.NUMERICAL
-        ) {
-          queueMicrotask(() => callback('selectedFeatureNumerical', null));
-        } else if (
-          state.columnsByDataType[action.currentColumn] ===
-          ColumnTypes.CATEGORICAL
-        ) {
-          queueMicrotask(() => callback('selectedFeatureCategorical', null));
+        if (state.instructionsKeyCallback) {
+          const callback = state.instructionsKeyCallback;
+          if (
+            state.columnsByDataType[action.currentColumn] ===
+            ColumnTypes.NUMERICAL
+          ) {
+            queueMicrotask(() => callback('selectedFeatureNumerical', null));
+          } else if (
+            state.columnsByDataType[action.currentColumn] ===
+            ColumnTypes.CATEGORICAL
+          ) {
+            queueMicrotask(() => callback('selectedFeatureCategorical', null));
+          }
         }
       }
 
@@ -750,10 +756,12 @@ export default function rootReducer(
   }
   if (action.type === SET_SHOW_RESULTS_DETAILS) {
     // Deferred — see SET_IMPORTED_DATA comment.
-    const callback = state.instructionsKeyCallback!;
-    queueMicrotask(() =>
-      callback(action.show ? 'resultsDetails' : 'results', null),
-    );
+    if (state.instructionsKeyCallback) {
+      const callback = state.instructionsKeyCallback;
+      queueMicrotask(() =>
+        callback(action.show ? 'resultsDetails' : 'results', null),
+      );
+    }
     return {
       ...state,
       showResultsDetails: action.show,
