@@ -416,9 +416,17 @@ export default function rootReducer(
   }
   if (action.type === SET_IMPORTED_DATA) {
     if (state.currentPanel === 'selectDataset') {
-      state.instructionsKeyCallback!(
-        action.userUploadedData ? 'uploadedDataset' : 'selectedDataset',
-        null,
+      // Reducer must stay pure: the consumer-supplied callback dispatches
+      // into its own redux store, which would interleave React commits
+      // (and a getState cascade) into this dispatch and trip the
+      // "getState() while reducer is executing" guard. Defer to a
+      // microtask so the dispatch fully unwinds before the callback fires.
+      const callback = state.instructionsKeyCallback!;
+      queueMicrotask(() =>
+        callback(
+          action.userUploadedData ? 'uploadedDataset' : 'selectedDataset',
+          null,
+        ),
       );
     }
 
@@ -601,7 +609,13 @@ export default function rootReducer(
         state.viewedPanels.push(action.currentPanel);
         showedOverlay = true;
       }
-      state.instructionsKeyCallback(action.currentPanel, options);
+      // Deferred to a microtask — see the comment on the SET_IMPORTED_DATA
+      // branch above for why the reducer must not synchronously fire a
+      // consumer callback that dispatches into another store.
+      const callback = state.instructionsKeyCallback;
+      const callbackAction = action.currentPanel;
+      const callbackOptions = options;
+      queueMicrotask(() => callback(callbackAction, callbackOptions));
     }
 
     if (action.currentPanel === 'dataDisplayLabel') {
@@ -670,7 +684,9 @@ export default function rootReducer(
     } else if (state.currentColumn === action.currentColumn) {
       // If column is selected, then deselect.
       if (state.currentPanel === 'dataDisplayFeatures') {
-        state.instructionsKeyCallback!('dataDisplayFeatures', null);
+        // Deferred — see SET_IMPORTED_DATA comment.
+        const callback = state.instructionsKeyCallback!;
+        queueMicrotask(() => callback('dataDisplayFeatures', null));
       }
       return {
         ...state,
@@ -678,16 +694,18 @@ export default function rootReducer(
       };
     } else {
       if (state.currentPanel === 'dataDisplayFeatures') {
+        // Deferred — see SET_IMPORTED_DATA comment.
+        const callback = state.instructionsKeyCallback!;
         if (
           state.columnsByDataType[action.currentColumn] ===
           ColumnTypes.NUMERICAL
         ) {
-          state.instructionsKeyCallback!('selectedFeatureNumerical', null);
+          queueMicrotask(() => callback('selectedFeatureNumerical', null));
         } else if (
           state.columnsByDataType[action.currentColumn] ===
           ColumnTypes.CATEGORICAL
         ) {
-          state.instructionsKeyCallback!('selectedFeatureCategorical', null);
+          queueMicrotask(() => callback('selectedFeatureCategorical', null));
         }
       }
 
@@ -731,9 +749,10 @@ export default function rootReducer(
     };
   }
   if (action.type === SET_SHOW_RESULTS_DETAILS) {
-    state.instructionsKeyCallback!(
-      action.show ? 'resultsDetails' : 'results',
-      null,
+    // Deferred — see SET_IMPORTED_DATA comment.
+    const callback = state.instructionsKeyCallback!;
+    queueMicrotask(() =>
+      callback(action.show ? 'resultsDetails' : 'results', null),
     );
     return {
       ...state,
